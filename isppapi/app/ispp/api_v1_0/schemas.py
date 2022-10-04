@@ -3,58 +3,32 @@ from marshmallow import fields
 from app.ext import ma
 
 
-class Usuario(ma.Schema):
-    idusuario = fields.Integer(dump_only=True)
-    usuario = fields.String()
-    contraseña = fields.String()
-    email = fields.String()
-    contraseñatemp = fields.String()
+class CarreraSchema(ma.Schema):
+    CarreraID = fields.Integer(dump_only=True)
+    CarreraNombre = fields.String()
+    Carpos = fields.Nested('CarpoSchema', many=True)
 
 
-class Perfiles(db.Model, BaseModelMixin):
-    idperfiles = fields.Integer(dump_only=True)
-    perfil = fields.String()
+class PlanSchema(ma.Schema):
+    PlanID = fields.Integer(dump_only=True)
+    PlanNombre = fields.String()
+    Carpos = fields.Nested('CarpoSchema', many=True)
 
 
-class UsuariosPerfiles(db.Model, BaseModelMixin):
-    idusuarioperfil = fields.Integer(dump_only=True)
-    idusuario = fields.Integer()
-    idperfil = fields.Integer()
+class OrientacionSchema(ma.Schema):
+    OrientacionID = fields.Integer(dump_only=True)
+    OrientacionNombre = fields.String()
+    Carpos = fields.Nested('CarpoSchema', many=True)
 
 
-class Estudiante(db.Model, BaseModelMixin):
-    idestudiante = fields.Integer(dump_only=True)
-    NombreAlumno = fields.String()
-    ApellidoAlumno = fields.String()
-    DNI = fields.Integer()
-
-
-class Carpo(db.Model, BaseModelMixin):
+class CarpoSchema(ma.Schema):
     CARPOID = fields.Integer(dump_only=True)
-    CarreraID = fields.Integer()
-    PlanDeEstudioID = fields.Integer()
-    OrientacionID = fields.Integer()
-    contraseñatemp = fields.String()
+    CarpoPrograma = fields.String()
+    Materias = fields.Nested('MateriaSchema', many=True)
 
 
-class Materia(db.Model, BaseModelMixin):
-    idmateria = fields.Integer(dump_only=True)
-    nombremateria = fields.String()
-    año = fields.String()
-    tipo = fields.String()
-
-
-class CarpoEstudiante(db.Model, BaseModelMixin):
-    idCARPOEstudiante = fields.Integer(dump_only=True)
-    idCARPO = fields.Integer()
-    contraseña = fields.String()
-
-
-class Bedel(db.Model, BaseModelMixin):
-    idbedel = fields.Integer(dump_only=True)
-    nombrebedel = fields.String()
-
-
-class Profesor(db.Model, BaseModelMixin):
-    idprofesor = fields.Integer(dump_only=True)
-    nombreprofesor = fields.String()
+class MateriaSchema(ma.Schema):
+    MateriaID = fields.Integer(dump_only=True)
+    MateriaNombre = fields.String()
+    MateriaAño = fields.String()
+    MateriaTipo = fields.String()
