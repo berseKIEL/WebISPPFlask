@@ -38,11 +38,10 @@ class Orientacion(db.Model, BaseModelMixin):
 
 
 class Carpo(db.Model, BaseModelMixin):
-    CARPOID = db.Column(db.Integer, primary_key=True)
-    CarreraID = db.Column(db.Integer, db.ForeignKey('carrera.carreraid'))
-    PlanDeEstudioID = db.Column(db.Integer, db.ForeignKey('plan.planid'))
-    OrientacionID = db.Column(
-        db.Integer, db.ForeignKey('orientacion.orientacionid'))
+    CarpoID = db.Column(db.Integer, primary_key=True)
+    CarreraID = db.Column(db.Integer, db.ForeignKey('carrera.CarreraID'))
+    PlanDeEstudioID = db.Column(db.Integer, db.ForeignKey('plan.PlanID'))
+    OrientacionID = db.Column(db.Integer, db.ForeignKey('orientacion.OrientacionID'))
     CarpoPrograma = db.Column(db.String(255))
     Materias = db.relationship(
         'materia', backref='carpo', lazy=False, cascade='all, delete-orphan')
@@ -60,8 +59,7 @@ class Materia(db.Model, BaseModelMixin):
     MateriaNombre = db.Column(db.String(255))
     MateriaAño = db.Column(db.String(255))
     MateriaTipo = db.Column(db.String(255))
-    CarpoIDMat = db.Column(db.Integer, db.ForeignKey(
-        'carpo.carpoid'), nullable=False)
+    CarpoIDMat = db.Column(db.Integer, db.ForeignKey('carpo.CarpoID'), nullable=False)
 
     def __init__(self, MateriaID, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat):
         self.MateriaID = MateriaID
