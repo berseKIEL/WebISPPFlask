@@ -21,7 +21,7 @@ def create_app(settings_module):
 
     app.register_blueprint(carreras_v_1_0_bp)
 
-    register_error_handlers(app)
+    # register_error_handlers(app)
 
     return app
 

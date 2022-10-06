@@ -20,12 +20,20 @@ class CarrerasListaRecursos(Resource):
         data = request.get_json()
         print(data)
         carrera_dict = carrera_schema.load(data)
-        carrera = Carrera(CarreraID=carrera_dict['CarreraID'],CarreraNombre=carrera_dict['CarreraNombre'])
-        Carrera.save()
+        carrera = Carrera(CarreraNombre=carrera_dict['CarreraNombre'])
+        carrera.save()
         resp = carrera_schema.dump(carrera)
         return resp, 201
-
-
-api.add_resource(CarrerasListaRecursos, '/api/v1.0/carreras/', endpoint='carreras_lista_recursos')
     
-# api.add_resource(CarrerasRecursos, 'api/v1.0/carreras/<int:carrera_id>', endpoint='carreras_recursos')
+class CarrerasRecursos(Resource):
+    def get(self, carrera_id):
+        carrera = Carrera.get_by_id(carrera_id)
+        if carrera is None:
+            raise ObjectNotFound('La carrera no existe')
+        resp = carrera_schema.dump(carrera)
+        return resp
+
+
+api.add_resource(CarrerasListaRecursos, '/api/v1.0/carreras/', endpoint='film_list_resource')
+    
+api.add_resource(CarrerasRecursos, '/api/v1.0/carreras/<int:carrera_id>', endpoint='carreras_recursos')

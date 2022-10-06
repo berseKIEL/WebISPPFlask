@@ -1,8 +1,8 @@
-"""Initial_db
+"""db1
 
-Revision ID: c54f16a7b6da
+Revision ID: 1c8393a5fe88
 Revises: 
-Create Date: 2022-10-04 07:19:45.466600
+Create Date: 2022-10-04 20:24:37.356233
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c54f16a7b6da'
+revision = '1c8393a5fe88'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,8 +35,8 @@ def upgrade():
     )
     op.create_table('carpo',
     sa.Column('CarpoID', sa.Integer(), nullable=False),
-    sa.Column('CarreraID', sa.Integer(), nullable=True),
-    sa.Column('PlanDeEstudioID', sa.Integer(), nullable=True),
+    sa.Column('CarreraID', sa.Integer(), nullable=False),
+    sa.Column('PlanDeEstudioID', sa.Integer(), nullable=False),
     sa.Column('OrientacionID', sa.Integer(), nullable=True),
     sa.Column('CarpoPrograma', sa.String(length=255), nullable=True),
     sa.ForeignKeyConstraint(['CarreraID'], ['carrera.CarreraID'], ),
