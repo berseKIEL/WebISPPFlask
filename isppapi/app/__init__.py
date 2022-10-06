@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 
-from app.common.error_handling import ObjectNotFound, AppErrorBaseClass
+from app.common.error_handling import ObjectNotFound,AppErrorBaseClass
 from app.db import db
 from app.ispp.api_v1_0.resources import carreras_v_1_0_bp
 from .ext import ma, migrate
@@ -21,15 +21,14 @@ def create_app(settings_module):
 
     app.register_blueprint(carreras_v_1_0_bp)
 
-    # register_error_handlers(app)
-
+    register_error_handlers(app)
     return app
 
 
 def register_error_handlers(app):
-    @app.errorhandler(Exception)
-    def handle_exception_error(e):
-        return jsonify({'msg': 'Internal server error'}), 500
+    # @app.errorhandler(Exception)
+    # def handle_exception_error(e):
+    #     return jsonify({'msg': 'Internal server error'}), 500
 
     @app.errorhandler(405)
     def handle_405_error(e):
