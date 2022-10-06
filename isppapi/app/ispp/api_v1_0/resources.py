@@ -12,6 +12,10 @@ carrera_schema = CarreraSchema()
 plan_schema = PlanSchema()
 orientacion_schema = OrientacionSchema()
 
+carpo_schema = CarpoSchema()
+
+materia_schemas = MateriaSchema()
+
 api = Api(carreras_v_1_0_bp)
 
 
@@ -62,6 +66,7 @@ class PlanesRecursos(Resource):
         resp = plan_schema.dump(plan)
         return resp
 
+
 class OrientacionesListaRecursos(Resource):
     def get(self):
         orientaciones = Orientacion.get_all()
@@ -71,7 +76,8 @@ class OrientacionesListaRecursos(Resource):
     def post(self):
         data = request.get_json()
         orientacion_dict = orientacion_schema.load(data)
-        orientacion = Orientacion(OrientacionNombre=orientacion_dict['OrientacionNombre'])
+        orientacion = Orientacion(
+            OrientacionNombre=orientacion_dict['OrientacionNombre'])
         orientacion.save()
         resp = orientacion_schema.dump(orientacion)
         return resp, 201
@@ -85,6 +91,56 @@ class OrientacionesRecursos(Resource):
         resp = orientacion_schema.dump(orientacion)
         return resp
 
+
+class CARPOListaRecursos(Resource):
+    def get(self):
+        CARPOS = Carpo.get_all()
+        resultado = carpo_schema.dump(CARPOS, many=True)
+        return resultado
+
+    def post(self):
+        data = request.get_json()
+        carpo_dict = carpo_schema.load(data)
+        carpo = Carpo(CarreraID=carpo_dict['CarreraID'],
+                      PlanDeEstudioID=carpo_dict['PlanDeEstudioID'], OrientacionID=carpo_dict['OrientacionID'])
+        carpo.save()
+        resp = carpo_schema.dump(carpo)
+        return resp, 201
+
+
+class CARPORecursos(Resource):
+    def get(self, carpo_id):
+        carpo = Carpo.get_by_id(carpo_id)
+        if carpo is None:
+            raise ObjectNotFound(
+                'No existe esa Carrera con esa orientación y plan solicitados')
+        resp = carpo_schema.dump(carpo)
+        return resp
+
+
+class MateriasListaRecursos(Resource):
+    def get(self):
+        materias = Materia.get_all()
+        resultado = materia_schemas.dump(materias, many=True)
+        return resultado
+
+    def post(self):
+        data = request.get_json()
+        materia_dict = materia_schemas.load(data)
+        materia = Materia(MateriaNombre=materia_dict['MateriaNombre'],CarpoIDMat=materia_dict['CarpoIDMat'])
+        materia.save()
+        resp = materia_schemas.dump(materia)
+        return resp, 201
+
+
+class MateriasRecursos(Resource):
+    def get(self, materia_id):
+        materia = Materia.get_by_id(materia_id)
+        if materia is None:
+            raise ObjectNotFound(
+                'La materia solicitada no existe')
+        resp = materia_schema.dump(materia)
+        return resp
 
 
 api.add_resource(CarrerasListaRecursos, '/api/v1.0/carreras/',
@@ -104,3 +160,15 @@ api.add_resource(OrientacionesListaRecursos, '/api/v1.0/orientaciones/',
 
 api.add_resource(OrientacionesRecursos, '/api/v1.0/orientaciones/<int:orientacion_id>',
                  endpoint='orientaciones_recursos')
+
+api.add_resource(CARPOListaRecursos, '/api/v1.0/carpos/',
+                 endpoint='carpos_lista_recursos')
+
+api.add_resource(CARPORecursos, '/api/v1.0/carpos/<int:carpo_id>',
+                 endpoint='carpos_recursos')
+
+api.add_resource(MateriasListaRecursos, '/api/v1.0/materias/',
+                 endpoint='materias_lista_recursos')
+
+api.add_resource(MateriasRecursos, '/api/v1.0/materias/<int:materia_id>',
+                 endpoint='materias_recursos')

@@ -19,12 +19,16 @@ class OrientacionSchema(ma.Schema):
 
 
 class CarpoSchema(ma.Schema):
-    CARPOID = fields.Integer(dump_only=True)
-    CarpoPrograma = fields.String()
+    CarpoID = fields.Integer(dump_only=True)
+    CarreraID = fields.Integer()
+    PlanDeEstudioID = fields.Integer()
+    OrientacionID = fields.Integer()
+    CarpoPrograma = fields.String(allow_none=True)
 
 
 class MateriaSchema(ma.Schema):
     MateriaID = fields.Integer(dump_only=True)
     MateriaNombre = fields.String()
-    MateriaAño = fields.String()
-    MateriaTipo = fields.String()
+    MateriaAño = fields.String(allow_none=True)
+    MateriaTipo = fields.String(allow_none=True)
+    CarpoIDMat = fields.Integer()

@@ -18,6 +18,7 @@ class Plan(db.Model, BaseModelMixin):
     def __init__(self, PlanNombre):
         self.PlanNombre = PlanNombre
 
+
 class Orientacion(db.Model, BaseModelMixin):
     OrientacionID = db.Column(db.Integer, primary_key=True)
     OrientacionNombre = db.Column(db.String(255))
@@ -29,16 +30,19 @@ class Orientacion(db.Model, BaseModelMixin):
 
 class Carpo(db.Model, BaseModelMixin):
     CarpoID = db.Column(db.Integer, primary_key=True)
-    CarreraID = db.Column(db.Integer, db.ForeignKey('carrera.CarreraID'), nullable=False)
-    PlanDeEstudioID = db.Column(db.Integer, db.ForeignKey('plan.PlanID'), nullable=False)
-    OrientacionID = db.Column(db.Integer, db.ForeignKey('orientacion.OrientacionID'))
+    CarreraID = db.Column(db.Integer, db.ForeignKey(
+        'carrera.CarreraID'), nullable=False)
+    PlanDeEstudioID = db.Column(
+        db.Integer, db.ForeignKey('plan.PlanID'), nullable=False)
+    OrientacionID = db.Column(
+        db.Integer, db.ForeignKey('orientacion.OrientacionID'))
     CarpoPrograma = db.Column(db.String(255))
     Materias = db.relationship('Materia', backref='carpo')
 
-    def __init__(self, CarreraID, PlanDeEstudioID, OrientacionID):
+    def __init__(self, CarreraID, OrientacionID, PlanDeEstudioID):
         self.CarreraID = CarreraID
+        self.OrientacionID = OrientacionID
         self.PlanDeEstudioID = PlanDeEstudioID
-        self.CarpoPrograma = CarpoPrograma
 
 
 class Materia(db.Model, BaseModelMixin):
@@ -46,10 +50,9 @@ class Materia(db.Model, BaseModelMixin):
     MateriaNombre = db.Column(db.String(255))
     MateriaAño = db.Column(db.String(255))
     MateriaTipo = db.Column(db.String(255))
-    CarpoIDMat = db.Column(db.Integer, db.ForeignKey('carpo.CarpoID'), nullable=False)
+    CarpoIDMat = db.Column(db.Integer, db.ForeignKey(
+        'carpo.CarpoID'), nullable=False)
 
-    def __init__(self, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat):
+    def __init__(self, MateriaNombre, CarpoIDMat):
         self.MateriaNombre = MateriaNombre
-        self.MateriaAño = MateriaAño
-        self.MateriaTipo = MateriaTipo
         self.CarpoIDMat = CarpoIDMat
