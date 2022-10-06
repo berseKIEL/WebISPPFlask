@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+import os
 
 from app.common.error_handling import ObjectNotFound,AppErrorBaseClass
 from app.db import db
@@ -10,7 +11,7 @@ from .ext import ma, migrate
 def create_app(settings_module):
     app = Flask(__name__)
     app.config.from_object(settings_module)
-
+        
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
