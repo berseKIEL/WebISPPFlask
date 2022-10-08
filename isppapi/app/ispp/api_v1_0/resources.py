@@ -116,6 +116,9 @@ class CARPORecursos(Resource):
                 'No existe esa Carrera con esa orientación y plan solicitados')
         resp = carpo_schema.dump(carpo)
         return resp
+    
+    def findorientacionNull(self, carreraid):
+        pass
 
 
 class MateriasListaRecursos(Resource):
@@ -127,7 +130,8 @@ class MateriasListaRecursos(Resource):
     def post(self):
         data = request.get_json()
         materia_dict = materia_schemas.load(data)
-        materia = Materia(MateriaNombre=materia_dict['MateriaNombre'],CarpoIDMat=materia_dict['CarpoIDMat'])
+        materia = Materia(
+            MateriaNombre=materia_dict['MateriaNombre'], CarpoIDMat=materia_dict['CarpoIDMat'])
         materia.save()
         resp = materia_schemas.dump(materia)
         return resp, 201

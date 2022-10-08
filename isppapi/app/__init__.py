@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+from flask_cors import CORS
+
 import os
 
 from app.common.error_handling import ObjectNotFound,AppErrorBaseClass
@@ -15,6 +17,7 @@ def create_app(settings_module):
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+    CORS(app)
 
     Api(app, catch_all_404s=True)
 
@@ -27,9 +30,9 @@ def create_app(settings_module):
 
 
 def register_error_handlers(app):
-    # @app.errorhandler(Exception)
-    # def handle_exception_error(e):
-    #     return jsonify({'msg': 'Internal server error'}), 500
+    @app.errorhandler(Exception)
+    def handle_exception_error(e):
+        return jsonify({'msg': 'Internal server error'}), 500
 
     @app.errorhandler(405)
     def handle_405_error(e):

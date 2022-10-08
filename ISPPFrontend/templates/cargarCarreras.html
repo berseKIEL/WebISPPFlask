@@ -1,0 +1,56 @@
+{%extends 'inicio.html' %}
+
+{% block css %}{{super()}}
+<link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='css/cargarCarreras.css') }}"> 
+{%endblock %}
+    
+{% block title %}Cargar carreras{% endblock %}
+
+{% block body %}
+    {% block navbar %}
+        {{super()}}
+    {% endblock %}
+
+    <div class="div-carga">
+        <form class="form-carga" action="/cargarCarreras" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <h1>Carreras</h1>
+            <div class="div-opcionescarga">
+                <input type="text" name="nombrecarrera" id="nombrecarrera" placeholder="Nombre Carrera">
+            </div>
+    
+            <h1>Orientaciones</h1>
+            <div class="div-opcionescarga">
+                <select name="orientaciones" class="id_orientacion">
+                    {%for or in lista%}
+                        <option value="{{or[0]}}">{{or[0]}}</option>
+                    {%endfor%}
+                    <option value="otra">Otra</option>
+                    <option value="Null">Ninguna</option>
+                </select>
+            </div>
+            <div class="inputOrientacion hide">
+                <input type="text" name="otra_orientacion"value="" placeholder="Nueva Orientacion">
+            </div>
+            
+            <h1>Planes</h1>
+            <div class="div-opcionescarga">
+                <select name="planes" class="id_plan">
+                    {%for plan in listap%}
+                        <option value="{{plan[0]}}">{{plan[0]}}</option>
+                    {%endfor%}
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div class="inputPlan hide">
+                <input type="text" name="otro_plan" value="" placeholder="Nuevo Plan">
+            </div>
+            <hr>
+            <input type="submit" value="Guardar" class="submit">
+        </form>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>   
+    <script src="{{url_for('static', filename='/scripts/cargarCarrera.js')}}"></script>
+{% endblock %}

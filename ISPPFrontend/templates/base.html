@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='css/base.css') }}">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='css/alertas.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    {% block css %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% block body %}
+        {% block navbar %}
+            <a href="/"></a>
+          
+        {% endblock %}
+    {% endblock %}
+
+    {% from "macroAlertas.html" import Alertas%}
+    {{ Alertas() }}
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{url_for('static', filename='/scripts/alertas.js')}}"></script> 
+    
+</body>
+</html>
+</html>

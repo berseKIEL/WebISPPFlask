@@ -1,0 +1,110 @@
+{%extends 'inicio.html' %} {% block css %}{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/carreras.css') }}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/materias.css') }}"
+/>
+{% endblock %} {% block title %}Materias{% endblock %} {% block body %} {% block
+navbar %} {{super()}} {% endblock %} {% block div %}
+
+        <div class="nombrecarpo">
+          {% if nombre[1]== None%}
+            <h1><b>{{nombre[0]}}: {{nombre[2]}}</b></h1>
+          {%else%}
+            <h1><b>{{nombre[0]}}: {{nombre[1]}} {{nombre[2]}}</b></h1>
+          {%endif%}
+
+        </div>
+        
+  
+<div class="contenedor">
+  {% for i in range(cantidadAños) %}
+  <div class="titulocarrera">
+    <h1>{{listaAños[i]}}</h1>
+  </div>
+
+  <div class="tablematerias">
+    <table id="carrera" class="carr">
+      <thead>
+        <!--<th>id</th>-->
+        <th>Materia</th>
+        <th>Tipo</th>
+      </thead>
+      <div class="cajatablascroll">
+        {% for materia in materias %} {% if materia[2]==(i+1) %}
+        <tbody id="select">
+          <tr id="{{materia[0]}}" class="fila">
+            <!--<td>{{materia[0]}}</td>-->
+            <td>{{materia[1]}}</td>
+            <td>{{materia[3]}}</td>
+          </tr>
+        </tbody>
+        {% endif %} {% endfor %}
+      </div>
+    </table>
+    <br>
+    <hr>
+  </div>
+
+  {%endfor%}
+</div>
+
+<div class="agregarmateria">
+    <h1>Agregar materia</h1>
+  <button value="nuevo" class="boton" name="accion" id="nuevo">+Nueva</button>
+</div>
+  <div class="nuevamateria hide">
+    <div class="materia">
+      <div class="nombreMateria">
+        <button type="button" class="closen" id="close">
+          <span>&times;</span>
+        </button>
+        <span id="promptTitle"><b>Nueva Materia</b></span>
+        <div class="carpo">
+          {% if nombre[1]== None%}
+            <span><b>{{nombre[0]}}: {{nombre[2]}}</b></span>
+          {%else%}
+            <span><b>{{nombre[0]}}: {{nombre[1]}} {{nombre[2]}}</b></span>
+          {%endif%}
+        </div>
+        
+      </div>
+      <br />
+      
+      <form class="nuevaMateriaForm" action="/cargarMaterias" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" value="nuevo" name="accion" id="nuevo">
+        <input type="hidden" value="{{idcarpo}}" name="idcarpo"/>
+
+        <input type="text" name="nombreMateria" class="boton" placeholder="Materia" id="cod"/>
+
+        <select name="añoMateria" id="nom" class="menudesp">
+          {% for opaño in range(cantidadAños+1) %}
+          
+            {%if 6 > listaañonumerica[opaño]%}
+              <option value="{{listaañonumerica[opaño]}}">{{listaañonumerica[opaño]}}</option>
+            {%endif%}
+          {%endfor%}
+        </select>
+
+        <select name="tipomateria" class="menudesp" id="tipo">
+          <option value="1°Cuatrimestre">1°Cuatrimestre</option>
+          <option value="2°Cuatrimestre">2°Cuatrimestre</option>
+          <option value="Anual">Anual</option>
+        </select>
+
+        <input type="submit" value="Guardar" class="boton" name="action" />
+      </form>
+    </div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{{url_for('static', filename='/scripts/orientacion.js')}}"></script>
+<script src="{{url_for('static', filename='/scripts/nuevaMateria.js')}}"></script>
+
+{%endblock%} {% endblock %}
