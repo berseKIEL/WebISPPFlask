@@ -1,0 +1,91 @@
+{%extends 'base.html' %}
+
+{% block css %}{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/carpo.css') }}"
+/>
+{% endblock %} 
+
+{% block title %}Carreras{% endblock %} 
+
+{%block navbar %} 
+{{super()}} 
+{% endblock %} 
+
+{% block content %} 
+
+
+<section>  
+    <table id="carrera" class="carr hide">
+        <thead>
+            <!-- <th>id</th> -->
+            <th>{{nombres[0]}}</th>
+        </thead>
+        <div class="cajatablascroll">
+            {% for carrera in lista %}
+            <tbody id="select">
+                <tr id="{{carrera[0]}}" class="fila">
+                    <!-- <td>{{carrera[0]}}</td> -->
+                    <td class="td-carreras">
+                        <div class="carreraedit">
+                            <span class="titulocarrera">
+                                {{carrera[1]}}
+                            </span>
+                            <div class="div-icon-carreras">
+                                <a href="editar"><img class="a-icon" src="../static/img/editar.png" alt=""></a>
+                                <a href="eliminar"><img class="a-icon" src="../static/img/eliminar.png" alt=""></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </div>
+    </table>
+
+</section>
+
+
+{% endblock %}
+
+{% block script %}
+{{super()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{{url_for('static', filename='/js/carreras.js')}}"></script>
+
+<script>
+    var lista = [0, 0, 0, 0];
+
+    $('.fila').dblclick(function(){
+        if(lista[0] == 0){
+            lista[0] = $(this).attr('id');
+        }
+        else{
+            if(lista[2] == 0){
+                if(lista[3] == 0){
+                    lista[2] == $(this).attr('id');
+                }
+                else{
+                    if(lista[1] == 0){
+                        lista[1] = $(this).attr('id');
+                    }
+                    else{
+                        lista[2] = $(this).attr('id');
+                    }
+                }
+            }
+        }
+        var listanueva = {'IDCarrera' : lista[0], 'IDPlan': lista[1],'IDOrientacion':lista[2],'NoOrientacion':lista[3]};
+
+        $.ajax({
+            url:"/get_carreras",
+            type:"POST",
+            contentType: "application/json",
+            data: JSON.stringify(listanueva)});
+    })
+    
+    
+</script>
+{% endblock %}
