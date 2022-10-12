@@ -1,72 +1,65 @@
-from flask import Blueprint, render_template, flash, request
+from flask import Blueprint, request, render_template
 
-import json
+from ..models.carrera import Carrera
+from ..models.orientacion import Orientacion
+from ..models.plan import Plan
+from ..models.carpo import Carpo
+from ..models.materia import Materia
 
-from ..entidades.carrera import Carrera
-from ..common.request import get_request_json
+from ..ext import db
 
 crudcarpo = Blueprint("crudcarpo", __name__)
 
-# @crudcarpo.route('/carreras', methods=['GET','POST'])
-# def mostrarCarreras():
-#     # if request.method == 'POST':
-#     #     action=request.form['accion']
-#     #     if action=="dbclickcarrera":
-#     #         idcarrera=request.form['idcarrera']
-#     #         idorientacion=request.form['idorientacion']
-#     #         orientaciones=Orientacion.listarOrientacionPorCarrera(mysql,idcarrera)
-
-#     #         if idorientacion != "-1":
-#     #             orientaciones=None
-
-#     #         if orientaciones==None:
-#     #             #retorno planes
-#     #             if idorientacion != "-1":
-#     #                 plan=Planes.listarPlanesPorCarreraYOrientacion(mysql,idcarrera,idorientacion)
-#     #             else:
-#     #                 plan=Planes.listarPlanesPorCarrera(mysql,idcarrera)
-
-#     #             nombre="Planes"
-#     #             return render_template("planes.html",planes=plan,nombre=nombre, idcarrera=idcarrera, idorientacion=idorientacion)
-#     #         else:
-#     #             #retorno orientaciones
-#     #             nombre="Orientaciones"
-#     #             return render_template("orientaciones.html",ori=orientaciones,idcarr=idcarrera,nombre=nombre)
+@crudcarpo.route('/carreras', methods=['GET','POST'])
+def mostrarCarreras():    
+    listaValores = [-1, -1, -1]
         
-#     #     else:
-#     #         if action=="mostrarmaterias":
-#     #             idplan=request.form['idplan']
-#     #             idcarrera = request.form['idcarrera']
-#     #             idorientacion = request.form['idorientacion']
-                
-#     #             idcarpo = Carpo.buscarcarpo(mysql,idcarrera,idorientacion,idplan)
-                
-#     #             nombrecarpo = Carpo.nombreCarpo(mysql,idcarpo)
-#     #             materias=Materia.listarMaterias(mysql,idcarpo)
-#     #             año=Materia.cantidadDeAños(mysql,idcarpo)
-#     #             lista_años = [1,2,3,4,5,6]
-#     #             años=['Primer año','Segundo año','Tercer año','Cuarto año','Quinto año']
-#     #             return render_template("materias.html",materias=materias, listaAños=años, cantidadAños=año,idcarpo=idcarpo, listaañonumerica=lista_años, nombre = nombrecarpo)
-        
-#     # lista = Carreras.listarCarreras(mysql)
-#     # nombre="Carreras"
-#     return render_template("carreras.html",lista=lista,nombre=nombre)
-
-
-@crudcarpo.route('/get_carreras',methods=['GET','POST',])
-def mostrarCarrerasPrueba():
-    
-    nombres = ['Carreras','Orientaciones','Planes']
-    listacar=[]
-    
-    if request.method == 'GET':
-        listacar = Carrera.buscarAPI()
-        print(listacar)
-    
     if request.method == 'POST':
-        output=request.get_json()
-        print(output)
-        return output
+        action=request.form['accion']
+        if action=="dbclickcarrera":
+            listaValores[0]=int(request.form['carreraid'])
+            listaValores[1]=int(request.form['orientacionid'])
+            listaValores[2]=int(request.form['planid'])
+
+            if listaValores[2]==-1:
+                orientaciones = Carpo.get_result_ori(db, listaValores[0])
+                print(listaValores)
+                print(orientaciones)
+
+                if listaValores[1] != -1:
+                    orientaciones=None
+
+                if orientaciones==None:
+                    #retorno planes
+                    if listaValores[1] != -1:
+                        plan=Plan.get_plan_via_oricar(db,listaValores[0], listaValores[1])
+                    else:
+                        listaValores[1]=0
+                        plan=Plan.get_plan_via_car(db,listaValores[0])
+                    print(plan)
+                    nombre = Plan.get_nombre_ori_plan(db, listaValores[0], listaValores[1])
+                    nombre= nombre+"Planes"
+                    return render_template("carreras.html",lista=plan,nombre=nombre, listaValores = listaValores )
+                else:
+                    #retorno orientaciones
+                    nombre = Plan.get_nombre_ori_plan(db, listaValores[0], -1)
+                    nombre = nombre + "Orientaciones"
+                    return render_template("carreras.html",lista=orientaciones,nombre=nombre,listaValores=listaValores)
         
-    return render_template("crudcarpo.html", lista = listacar,nombres=nombres)
+            else:
+                print(listaValores)                
+                idcarpo = Carpo.search_carpo(db,listaValores[0],listaValores[1],listaValores[2])
+                
+                nombrecarpo = Carpo.name_carpo(db,idcarpo)
+                materias=Materia.get_Materia_all(db,idcarpo)
+                año=Materia.cantidadDeAños(db,idcarpo)
+                lista_años = [1,2,3,4,5,6]
+                años=['Primer año','Segundo año','Tercer año','Cuarto año','Quinto año']
+                return render_template("materias.html",materias=materias, listaAños=años, cantidadAños=año,idcarpo=idcarpo, listaañonumerica=lista_años, nombre = nombrecarpo)
+            
+    listaCarreras = Carrera.get_Carrera_all(db)
+    
+    nombre="Carreras"
+    
+    return render_template("carreras.html",lista=listaCarreras,nombre=nombre,listaValores=listaValores)
 

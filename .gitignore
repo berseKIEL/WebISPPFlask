@@ -1,5 +1,3 @@
-isppfrontend
 viejoispp
-
-newdb/isppdumpdata.sql
-newdb/DBISPPCompleta.sql
+newdb/dbisppdata.sql
+newdb/dbisppcomplete.sql

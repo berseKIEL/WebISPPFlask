@@ -11,8 +11,5 @@ $(document).ready(function(){
         var idtr = $(this).attr('id');
         document.getElementById('idplan').value = idtr;
         document.getElementById("mostrar-materia").submit();
-
     })
-
-
 })

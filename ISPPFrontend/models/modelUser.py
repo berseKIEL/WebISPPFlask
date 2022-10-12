@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from .entidades.usuario import User
 
 class modeluser():
@@ -73,7 +74,7 @@ class modeluser():
             raise Exception(ex)
 
     @classmethod
-    def cambiarcontraseña(self,mysql,id, contraseña):
+    def cambiarcontraseña(slef,mysql,id, contraseña):
         try:
             cur = mysql.connection.cursor()
             sql = 'UPDATE usuarios SET contraseña = %s WHERE idusuario = %s'

@@ -59,6 +59,7 @@ class Planes():
 
         except Exception as ex:
             raise Exception(ex)
+        
     @classmethod
     def nombreplan(self, mysql, car,ori):
         try:
@@ -66,7 +67,9 @@ class Planes():
             sql='SELECT carreranombre from carrera WHERE carreraid=%s'
             cur.execute(sql,[car])
             car=cur.fetchone()
+            
             nombre = car[0] + '/'
+            
             sql='SELECT orientacionnombre from orientacion WHERE orientacionid=%s'
             cur.execute(sql,[ori])
             ori=cur.fetchone()

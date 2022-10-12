@@ -1,7 +1,10 @@
 let previousFila;
-$(document).ready(function(){
-    $('.fila').click(function(){
 
+
+$(document).ready(function(){
+    let Orientacion = document.getElementById('idorientacion').value;
+
+    $('.fila').click(function(){
         var idtr = $(this).attr('id');
         $(previousFila).css('background-color', '');
         $(previousFila).css('color', 'black');
@@ -14,9 +17,8 @@ $(document).ready(function(){
     $('.fila').dblclick(function(){
         var idtr = $(this).attr('id');
         document.getElementById('idcarrera').value = idtr;
+        document.getElementById('idorientacion').value = Orientacion;
         document.getElementById("form-dbclick").submit();
-
     })
-
-
 })
+

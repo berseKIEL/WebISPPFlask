@@ -1,6 +1,6 @@
 from flask import Flask
 
-from flask_cors import CORS
+from .ext import cors, db, csrf
 
 import requests
 
@@ -10,7 +10,11 @@ def create_app(settings_module):
     app = Flask(__name__)
     
     app.config.from_object(settings_module)
-    CORS(app)
+    
+    db.init_app(app)
+    cors.init_app(app)
+    csrf.init_app(app)
+    
 
     from .views.views import vistas
     

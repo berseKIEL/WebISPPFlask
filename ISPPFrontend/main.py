@@ -30,7 +30,9 @@ def mostrarCarreras():
             idcarrera=request.form['idcarrera']
             idorientacion=request.form['idorientacion']
             orientaciones=Orientacion.listarOrientacionPorCarrera(mysql,idcarrera)
-
+            print(idorientacion)
+            print(orientaciones)
+            
             if idorientacion != "-1":
                 orientaciones=None
 
@@ -38,14 +40,16 @@ def mostrarCarreras():
                 #retorno planes
                 if idorientacion != "-1":
                     plan=Planes.listarPlanesPorCarreraYOrientacion(mysql,idcarrera,idorientacion)
+                    
                 else:
                     plan=Planes.listarPlanesPorCarrera(mysql,idcarrera)
-
-                nombre="Planes"
+                nombre = Planes.nombreplan(mysql,idcarrera, idorientacion)
+                nombre=nombre+"Planes"
                 return render_template("planes.html",planes=plan,nombre=nombre, idcarrera=idcarrera, idorientacion=idorientacion)
             else:
                 #retorno orientaciones
-                nombre="Orientaciones"
+                nombre = Planes.nombreplan(mysql,idcarrera, -1)
+                nombre=nombre + "Orientaciones"
                 return render_template("orientaciones.html",ori=orientaciones,idcarr=idcarrera,nombre=nombre)
         
         else:
@@ -59,10 +63,12 @@ def mostrarCarreras():
                 nombrecarpo = Carpo.nombreCarpo(mysql,idcarpo)
                 materias=Materia.listarMaterias(mysql,idcarpo)
                 año=Materia.cantidadDeAños(mysql,idcarpo)
+                print(materias)
+                print(año)
                 lista_años = [1,2,3,4,5,6]
                 años=['Primer año','Segundo año','Tercer año','Cuarto año','Quinto año']
                 return render_template("materias.html",materias=materias, listaAños=años, cantidadAños=año,idcarpo=idcarpo, listaañonumerica=lista_años, nombre = nombrecarpo)
-        
+    
     lista = Carreras.listarCarreras(mysql)
     nombre="Carreras"
     return render_template("carreras.html",lista=lista,nombre=nombre)
@@ -97,31 +103,35 @@ def cargarCarrera():
         orientacion=request.form['orientaciones']
         plan=request.form['planes']
         
-        if Carreras.obtenerID(mysql,carrera)=='vacio':
-            Carreras.AgregarCarrera(mysql,carrera)
-            carrera=Carreras.obtenerID(mysql,carrera)
-            
-            if plan=='otro':
-                #Agrego plan
-                plan=request.form['otro_plan']
-                if Planes.obtenerID(mysql,plan) =='vacio':
-                    Planes.AgregarPlan(mysql,plan)
-            plan=Planes.obtenerID(mysql,plan)
+        if carrera != '':
+            if Carreras.obtenerID(mysql,carrera)=='vacio':
+                Carreras.AgregarCarrera(mysql,carrera)
+                carrera=Carreras.obtenerID(mysql,carrera)
+                
+                if plan=='otro':
+                    #Agrego plan
+                    plan=request.form['otro_plan']
+                    if Planes.obtenerID(mysql,plan) =='vacio':
+                        Planes.AgregarPlan(mysql,plan)
+                plan=Planes.obtenerID(mysql,plan)
 
-            if orientacion!='Null':
-                if orientacion=='otra':
-                    #Agrego 
-                    orientacion=request.form['otra_orientacion']
-                    if Orientacion.obtenerID(mysql,orientacion)=='vacio':
-                        Orientacion.AgregarOrientacion(mysql,orientacion)
-                orientacion=Orientacion.obtenerID(mysql,orientacion)
-            
-            #carpo
-            Carpo.AgregarCarpo(mysql,carrera,orientacion,plan)
-            flash('Carrera Agregada!')
-                   
+                if orientacion!='Null':
+                    if orientacion=='otra':
+                        #Agrego 
+                        orientacion=request.form['otra_orientacion']
+                        if Orientacion.obtenerID(mysql,orientacion)=='vacio':
+                            Orientacion.AgregarOrientacion(mysql,orientacion)
+                    orientacion=Orientacion.obtenerID(mysql,orientacion)
+                
+                #carpo
+                Carpo.AgregarCarpo(mysql,carrera,orientacion,plan)
+                flash('Carrera Agregada!')
+                    
+            else:
+                flash('Carrera Existente')
         else:
-            flash('Carrera Existente')
+            flash('El nombre de la carrera esta vacio')
+
         
     return render_template("cargarCarreras.html",listap=listap,lista=listao)
 
@@ -139,4 +149,4 @@ if __name__ == '__main__':
     csrf.init_app(app)
     app.register_error_handler(401, status_401)
     app.register_error_handler(404, status_404)
-    app.run(port=2432)
+    app.run()

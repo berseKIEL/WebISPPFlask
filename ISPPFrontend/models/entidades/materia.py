@@ -22,7 +22,7 @@ class Materia:
     def listarMaterias(mysql,idcarpo):
         try:
             cur = mysql.connection.cursor()
-            sql='SELECT m.idmateria,m.nombremateria,m.año,m.tipo FROM carpo c JOIN materia m ON c.CARPOID = m.idcarpo WHERE CARPOID = %s ORDER BY m.tipo ASC'            
+            sql='SELECT m.idmateria,m.nombremateria,m.año,m.tipo FROM carpo c JOIN materia m ON c.CARPOID = m.idcarpo WHERE CARPOID = %s ORDER BY m.tipo ASC'
             cur.execute(sql,[idcarpo])
             materias = cur.fetchall()
             return materias

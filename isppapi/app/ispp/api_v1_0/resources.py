@@ -1,4 +1,4 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, jsonify
 from flask_restful import Api, Resource
 
 from app.common.error_handling import ObjectNotFound
@@ -116,9 +116,6 @@ class CARPORecursos(Resource):
                 'No existe esa Carrera con esa orientación y plan solicitados')
         resp = carpo_schema.dump(carpo)
         return resp
-    
-    def findorientacionNull(self, carreraid):
-        pass
 
 
 class MateriasListaRecursos(Resource):
@@ -146,6 +143,17 @@ class MateriasRecursos(Resource):
         resp = materia_schema.dump(materia)
         return resp
 
+
+class CarrerasSinOrientacion(Resource):
+    def get(self):
+        carreras = Carpo.filter_sinori()
+        res = carpo_schema.dump(carreras,many=True)
+        return res
+
+
+class PlanesCarreraSelected(Resource):
+    def get(self):
+        pass
 
 api.add_resource(CarrerasListaRecursos, '/api/v1.0/carreras/',
                  endpoint='carreras_lista_recursos')
@@ -176,3 +184,6 @@ api.add_resource(MateriasListaRecursos, '/api/v1.0/materias/',
 
 api.add_resource(MateriasRecursos, '/api/v1.0/materias/<int:materia_id>',
                  endpoint='materias_recursos')
+
+api.add_resource(CarrerasSinOrientacion, '/api/v1.0/filter/carrera/noori/',
+                 endpoint='Carreras_sin_orientacion')

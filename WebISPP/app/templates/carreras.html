@@ -1,0 +1,38 @@
+{%extends 'base.html' %}
+{% block css %}
+{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/carpo.css') }}"
+/>
+{% endblock %}
+
+{% block title %}Carreras{% endblock %}
+
+{% block navbar %} {{super()}} {% endblock %}
+
+{% block content %}
+{{super()}}
+<section>
+  <div class="contenedor">
+    {% from "macrocarreras.html" import carreras %} {{ carreras(lista,nombre) }}
+  </div>
+</section>
+
+
+<form action="/carreras" id="form-dbclick" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input type="hidden" name="planid" id="planid" value="{{listaValores[2]}}">
+  <input type="hidden" name="carreraid" id="carreraid" value="{{listaValores[0]}}" />
+  <input type="hidden" name="orientacionid" id="orientacionid" value="{{listaValores[1]}}" />
+  <input type="hidden" name="accion" value="dbclickcarrera">
+</form>
+
+
+{%endblock%}
+
+{% block script %}
+{{super()}}
+<script src="{{url_for('static', filename='/js/carreras.js')}}"></script>
+{%endblock%}

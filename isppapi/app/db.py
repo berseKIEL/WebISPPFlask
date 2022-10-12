@@ -14,5 +14,11 @@ class BaseModelMixin:
     def get_by_id(cls, id):
         return cls.query.get(id)
     @classmethod
-    def simple_filter(cls, **kwargs):
+    def simple_filter(cls, **kwargs,):
         return cls.query.filter_by(**kwargs).all()
+    @classmethod
+    def filter_sinori(cls, **kwargs):
+        return cls.query.filter(cls.OrientacionID != None).all()
+    @classmethod
+    def filter_planes(cls, **kwargs):
+        return cls.query.filter(cls)

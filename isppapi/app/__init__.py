@@ -32,6 +32,7 @@ def create_app(settings_module):
 def register_error_handlers(app):
     @app.errorhandler(Exception)
     def handle_exception_error(e):
+        print(e)
         return jsonify({'msg': 'Internal server error'}), 500
 
     @app.errorhandler(405)
