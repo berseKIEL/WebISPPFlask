@@ -7,7 +7,7 @@ class Plan():
     def add_Plan(self, mysql, PlanNombre):
         try:
             cur=mysql.connection.cursor()
-            sql='INSERT INTO Plan(PlanNombre) VALUES (%s)'
+            sql='INSERT INTO plandeestudio(PlanNombre) VALUES (%s)'
             cur.execute(sql,[PlanNombre])
             mysql.connection.commit()
         except Exception as ex:
@@ -17,7 +17,7 @@ class Plan():
     def get_Plan_all(self, mysql):
         try:
             cur = mysql.connection.cursor()
-            sql = 'SELECT * FROM Plan'
+            sql = 'SELECT * FROM plandeestudio'
             cur.execute(sql)
             Plan = cur.fetchall()
             return Plan
@@ -28,7 +28,7 @@ class Plan():
     def get_Plan_id(self, mysql, PlanID):
         try:
             cur=mysql.connection.cursor()
-            sql='SELECT * from Plan WHERE PlanID=%s'
+            sql='SELECT * from plandeestudio WHERE PlanID=%s'
             cur.execute(sql,[PlanID])
             Plan=cur.fetchone()
             if Plan:
@@ -43,7 +43,7 @@ class Plan():
     def edit_Plan(self, mysql, PlanID, PlanNombre):
         try:
             cur = mysql.connection.cursor()
-            sql = 'UPDATE Plan SET PlanNombre = %s WHERE PlanID = %s'
+            sql = 'UPDATE plandeestudio SET PlanNombre = %s WHERE PlanID = %s'
             cur.execute(sql,[PlanNombre,PlanID])
             mysql.connection.commit()
             return True
@@ -54,7 +54,7 @@ class Plan():
     def delete_Plan(self, mysql, PlanID):
         try:
             cur = mysql.connection.cursor()
-            sql = 'delete from Plan where PlanID = %s'
+            sql = 'delete from plandeestudio where PlanID = %s'
             cur.execute(sql,([int(PlanID)]))
             mysql.connection.commit()
         except Exception as ex:

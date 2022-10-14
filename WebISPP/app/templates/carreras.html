@@ -16,12 +16,25 @@
 {{super()}}
 <section>
   <div class="contenedor">
-    {% from "macrocarreras.html" import carreras %} {{ carreras(lista,nombre) }}
+    {% from "macrocarpo.html" import carpo %}
+    {{ carpo(lista,nombre) }}
   </div>
+
+  {%if listaValores[0] == -1%}
+  <div class="boton-flex">
+    <img src="{{url_for('static',filename='img/add.png')}}" alt="add" class="boton" id="nuevo">
+  </div>
+  
+  <div>
+    {% include "cargarcarreras.html" %}
+  </div>
+  
+  {%endif%}
+
 </section>
 
 
-<form action="/carreras" id="form-dbclick" method="post">
+<form action="{{url_for('crudcarpo.mostrarCarreras')}}" id="form-dbclick" method="post">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <input type="hidden" name="planid" id="planid" value="{{listaValores[2]}}">
   <input type="hidden" name="carreraid" id="carreraid" value="{{listaValores[0]}}" />
@@ -35,4 +48,77 @@
 {% block script %}
 {{super()}}
 <script src="{{url_for('static', filename='/js/carreras.js')}}"></script>
+
+<script src="{{url_for('static', filename='/js/nuevocarpo.js')}}"></script>
+
+<script>
+  const getoriplan = {{url_for("crudcarpo.get_ori_plan")|tojson}}
+  var oriopt = document.getElementById('orientaciones')
+  var planopt = document.getElementById('planes')
+
+  async function fetchOriPlan(url) {
+    try {
+      const response = await fetch(url);
+      const oriplanes = await response.json();
+      return oriplanes
+    }
+    catch {
+      console.error(error)
+    }
+  }
+
+  async function renderOri(url) {
+    const oriplanes = await fetchOriPlan(url)
+    var max = oriplanes['Orientaciones'].length
+    for (var i = 0; i < max; i++) {
+      var opt = document.createElement('option')
+      opt.value = oriplanes['Orientaciones'][i]['OrientacionID']
+      opt.innerHTML = oriplanes['Orientaciones'][i]['OrientacionNombre']
+      oriopt.prepend(opt)
+    }
+  }
+
+  async function renderPlan(url) {
+    const oriplanes = await fetchOriPlan(url)
+    var max = oriplanes['Planes'].length
+    console.log(max)
+    for (var i = 0; i < max; i++) {
+      var opt = document.createElement('option')
+      opt.value = oriplanes['Planes'][i]['PlanID']
+      opt.innerHTML = "Plan "+oriplanes['Planes'][i]['PlanNombre']
+      planopt.prepend(opt)
+    }
+  }
+
+  renderOri(getoriplan)
+  renderPlan(getoriplan)
+
+  cargacarpo.addEventListener('submit', async e => {
+    e.preventDefault();
+  
+    const carrera = cargacarpo['carrera'].value;
+    const orientacion = oriID.options[oriID.selectedIndex].value;
+    const plan = planID.options[planID.selectedIndex].value;
+  
+    const response = await fetch('/cargarCarreras', {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'X-CSRF-TOKEN': e.target.csrf_token.value
+         },
+      body: JSON.stringify({
+        carrera, orientacion, plan
+      }),
+      credentials: 'same-origin'
+    })
+  
+    const data = await response.json()
+    console.log(data)
+  })
+  
+
+</script>
+
+
+
 {%endblock%}

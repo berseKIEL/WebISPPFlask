@@ -1,18 +1,17 @@
-{% macro carreras(lista,nombre) %}
-<table id="carrera" class="carr">
+{% macro carpo(lista,nombre) %}
+<table class="carpo">
     <thead>
         <!-- <th>id</th> -->
         <th>{{nombre}}</th>
     </thead>
     <div class="cajatablascroll">
-        {% for carrera in lista %}
+        {% for carpo in lista %}
         <tbody id="select">
-            <tr id="{{carrera[0]}}" class="fila">
-                <!-- <td>{{carrera[0]}}</td> -->
+            <tr id="{{carpo[0]}}" class="fila">
                 <td class="td">
                     <div class="edit">
                         <span class="titulo">
-                            {{carrera[1]}}
+                            {{carpo[1]}}
                         </span>
                         <div class="div-icon">
                             <a href="editar"><img class="a-icon" src="../static/img/editar.png" alt=""></a>
