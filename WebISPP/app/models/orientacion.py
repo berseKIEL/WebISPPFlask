@@ -10,6 +10,7 @@ class Orientacion():
             sql='INSERT INTO Orientacion(OrientacionNombre) VALUES (%s)'
             cur.execute(sql,[OrientacionNombre])
             mysql.connection.commit()
+            return cur.lastrowid
         except Exception as ex:
             raise Exception(ex)
     

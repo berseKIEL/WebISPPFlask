@@ -10,6 +10,7 @@ class Plan():
             sql='INSERT INTO plandeestudio(PlanNombre) VALUES (%s)'
             cur.execute(sql,[PlanNombre])
             mysql.connection.commit()
+            return cur.lastrowid
         except Exception as ex:
             raise Exception(ex)
     

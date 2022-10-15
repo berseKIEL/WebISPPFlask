@@ -1,10 +1,12 @@
-from flask import Blueprint, request, render_template, jsonify
+from flask import Blueprint, request, render_template, jsonify, flash
 
 from ..models.carrera import Carrera
 from ..models.orientacion import Orientacion
 from ..models.plan import Plan
 from ..models.carpo import Carpo
 from ..models.materia import Materia
+
+from ..common.convertoInt import convertInt
 
 from ..ext import db
 
@@ -87,38 +89,34 @@ def cargarMaterias():
 def cargarCarrera():
     if request.method == 'POST':
         new_data = request.get_json()
+        carrera = new_data['carrera']
+        orientacion = new_data['orientacion']
+        plan = new_data['plan']
         print(new_data)
-        
-    #     if carrera != '':
-    #         if Carreras.obtenerID(mysql,carrera)=='vacio':
-    #             Carreras.AgregarCarrera(mysql,carrera)
-    #             carrera=Carreras.obtenerID(mysql,carrera)
-                
-    #             if plan=='otro':
-    #                 #Agrego plan
-    #                 plan=request.form['otro_plan']
-    #                 if Planes.obtenerID(mysql,plan) =='vacio':
-    #                     Planes.AgregarPlan(mysql,plan)
-    #             plan=Planes.obtenerID(mysql,plan)
 
-    #             if orientacion!='Null':
-    #                 if orientacion=='otra':
-    #                     #Agrego 
-    #                     orientacion=request.form['otra_orientacion']
-    #                     if Orientacion.obtenerID(mysql,orientacion)=='vacio':
-    #                         Orientacion.AgregarOrientacion(mysql,orientacion)
-    #                 orientacion=Orientacion.obtenerID(mysql,orientacion)
-                
-    #             #carpo
-    #             Carpo.AgregarCarpo(mysql,carrera,orientacion,plan)
-    #             flash('Carrera Agregada!')
-                    
-    #         else:
-    #             flash('Carrera Existente')
-    #     else:
-    #         flash('El nombre de la carrera esta vacio')
-            
-    return jsonify({'Prueba 123':'Prueba2'})
+    
+        carreraid = Carrera.add_Carrera(db, carrera)
+        
+        #Crear Plan
+        planid = convertInt(plan)
+        
+        if planid == False:
+           planid = Plan.add_Plan(db, plan) 
+           
+        #Crear Orientacion
+        orientacionid = convertInt(orientacion)
+        
+        if orientacionid == False:
+            if orientacion != 'null':
+                orientacionid = Orientacion.add_Orientacion(db, orientacion)
+
+        carpoid = Carpo.add_Carpo(db, carreraid, planid, orientacionid)
+        
+        CarreraCargada = {'Carpo':carpoid,'Carrera':carreraid,'Plan':planid,'Orientacion':orientacionid}
+    
+        flash('Carrera Agregada!')
+        
+    return jsonify({'Mensaje':'La carrera se cargo exitosamente!','Carrera':CarreraCargada})
 
 @crudcarpo.route('/get_ori_plan', methods=['GET','POST'])
 def get_ori_plan():

@@ -52,15 +52,17 @@
 <script src="{{url_for('static', filename='/js/nuevocarpo.js')}}"></script>
 
 <script>
-  const getoriplan = {{url_for("crudcarpo.get_ori_plan")|tojson}}
-  var oriopt = document.getElementById('orientaciones')
-  var planopt = document.getElementById('planes')
+  const getoriplan = {{url_for("crudcarpo.get_ori_plan")|tojson}};
+  const sendData = {{url_for("crudcarpo.cargarCarrera")|tojson}}
+
+  var oriopt = document.getElementById('orientaciones');
+  var planopt = document.getElementById('planes');
 
   async function fetchOriPlan(url) {
     try {
       const response = await fetch(url);
       const oriplanes = await response.json();
-      return oriplanes
+      return oriplanes;
     }
     catch {
       console.error(error)
@@ -95,25 +97,72 @@
 
   cargacarpo.addEventListener('submit', async e => {
     e.preventDefault();
+
+    if (document.querySelector('.spanstyle')) {
+      document.querySelector('.spanstyle').remove()
+    }  
   
     const carrera = cargacarpo['carrera'].value;
-    const orientacion = oriID.options[oriID.selectedIndex].value;
-    const plan = planID.options[planID.selectedIndex].value;
-  
-    const response = await fetch('/cargarCarreras', {
-      method: 'POST',
-      headers: {
-         'Content-Type': 'application/json',
-         'X-CSRF-TOKEN': e.target.csrf_token.value
-         },
-      body: JSON.stringify({
-        carrera, orientacion, plan
-      }),
-      credentials: 'same-origin'
-    })
-  
-    const data = await response.json()
-    console.log(data)
+    var orientacion = oriID.options[oriID.selectedIndex].value;
+    const InputOrientacion = document.getElementById('add_orientacion').value;
+    var plan = planID.options[planID.selectedIndex].value;
+    const InputPlan = document.getElementById('add_plan').value;
+
+    if (orientacion == 'other') {
+      orientacion = InputOrientacion
+    }
+    
+    if (plan == 'other') {
+      plan = InputPlan
+    }
+
+
+    if (carrera == ''){
+      if (document.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        carrerapadreele.appendChild(Span)
+        }
+      }
+
+    if (orientaciones.value == 'disable'){
+      if (oripadreele.querySelector('.spanstyle') == null) {
+
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        oripadreele.appendChild(Span)
+        }
+      }
+      
+    if (planes.value == 'disable'){
+      if (planpadreele.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        planpadreele.appendChild(Span)
+        }
+      }
+    
+    else if ((carrera != '') && (orientaciones != 'disable') && (planes != 'disable')) {
+      const response = await fetch(sendData, {
+        method: 'POST',
+        headers: {
+           'Content-Type': 'application/json',
+           'X-CSRF-TOKEN': e.target.csrf_token.value
+           },
+        body: JSON.stringify({
+          carrera, orientacion, plan
+        }),
+        credentials: 'same-origin'
+      })
+
+      const data = await response.json()
+      
+      window.location.reload();
+    }
+    
   })
   
 

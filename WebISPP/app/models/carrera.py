@@ -10,6 +10,7 @@ class Carrera():
             sql='INSERT INTO Carrera(CarreraNombre) VALUES (%s)'
             cur.execute(sql,[CarreraNombre])
             mysql.connection.commit()
+            return cur.lastrowid
         except Exception as ex:
             raise Exception(ex)
     

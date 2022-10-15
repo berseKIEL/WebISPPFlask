@@ -1,3 +1,6 @@
+from ..models.carrera import Carrera
+from ..models.orientacion import Orientacion
+from ..models.plan import Plan
 class Carpo():
     def __init__(self, CarpoID, CarreraID, PlanDeEstudioID, OrientacionID, CarpoPrograma) -> None:
         self.CarpoID = CarpoID
@@ -7,13 +10,18 @@ class Carpo():
         self.CarpoPrograma = CarpoPrograma
 
     @classmethod
-    def add_Carpo(self, mysql, CarreraID, PlanDeEstudioID, OrientacionID, CarpoPrograma):
+    def add_Carpo(self, mysql, CarreraID, PlanDeEstudioID, OrientacionID):
         try:
             cur = mysql.connection.cursor()
-            sql = 'INSERT INTO Carpo(CarreraID,PlanDeEstudioID,OrientacionID,CarpoPrograma) VALUES (%s,%s,%s,%s)'
-            cur.execute(sql, [CarreraID, PlanDeEstudioID,
-                        OrientacionID, CarpoPrograma])
+            if OrientacionID==False:
+                sql = 'INSERT INTO Carpo(CarreraID,PlanDeEstudioID) VALUES (%s,%s)'
+                cur.execute(sql, [CarreraID, PlanDeEstudioID])
+            else:
+                sql = 'INSERT INTO Carpo(CarreraID,PlanDeEstudioID,OrientacionID) VALUES (%s,%s,%s)'
+                cur.execute(sql, [CarreraID, PlanDeEstudioID,
+                        OrientacionID])
             mysql.connection.commit()
+            return cur.lastrowid
         except Exception as ex:
             raise Exception(ex)
 
