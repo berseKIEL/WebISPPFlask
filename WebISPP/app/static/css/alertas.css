@@ -1,19 +1,18 @@
 .alerta {
-    position: fixed;
+    top: 2.5rem;
     width: fit-content;
     left: 0;
     margin: auto;
     position: fixed;
     right: 0;
     text-align: center;
-    bottom: 2.5rem;
     z-index: 1;
 }
 
 .alert {
     border-radius: 15px;
     padding: 10px 25px 10px 25px;
-    background-color: rgb(126, 168, 230);;
+    background-color: rgb(56 111 255);
 }
 .mensaje {
     font-size: 1.3rem;
