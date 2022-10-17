@@ -1,26 +1,28 @@
+// Boton para agregar CARPO
 const mostrarPrompt = document.getElementById("nuevo");
-const promptBox = document.querySelector(".nuevocarpo");
+// Para habilitar ivsibilidad
+const nuevoCarpo = document.querySelector('.nuevocarpo')
+// Id del Carga del Carpo y Hide
+const cargacarpo = document.querySelector('#carga-carpo')
+// Form del Carpo
 const promptForm = document.querySelector(".form-carga-carpo");
-const close = document.getElementById("close");
+// Cerrar
+const cerrar = document.getElementById("close");
 
-const orientaciones = document.getElementById('orientaciones')
-const planes = document.getElementById('planes')
+// IDs importantes
+const orientaciones = document.querySelector('#orientaciones')
+const planes = document.querySelector('#planes')
 
-const addori = document.querySelector('#add_orientacion')
-const addplan = document.querySelector('#add_plan')
-
-
+// Ids Input al sacar Hide
 const carreraele = document.querySelector('#add_carrera')
+const addplan = document.querySelector('#add_plan')
+const addori = document.querySelector('#add_orientacion')
+
+// Padres de los Hide
 const carrerapadreele = carreraele.parentNode
-
 const planpadreele = planes.parentNode
-
 const oripadreele = orientaciones.parentNode
 
-
-const cargacarpo = document.querySelector('#carga-carpo')
-const oriID = document.querySelector('#orientaciones')
-const planID = document.querySelector('#planes')
 
 
 if (orientaciones.value == "disable") {
@@ -45,13 +47,15 @@ planes.addEventListener("change", function () {
 }
 )
 
+
+
 mostrarPrompt.onclick = (e) => {
-  promptBox.classList.toggle("hide");
+  nuevoCarpo.classList.toggle("hide");
 };
 
 
-close.onclick = (e) => {
-  promptBox.classList.add("hide");
+cerrar.onclick = (e) => {
+  nuevoCarpo.classList.add("hide");
   orientaciones.value = 'disable';
   orientaciones.style.color = "gray";
   planes.value = 'disable';
@@ -91,3 +95,38 @@ $(document).ready(function() {
   })
 
 })
+
+
+async function fetchOriPlan(url) {
+  try {
+    const response = await fetch(url);
+    const oriplanes = await response.json();
+    return oriplanes;
+  }
+  catch {
+    console.error(error)
+  }
+}
+
+async function renderOri(url) {
+  const oriplanes = await fetchOriPlan(url)
+  var max = oriplanes['Orientaciones'].length
+  for (var i = 0; i < max; i++) {
+    var opt = document.createElement('option')
+    opt.value = oriplanes['Orientaciones'][i]['OrientacionID']
+    opt.innerHTML = oriplanes['Orientaciones'][i]['OrientacionNombre']
+    orientaciones.prepend(opt)
+  }
+}
+
+async function renderPlan(url) {
+  const oriplanes = await fetchOriPlan(url)
+  var max = oriplanes['Planes'].length
+  console.log(max)
+  for (var i = 0; i < max; i++) {
+    var opt = document.createElement('option')
+    opt.value = oriplanes['Planes'][i]['PlanID']
+    opt.innerHTML = "Plan "+oriplanes['Planes'][i]['PlanNombre']
+    planes.prepend(opt)
+  }
+}

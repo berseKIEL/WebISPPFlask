@@ -65,24 +65,21 @@ def mostrarCarreras():
     
     return render_template("carreras.html",lista=listaCarreras,nombre=nombre,listaValores=listaValores)
 
-@crudcarpo.route('/cargarMaterias', methods=['GET','POST'])
+@crudcarpo.route('/cargarMaterias', methods=['POST'])
 def cargarMaterias():
     if request.method=='POST':
-        nombreMateria=request.form['nombreMateria']
-        añoMateria=request.form['añoMateria']
-        tipoMateria=request.form['tipomateria']
-        idcarpoM=request.form['idcarpo']
-
-        #guardar materia
-        Materia.agregarMateria(mysql,nombreMateria, añoMateria, tipoMateria,idcarpoM)
-
-        nombrecarpo = Carpo.nombreCarpo(mysql,idcarpoM)
-        materias=Materia.listarMaterias(mysql,idcarpoM)
-        año=Materia.cantidadDeAños(mysql,idcarpoM)
-        lista_años = [1,2,3,4,5,6]
-        años=['Primer año','Segundo año','Tercer año','Cuarto año','Quinto año']
-    
-    return render_template("materias.html",materias=materias, listaAños=años, cantidadAños=año,idcarpo=idcarpoM, listaañonumerica=lista_años,nombre = nombrecarpo)
+        new_data = request.get_json()
+        
+        materianombre = new_data['MateriaNombre']
+        materiaaño = new_data['MateriaAño']
+        materiatipo = new_data['MateriaTipo']
+        carpoidmat = new_data['CarpoID']
+        
+        materiaid = Materia.add_Materia(db, materianombre, materiaaño, materiatipo, carpoidmat)
+        
+        MateriaCargada = {'ID de la Materia': materiaid,'Nombre de la Materia':materianombre,'Año de la Materia':materiaaño,'Tipo de Materia':materiatipo,'CARPO':carpoidmat}
+        flash('Materia Agregada!')
+    return jsonify({'Mensaje':'Se ha cargado la materia se forma Exitosa!', 'Materia Cargada':MateriaCargada})
 
 
 @crudcarpo.route('/cargarCarreras', methods=['POST'])
@@ -118,6 +115,7 @@ def cargarCarrera():
         
     return jsonify({'Mensaje':'La carrera se cargo exitosamente!','Carrera':CarreraCargada})
 
+
 @crudcarpo.route('/get_ori_plan', methods=['GET','POST'])
 def get_ori_plan():
     planes = Plan.get_Plan_all(db)
@@ -134,3 +132,8 @@ def get_ori_plan():
         ori = {'OrientacionID':fila[0],'OrientacionNombre':fila[1]}
         listaOri.append(ori)
     return jsonify({'Planes':listaPlanes,'Orientaciones':listaOri,'Mensaje':'Sucess'})
+
+@crudcarpo.route('/editar-carrera', methods=['GET','POST'])
+def editarCarrera():
+    pass
+

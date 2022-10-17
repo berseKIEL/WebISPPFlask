@@ -86,16 +86,16 @@
         {%endif%}
       </div>
               
-      <form class="nuevaMateriaForm" action="/cargarMaterias" method="POST">
+      <form class="nuevaMateriaForm" action="/cargarMaterias" id="carga-materia" method="POST">
 
         <div class="inputClass">
           <!-- <label for="cod">Nombre de la Materia</label> -->
-          <input type="text" name="nombreMateria" class="inputMateria" placeholder="Materia" id="cod"/>
+          <input type="text" name="nombremateria" class="inputMateria" placeholder="Materia" id="materianombre"/>
         </div>
         
         <div class="inputClass">
           <!-- <label for="year">Selecionar Año</label> -->
-          <select name="añoMateria" id="year" class="menudesp">
+          <select name="materiaaño" id="materiaaño" class="menudesp">
             <option disabled selected value="disable">Año</option>
             {% for opaño in range(cantidadAños+1) %}
               {%if 6 > listaañonumerica[opaño]%}
@@ -108,10 +108,10 @@
         
         <div class="inputClass">
           <!-- <label for="tipo">Seleccionar Tipo de Materia</label> -->
-          <select name="tipomateria" class="menudesp" id="tipo" aria-placeholder="Año">
+          <select name="materiatipo" class="menudesp" id="materiatipo">
             <option disabled selected value="disable">Tipo</option>
-            <option value="1°Cuatrimestre">1°Cuatrimestre</option>
-            <option value="2°Cuatrimestre">2°Cuatrimestre</option>
+            <option value="1° Cuatrimestre">1°Cuatrimestre</option>
+            <option value="2° Cuatrimestre">2°Cuatrimestre</option>
             <option value="Anual">Anual</option>
           </select>
         </div>
@@ -122,15 +122,78 @@
 
         <!-- Send to Backend -->
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <input type="hidden" value="{{idcarpo}}" name="idcarpo"/>
       </form>
     </div>
   </div>
 </section>
-
 {%endblock%}
 
 {% block script %}
 {{super()}}
 <script src="{{url_for('static', filename='/js/nuevamateria.js')}}"></script>
+
+<script>
+
+  const sendData = {{url_for('crudcarpo.cargarMaterias')|tojson}};
+
+  const CarpoID = {{idcarpo}}
+
+  promptFormMateria.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    if (document.querySelector('.spanstyle')) {
+      document.querySelector('.spanstyle').remove()
+    }
+
+    if (matnom.value == ''){
+      if (matnom.parentNode.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        matnom.parentNode.appendChild(Span)
+        }
+      }
+
+    if (year.value == 'disable'){
+      if (year.parentNode.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        year.parentNode.appendChild(Span)
+        }
+      }
+      
+    if (tipo.value == 'disable'){
+      if (tipo.parentNode.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        tipo.parentNode.appendChild(Span)
+        }
+      }
+    
+    else if ((matnom != '') && (year != 'disable') && (tipo != 'disable')) {
+      const response = await fetch(sendData, {
+        method: 'POST',
+        headers: {
+           'Content-Type': 'application/json',
+           'X-CSRF-TOKEN': e.target.csrf_token.value
+           },
+        body: JSON.stringify({
+          'MateriaNombre' : cargamateria['materianombre'].value,
+          'MateriaAño' : cargamateria['materiaaño'].value,
+          'MateriaTipo' : cargamateria['materiatipo'].value, 
+          'CarpoID' : CarpoID
+        }),
+        credentials: 'same-origin'
+      })
+
+      const data = await response.json()
+
+      window.location.reload()
+    }
+    
+  })
+
+</script>
 {% endblock %}

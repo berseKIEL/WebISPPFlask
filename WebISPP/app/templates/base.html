@@ -14,6 +14,7 @@
     {% block css %}
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='css/base.css') }}">    
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='css/nav.css') }}">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='css/alertas.css')}}">
     {% endblock %}
 
     <title>
@@ -40,16 +41,19 @@
 
       <div class="div-items">
         <a class="item" href="/">Inicio</a>
-        <a class="item" href="/carreras">Carreras</a>
+        <a class="item" href="{{url_for('crudcarpo.mostrarCarreras')}}">Carreras</a>
       </div>
     </nav>
     {% endblock %}
 
     {% block content %}
-      {% from "macroAlertas.html" import Alertas%}
-      {{ Alertas() }}
+
     {% endblock %}
 
+    {%block alertas%}
+    {% from "macroAlertas.html" import Alertas%}
+    {{ Alertas() }}
+    {%endblock%}
 
 
     {% block script %}
