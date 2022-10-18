@@ -1,9 +1,7 @@
 Flask
-Flask-marshmallow
-Flask-Migrate
-Flask-RESTful
-Flask-SQLAlchemy
-marshmallow
-marshmallow-sqlalchemy
+flask_cors
+flask_mysqldb
+flask_wtf
+flask_login
 python-dotenv
-SQLAlchemy
+requests

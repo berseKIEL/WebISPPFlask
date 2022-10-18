@@ -2,10 +2,6 @@ from flask import Flask
 
 from .ext import cors, db, csrf
 
-import requests
-
-import os
-
 def create_app(settings_module):
     app = Flask(__name__)
     
