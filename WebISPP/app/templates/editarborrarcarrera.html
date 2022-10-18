@@ -4,6 +4,11 @@
 <link
   rel="stylesheet"
   type="text/css"
+  href="{{ url_for('static',filename='css/carpo.css') }}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
   href="{{ url_for('static',filename='css/editar.css') }}"
 />
 {{super()}}
@@ -15,7 +20,12 @@
 
 {%block content%}
 <section>
-    <div class="titulo">
+
+    <div class="title">
+        Editar Carrera:
+    </div>
+
+    <div class="subtitle">
         {{nombrecar}}
     </div>
 
@@ -29,7 +39,16 @@
             <tbody id="select">
                 {% for plan in Planes%}
                 <tr id="{{plan}}" class="fila">
-                    <td class="td">{{plan}}</td>
+                    <td class="td">
+                        <div class="edit">
+                            <span class="titulo">
+                                {{plan}}
+                            </span>
+                            <div class="div-icon">
+                                <img src="{{url_for('static',filename='img/eliminar.png')}}" alt="remove" class="a-icon hide" id="remover">
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 {%endfor%}
             </tbody>
@@ -45,7 +64,16 @@
                 <tbody id="select">
                     {% for ori in Orientaciones %}
                     <tr id="{{ori}}" class="fila">
-                        <td class="td">{{ori}}</td>
+                        <td class="td">
+                            <div class="edit">
+                                <span class="titulo">
+                                    {{ori}}
+                                </span>
+                                <div class="div-icon">
+                                    <img src="{{url_for('static',filename='img/eliminar.png')}}" alt="remove" class="a-icon hide" id="remover">
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     {%endfor%}
                  </tbody>
@@ -58,4 +86,8 @@
 
 {%block script%}
 {{super()}}
+<script src="{{url_for('static',filename='js/editar.js')}}"></script>
+
+
+
 {%endblock%}

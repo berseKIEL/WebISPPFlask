@@ -12,11 +12,6 @@ $(document).ready(function(){
         $(previousFila).find('.a-icon').css('filter', '');
         $(this).css('background-color', 'rgb(193, 207, 227)');
         $(this).find('.a-icon').css('filter', 'invert(27%) sepia(69%) saturate(753%) hue-rotate(174deg) brightness(90%) contrast(99%)');
-        $(this).find('.a-icon').mouseover(function() {
-            $(this).css('filter', 'invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)');
-        }).mouseout(function() {
-            $(this).css('filter', 'invert(27%) sepia(69%) saturate(753%) hue-rotate(174deg) brightness(90%) contrast(99%)');
-        })
         previousFila = this
     })
     

@@ -26,20 +26,17 @@
           {% for carpo in lista %}
           <tr id="{{carpo[0]}}" class="fila">
               <td class="td">
-                  <div class="edit">
+                  <div class="{%if listaValores[0] == -1%} edit {%endif%}">
                       <span class="titulo">
                           {{carpo[1]}}
                       </span>
+                      {%if listaValores[0] == -1%}
                       <div class="div-icon">
                           <a href="{{ url_for('crudcarpo.editarCarpo', id=carpo[0],carrera=carpo[1]) }}">
                               <img class="a-icon" src="../static/img/editar.png" alt="">
                           </a>
-  
-                          <a href="{{ url_for('crudcarpo.eliminarSeleccionado', idseleccionada=carpo[0],c=listaValores[0],o=listaValores[1],p=listaValores[2]) }}">
-                              <img src="{{url_for('static',filename='img/eliminar.png')}}" alt="remove" class="a-icon" id="remover">
-                          </a>
-  
                       </div>
+                      {%endif%}
                   </div>
               </td>
           </tr>

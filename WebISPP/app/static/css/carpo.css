@@ -47,6 +47,10 @@ section {
   border-bottom: 2px solid rgb(72, 129, 215);
 }
 
+.center {
+  justify-content: center;
+}
+
 .edit {
   display: flex;
   flex-direction: row;
@@ -140,6 +144,11 @@ section {
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
+}
+.subtitle {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 400;
 }
 
 .form-carga-carpo {
