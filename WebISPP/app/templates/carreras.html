@@ -16,10 +16,38 @@
 {{super()}}
 <section>
   <div class="contenedor">
-    {% from "macrocarpo.html" import carpo %}
-    {{ carpo(lista,nombre) }}
+    <table class="style-table">
+      <thead>
+          <!-- <th>id</th> -->
+          <th>{{nombre}}</th>
+      </thead>
+      
+      <tbody id="select">
+          {% for carpo in lista %}
+          <tr id="{{carpo[0]}}" class="fila">
+              <td class="td">
+                  <div class="edit">
+                      <span class="titulo">
+                          {{carpo[1]}}
+                      </span>
+                      <div class="div-icon">
+                          <a href="{{ url_for('crudcarpo.editarCarpo', id=carpo[0],carrera=carpo[1]) }}">
+                              <img class="a-icon" src="../static/img/editar.png" alt="">
+                          </a>
+  
+                          <a href="{{ url_for('crudcarpo.eliminarSeleccionado', idseleccionada=carpo[0],c=listaValores[0],o=listaValores[1],p=listaValores[2]) }}">
+                              <img src="{{url_for('static',filename='img/eliminar.png')}}" alt="remove" class="a-icon" id="remover">
+                          </a>
+  
+                      </div>
+                  </div>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
   </div>
-
+{{listaValores}}
   {%if listaValores[0] == -1%}
   <div class="boton-flex">
     <img src="{{url_for('static',filename='img/add.png')}}" alt="add" class="boton" id="nuevo">
@@ -28,7 +56,6 @@
   <div>
     {% include "cargarcarreras.html" %}
   </div>
-  
   {%endif%}
 
 </section>
@@ -66,17 +93,16 @@
     }  
   
     const carrera = cargacarpo['carrera'].value;
-    var orientacion = oriID.options[oriID.selectedIndex].value;
-    var plan = planID.options[planID.selectedIndex].value;
+    var orientacion = orientaciones.options[orientaciones.selectedIndex].value;
+    var plan = planes.options[planes.selectedIndex].value;
 
     if (orientacion == 'other') {
-      orientacion = addori
+      orientacion = addori.value;
     }
     
     if (plan == 'other') {
-      plan = addplan
+      plan = addplan.value;
     }
-
 
     if (carrera == ''){
       if (document.querySelector('.spanstyle') == null) {

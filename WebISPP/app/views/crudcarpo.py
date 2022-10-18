@@ -78,7 +78,9 @@ def cargarMaterias():
         materiaid = Materia.add_Materia(db, materianombre, materiaaño, materiatipo, carpoidmat)
         
         MateriaCargada = {'ID de la Materia': materiaid,'Nombre de la Materia':materianombre,'Año de la Materia':materiaaño,'Tipo de Materia':materiatipo,'CARPO':carpoidmat}
+        
         flash('Materia Agregada!')
+        
     return jsonify({'Mensaje':'Se ha cargado la materia se forma Exitosa!', 'Materia Cargada':MateriaCargada})
 
 
@@ -91,7 +93,6 @@ def cargarCarrera():
         plan = new_data['plan']
         print(new_data)
 
-    
         carreraid = Carrera.add_Carrera(db, carrera)
         
         #Crear Plan
@@ -133,7 +134,55 @@ def get_ori_plan():
         listaOri.append(ori)
     return jsonify({'Planes':listaPlanes,'Orientaciones':listaOri,'Mensaje':'Sucess'})
 
-@crudcarpo.route('/editar-carrera', methods=['GET','POST'])
-def editarCarrera():
-    pass
+@crudcarpo.route('/editar', methods=['GET','PUT'])
+def editarCarpo():
+    if request.method == 'GET':
+        carpoid = request.args.get('id')
+        nombrecar = request.args.get('carrera')
+        get_carpo = Carpo.get_ori_plan_carpo(db, carpoid)
+        
+        print(get_carpo)
+        Planes = []
+        for plan in get_carpo[0]:
+            for planes in plan:
+                Planes.append(planes)
+                
+        Orientaciones = []
+        for orien in get_carpo[1]:
+            for orienta in orien:
+                Orientaciones.append(orienta)
+                
+    if request.method == 'PUT':
+        pass
+    
+    return render_template('editarborrarcarrera.html',Planes=Planes,Orientaciones=Orientaciones,nombrecar=nombrecar)
 
+@crudcarpo.route('/eliminar',methods=['GET'])
+def eliminarSeleccionado():
+    idseleccionada = request.args.get('idseleccionada')
+    cSelec = request.args.get('c')
+    oSelec = request.args.get('o')
+    pSelec = request.args.get('p')
+    lista = [cSelec, oSelec, pSelec]
+    
+    if lista[0] == "-1":
+        # borrar todos los carpos de la carrera seleccionada
+        print(Carrera.get_Carrera_id(db, idseleccionada))
+    elif lista[0] != "-1":
+        if lista[1] == "0":
+             # borrar carpo del plan de la carrera seleccionado
+            print(Carrera.get_Carrera_id(db, cSelec))
+            print(Plan.get_Plan_id(db, idseleccionada))
+        elif lista[1] == "-1":
+            # borrar orientacion de la carrera seleccionada
+            print(Carrera.get_Carrera_id(db, cSelec))
+            print(Orientacion.get_Orientacion_id(db, idseleccionada))
+        else:
+            # borrar plan dentro de una orientacion de una carrera seleccionada
+            print(Carrera.get_Carrera_id(db, cSelec))
+            print(Orientacion.get_Orientacion_id(db, oSelec))
+            print(Plan.get_Plan_id(db, idseleccionada))
+        
+    print(idseleccionada)
+    print(lista)
+    return jsonify({'Eliminada':'OK'})

@@ -1,41 +1,61 @@
 section {
   margin: 0 15px 0 15px;
 }
-table {
-  width: 100%;
-  border: 1px solid #000;
-  border-collapse: collapse;
+
+
+.titleCarpo {
+  color:white;
 }
 
-th,
-td {
+.style-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  table-layout:fixed;
+  width: 100% ;
+  empty-cells: hide;
+}
+
+.style-table thead tr {
+  background-color: rgb(126, 168, 230);
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.style-table th {
+  padding: 3px;
+}
+
+.style-table td {
+  padding: 12px 15px;
   width: 25%;
-  text-align: left;
-  vertical-align: top;
-  border: 1px solid rgb(97, 97, 97);
-  border-collapse: collapse;
-  padding: 0.3em;
-  caption-side: bottom;
-}
-.a-icon {
-  width: 20px;
-  height: 20px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
-caption {
-  padding: 0.3em;
-  color: #fff;
-  background: #000;
+.style-table tbody tr {
+  border-bottom: thin solid #dddddd;
 }
-th {
-  background: rgb(126, 168, 230);
-  color: rgb(255, 255, 255);
+
+.style-table tbody tr:nth-of-type(even) {
+  background-color: var(--gray-background);
+}
+
+.style-table tbody tr:last-of-type {
+  border-bottom: 2px solid rgb(72, 129, 215);
 }
 
 .edit {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.a-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .div-icon {

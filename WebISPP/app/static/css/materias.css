@@ -9,6 +9,7 @@
 .titleCarpo {
   font-size: 1.75em;
   font-weight: 700;
+  color:white
 }
 
 .titleYear {
@@ -22,10 +23,19 @@
   margin-right: 2.5rem;
 }
 
-hr {
-  border-top: 5px solid rgb(196, 196, 196);
-  margin: 2px 3rem 2px 3rem;
+.style-table td {
+  text-align: left;
 }
+
+.style-table td:last-of-type {
+  text-align: center;
+}
+
+.style-table th {
+  text-align: center;
+  color:black
+}
+
 
 /* Agregar Materias boton */
 .boton {
@@ -72,7 +82,7 @@ hr {
 
 .closen {
   background-color: transparent;
-  color: rgb(180, 87, 87);
+  color: rgb(255 0 0);;
   border: transparent;
   font-size: 2rem;
   position: absolute;

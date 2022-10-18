@@ -101,3 +101,19 @@ class Carpo():
             return ori
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def get_ori_plan_carpo(self,mysql,carreraid):
+        try:
+            # First Fetch
+            cur = mysql.connection.cursor()
+            sql = 'select distinct plandeestudio.PlanNombre from carpo join carrera on carpo.carreraid = carrera.carreraID join plandeestudio on carpo.PlanDeEstudioID = PlanDeEstudio.planID where carpo.carreraid = %s'
+            cur.execute(sql,[carreraid])
+            plan = cur.fetchall()
+            # Second Fetch
+            sql = 'select orientacion.OrientacionNombre from carpo join carrera on carpo.carreraid = carrera.carreraID join orientacion on carpo.OrientacionID = orientacion.OrientacionID where carpo.carreraid = %s'
+            cur.execute(sql,[carreraid])
+            ori = cur.fetchall()
+            return plan, ori
+        except Exception as ex:
+            raise Exception(ex)

@@ -62,7 +62,11 @@ cerrar.onclick = (e) => {
   planes.style.color = "gray";
   if (document.querySelector('.spanstyle')) {
     document.querySelector('.spanstyle').remove()
-  }  
+  }
+  addori.value = '';
+  addori.classList.add("hide");
+  addplan.value = '';
+  addplan.classList.add("hide");
 };
 
 // Select "Otro"
@@ -83,7 +87,7 @@ $(document).ready(function() {
 
   $('#planes').change(function(){
 
-    let optionPlan = orientaciones.value;
+    let optionPlan = planes.value;
 
     if (optionPlan=="other") {
       addplan.classList.toggle("hide")

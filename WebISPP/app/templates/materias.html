@@ -46,25 +46,24 @@
     </div>
   
     <div class="tablematerias">
-      <table>
+      <table class="style-table">
         <thead>
           <th>Materia</th>
           <th>Tipo</th>
         </thead>
-        <div class="cajatablascroll">
+        
+        <tbody id="select">
           {% for materia in materias %} {% if materia[2]==(i+1) %}
-          <tbody id="select">
-            <tr id="{{materia[0]}}" class="fila">
-              <!--<td>{{materia[0]}}</td>-->
-              <td>{{materia[1]}}</td>
-              <td>{{materia[3]}}</td>
-            </tr>
-          </tbody>
+          <tr id="{{materia[0]}}" class="fila">
+            <!--<td>{{materia[0]}}</td>-->
+            <td>{{materia[1]}}</td>
+            <td>{{materia[3]}}</td>
+          </tr>
           {% endif %} {% endfor %}
-        </div>
+        </tbody>
+        
       </table>
       <br>
-      <hr>
     </div>
     {%endfor%}
   </div>

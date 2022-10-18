@@ -5,9 +5,17 @@
     font-family: 'Roboto Condensed', sans-serif;
 }
 
+:root {
+    --dark-background: black;
+    --white-background: white;
+    --gray-white-background: #f3f3f3;
+    --gray-background: gray;
+}
+
 body {
     font-weight: 400;
-    color: black;
+    color: white;
+    background-color: var(--dark-background);
 }
 
 a{
