@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, jsonify, flash
+from flask import Blueprint, request, render_template, jsonify, flash, session
 
 from ..models.carrera import Carrera
 from ..models.orientacion import Orientacion
@@ -13,8 +13,10 @@ from ..ext import db
 crudcarpo = Blueprint("crudcarpo", __name__)
 
 @crudcarpo.route('/carreras', methods=['GET','POST'])
-def mostrarCarreras():    
-    listaValores = [-1, -1, -1]
+def mostrarCarreras():
+    session['listadeValores'] = [-1,-1,-1]
+   
+    listaValores = session['listadeValores']
         
     if request.method == 'POST':
         action=request.form['accion']
@@ -57,6 +59,7 @@ def mostrarCarreras():
                 año=Materia.cantidadDeAños(db,idcarpo)
                 lista_años = [1,2,3,4,5,6]
                 años=['Primer año','Segundo año','Tercer año','Cuarto año','Quinto año']
+                session.pop('listadeValores')
                 return render_template("materias.html",materias=materias, listaAños=años, cantidadAños=año,idcarpo=idcarpo, listaañonumerica=lista_años, nombre = nombrecarpo)
             
     listaCarreras = Carrera.get_Carrera_all(db)
