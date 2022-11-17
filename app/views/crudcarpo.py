@@ -27,8 +27,6 @@ def mostrarCarreras():
 
             if listaValores[2]==-1:
                 orientaciones = Carpo.get_result_ori(db, listaValores[0])
-                print(listaValores)
-                print(orientaciones)
 
                 if listaValores[1] != -1:
                     orientaciones=None
