@@ -1,0 +1,14 @@
+{% macro Alertas()%}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                    <div class="alerta">
+                        <div class="alert">
+                            <strong class="mensaje">{{message}}</strong>
+                            <button type="button" class="close" ><span>&times;</span></button>
+                        </div>
+                    </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endmacro %}

@@ -1,0 +1,156 @@
+{%extends 'base.html' %}
+{% block css %}
+{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/carpo.css') }}"
+/>
+{% endblock %}
+
+{% block title %}Carreras{% endblock %}
+
+{% block navbar %} {{super()}} {% endblock %}
+
+{% block content %}
+{{super()}}
+<section>
+  <div class="contenedor">
+    <table class="style-table">
+      <thead>
+          <!-- <th>id</th> -->
+          <th>{{nombre}}</th>
+      </thead>
+      
+      <tbody id="select">
+          {% for carpo in lista %}
+          <tr id="{{carpo[0]}}" class="fila">
+              <td class="td">
+                  <div class="{%if listaValores[0] == -1%} edit {%endif%}">
+                      <span class="titulo">
+                          {{carpo[1]}}
+                      </span>
+                      {%if listaValores[0] == -1%}
+                      <div class="div-icon">
+                          <a href="{{ url_for('crudcarpo.editarCarpo', id=carpo[0],carrera=carpo[1]) }}">
+                              <img class="a-icon" src="../static/img/editar.png" alt="">
+                          </a>
+                      </div>
+                      {%endif%}
+                  </div>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  </div>
+  
+  {%if listaValores[0] == -1%}
+  <div class="boton-flex">
+    <img src="{{url_for('static',filename='img/add.png')}}" alt="add" class="boton" id="nuevo">
+  </div>
+  
+  <div>
+    {% include "cargarcarreras.html" %}
+  </div>
+  {%endif%}
+
+</section>
+
+
+<form action="{{url_for('crudcarpo.mostrarCarreras')}}" id="form-dbclick" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input type="hidden" name="planid" id="planid" value="{{listaValores[2]}}">
+  <input type="hidden" name="carreraid" id="carreraid" value="{{listaValores[0]}}" />
+  <input type="hidden" name="orientacionid" id="orientacionid" value="{{listaValores[1]}}" />
+  <input type="hidden" name="accion" value="dbclickcarrera">
+</form>
+
+
+{%endblock%}
+
+{% block script %}
+{{super()}}
+<script src="{{url_for('static', filename='/js/carreras.js')}}"></script>
+
+<script src="{{url_for('static', filename='/js/nuevocarpo.js')}}"></script>
+
+<script>
+  const getoriplan = {{url_for("crudcarpo.get_ori_plan")|tojson}};
+  const sendData = {{url_for("crudcarpo.cargarCarrera")|tojson}}
+
+  renderOri(getoriplan)
+  renderPlan(getoriplan)
+
+  cargacarpo.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    if (document.querySelector('.spanstyle')) {
+      document.querySelector('.spanstyle').remove()
+    }  
+  
+    const carrera = cargacarpo['carrera'].value;
+    var orientacion = orientaciones.options[orientaciones.selectedIndex].value;
+    var plan = planes.options[planes.selectedIndex].value;
+
+    if (orientacion == 'other') {
+      orientacion = addori.value;
+    }
+    
+    if (plan == 'other') {
+      plan = addplan.value;
+    }
+
+    if (carrera == ''){
+      if (document.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        carrerapadreele.appendChild(Span)
+        }
+      }
+
+    if (orientaciones.value == 'disable'){
+      if (oripadreele.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        oripadreele.appendChild(Span)
+        }
+      }
+      
+    if (planes.value == 'disable'){
+      if (planpadreele.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        planpadreele.appendChild(Span)
+        }
+      }
+    
+    else if ((carrera != '') && (orientaciones != 'disable') && (planes != 'disable')) {
+      const response = await fetch(sendData, {
+        method: 'POST',
+        headers: {
+           'Content-Type': 'application/json',
+           'X-CSRF-TOKEN': e.target.csrf_token.value
+           },
+        body: JSON.stringify({
+          carrera, orientacion, plan
+        }),
+        credentials: 'same-origin'
+      })
+
+      const data = await response.json()
+      
+      window.location.reload();
+    }
+    
+  })
+  
+
+</script>
+
+
+
+{%endblock%}

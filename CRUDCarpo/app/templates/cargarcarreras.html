@@ -1,0 +1,65 @@
+<div class="nuevocarpo hide">
+  <div class="addcarpo">
+    <button class="closen" type="button" id="close">
+      <span>&times;</span>
+    </button>
+
+    <span class="title">Nueva carrera</span>
+
+    <form
+      action="{{url_for('crudcarpo.cargarCarrera')}}"
+      class="form-carga-carpo"
+      id="carga-carpo"
+    >
+      <div class="inputClass">
+        <input
+          type="text"
+          name="carrera"
+          id="add_carrera"
+          placeholder="Carrera"
+          class="inputCarrera"
+        />
+      </div>
+
+      <div class="inputClass">
+        <select class="menudesp" name="orientaciones" id="orientaciones">
+          <option disabled selected value="disable">Orientaciones</option>
+          <option value="other">Otra</option>
+          <option value="null">Ninguna</option>
+        </select>
+
+        <input
+          type="text"
+          name="add_orientacion"
+          id="add_orientacion"
+          placeholder="Agregar Orientacion"
+          class="inputCarrera hide"
+        />
+      </div>
+
+      <div class="inputClass">
+        <select class="menudesp" name="planes" id="planes">
+          <option disabled selected value="disable">Planes</option>
+          <option value="other">Otro</option>
+        </select>
+
+        <input
+          type="text"
+          name="add_plan"
+          id="add_plan"
+          placeholder="Agregar Plan de Estudio"
+          class="inputCarrera hide"
+        />
+      </div>
+
+      <input
+        type="submit"
+        value="Guardar"
+        class="botonSubmit"
+        id="enviarInfo"
+      />
+
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+  </div>
+</div>

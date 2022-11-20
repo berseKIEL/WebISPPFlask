@@ -1,0 +1,198 @@
+{%extends 'base.html' %}
+
+{% block css %}
+{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/carpo.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/materias.css') }}"
+/>
+
+{% endblock %}
+
+{% block title %}Materias{% endblock %}
+
+{% block navbar %}
+{{super()}}
+{% endblock %}
+
+{% block content %}
+<section>
+  <div class="titleFormat">
+    <span class="titleCarpo">
+      {% if nombre[1]== None%}
+        {{nombre[0]}} - {{nombre[2]}}
+      {%else%}
+        {{nombre[0]}}: {{nombre[1]}} - {{nombre[2]}}
+      {%endif%}
+    </span>
+
+    <img src="{{url_for('static',filename='img/add.png')}}" alt="add" class="boton" id="nuevo">
+
+  </div>
+
+  
+    
+  <div class="contenedor">
+    {% for i in range(cantidadAños) %}
+    <div class="titleYear">
+      <h1>{{listaAños[i]}}</h1>
+    </div>
+  
+    <div class="tablematerias">
+      <table class="style-table">
+        <thead>
+          <th>Materia</th>
+          <th>Tipo</th>
+        </thead>
+        
+        <tbody id="select">
+          {% for materia in materias %} {% if materia[2]==(i+1) %}
+          <tr id="{{materia[0]}}" class="fila">
+            <!--<td>{{materia[0]}}</td>-->
+            <td>{{materia[1]}}</td>
+            <td>{{materia[3]}}</td>
+          </tr>
+          {% endif %} {% endfor %}
+        </tbody>
+        
+      </table>
+      <br>
+    </div>
+    {%endfor%}
+  </div>
+
+  <div class="nuevamateria hide">
+    <div class="materia">
+
+      <button type="button" class="closen" id="close">
+        <span>&times;</span>
+      </button>
+
+      <span class="title">Nueva materia</span>
+
+      <div class="subtitle">
+        {% if nombre[1]== None%}
+          {{nombre[0]}}: {{nombre[2]}}
+        {%else%}
+          {{nombre[0]}}: {{nombre[1]}} {{nombre[2]}}
+        {%endif%}
+      </div>
+              
+      <form class="nuevaMateriaForm" action="/cargarMaterias" id="carga-materia" method="POST">
+
+        <div class="inputClass">
+          <!-- <label for="cod">Nombre de la Materia</label> -->
+          <input type="text" name="nombremateria" class="inputMateria" placeholder="Materia" id="materianombre"/>
+        </div>
+        
+        <div class="inputClass">
+          <!-- <label for="year">Selecionar Año</label> -->
+          <select name="materiaaño" id="materiaaño" class="menudesp">
+            <option disabled selected value="disable">Año</option>
+            {% for opaño in range(cantidadAños+1) %}
+              {%if 6 > listaañonumerica[opaño]%}
+                <option value="{{listaañonumerica[opaño]}}">{{listaañonumerica[opaño]}}° Año</option>
+              {%endif%}
+            {%endfor%}
+          </select>
+        </div>
+        
+        
+        <div class="inputClass">
+          <!-- <label for="tipo">Seleccionar Tipo de Materia</label> -->
+          <select name="materiatipo" class="menudesp" id="materiatipo">
+            <option disabled selected value="disable">Tipo</option>
+            <option value="1° Cuatrimestre">1°Cuatrimestre</option>
+            <option value="2° Cuatrimestre">2°Cuatrimestre</option>
+            <option value="Anual">Anual</option>
+          </select>
+        </div>
+        
+
+        
+        <input type="submit" value="Guardar" class="botonSubmit" name="action"/>
+
+        <!-- Send to Backend -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      </form>
+    </div>
+  </div>
+</section>
+{%endblock%}
+
+{% block script %}
+{{super()}}
+<script src="{{url_for('static', filename='/js/nuevamateria.js')}}"></script>
+
+<script>
+
+  const sendData = {{url_for('crudcarpo.cargarMaterias')|tojson}};
+
+  const CarpoID = {{idcarpo}}
+
+  promptFormMateria.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    if (document.querySelector('.spanstyle')) {
+      document.querySelector('.spanstyle').remove()
+    }
+
+    if (matnom.value == ''){
+      if (matnom.parentNode.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        matnom.parentNode.appendChild(Span)
+        }
+      }
+
+    if (year.value == 'disable'){
+      if (year.parentNode.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        year.parentNode.appendChild(Span)
+        }
+      }
+      
+    if (tipo.value == 'disable'){
+      if (tipo.parentNode.querySelector('.spanstyle') == null) {
+        var Span = document.createElement('span');
+        Span.innerHTML = 'No puede estar vacia';
+        Span.classList.add('spanstyle');
+        tipo.parentNode.appendChild(Span)
+        }
+      }
+    
+    else if ((matnom != '') && (year != 'disable') && (tipo != 'disable')) {
+      const response = await fetch(sendData, {
+        method: 'POST',
+        headers: {
+           'Content-Type': 'application/json',
+           'X-CSRF-TOKEN': e.target.csrf_token.value
+           },
+        body: JSON.stringify({
+          'MateriaNombre' : cargamateria['materianombre'].value,
+          'MateriaAño' : cargamateria['materiaaño'].value,
+          'MateriaTipo' : cargamateria['materiatipo'].value, 
+          'CarpoID' : CarpoID
+        }),
+        credentials: 'same-origin'
+      })
+
+      const data = await response.json()
+
+      window.location.reload()
+    }
+    
+  })
+
+</script>
+{% endblock %}
