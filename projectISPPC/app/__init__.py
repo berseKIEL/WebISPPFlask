@@ -24,8 +24,8 @@ def create_app(Settings_Module):
     
     # Logeo
     @LogMan.user_loader
-    def load_user(id):
-        return Usuario.get_id(db,id)
+    def user_loader(id):
+        return Usuario.get_login_id(db, id)
     
     LogMan.login_view = "auth.login" #vista del login
     LogMan.login_message = "Inicie la sesión para acceder a esta pagina"

@@ -15,36 +15,39 @@ auth = Blueprint('auth', __name__)
 # Creación de la ruta login
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home.index'))
+        
     if request.method == 'POST':
         # Obtener los Formularios del HTML
         usuario = request.form.get('Lcorreo')
-        contrasenia = request.form.get('password')
+        contrasenia = request.form.get('Lpassword')
         
         # Crear la Clase usuario
         user = Usuario(usuario=usuario, usuariocontraseña=contrasenia, usuariocorreo=usuario)
-        print(user.usuario)
         
         # Retorno del Usuario obtenido
         RetornoUsuario = Usuario.return_queried_user(db, user)
-                
+        
         # Preguntar si el usuario retornado no es nulo
         if RetornoUsuario != None:
-            if RetornoUsuario.contraseña or RetornoUsuario.contraseñatemp:
+            
+            if RetornoUsuario.usuariocontraseña or RetornoUsuario.usuariocontraseñatemp:
                 
                 login_user(RetornoUsuario) # Logear al Flask-Login
-                
-                if RetornoUsuario.usuario != RetornoUsuario.usuariocontraseña:
-                    Usuario.update_temp_password(RetornoUsuario.id)
                 
                 # Si el usuario no esta activo, no tendrá contraseña ni correo
                 if RetornoUsuario.usuarioestado == 0:
                     return redirect(url_for('auth.cambiar_correopass'))
                 
+                if RetornoUsuario.usuario != RetornoUsuario.usuariocontraseña:
+                    Usuario.update_temp_password(db,RetornoUsuario.id)
+                
                 # Si el usuario posee una contraseña temporal, se realiza una redirección hacia cambiar contraseña
-                if RetornoUsuario.contraseñatemp:
+                if RetornoUsuario.usuariocontraseñatemp:
                     return redirect(url_for('auth.cambiar_contraseña'))
                 
-                return redirect(url_for('views.home'))
+                return redirect(url_for('auth.verificar_roles'))
             else:
                 flash('Contraseña Incorrecta', category='error')
         else:
@@ -52,63 +55,110 @@ def login():
 
     return render_template("login/log_in.html")
 
+@auth.route('/verificacionderoles',methods=['GET','POST'])
+@login_required
+def verificar_roles():
+    return '<h1>ME TENES PODRIDO CALDERON</h1>'
+
+# @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
+# def recuperar_contraseña():
+#         #genreacion y envio de contraseña temporal
+#         if request.method == 'POST':
+#             mail = request.form.get('email')
+#             p = generar_contraseña_temp()
+#             user = Usuario(email=mail,contraseñatemp=p)
+                        
+#             try:
+#                 Usuario.get_usuario_email(db, user)
+#             except Exception as e:
+#                 flash('Error a la hora de enviar el email')
+#                 return redirect(url_for('auth.recuperar_contraseña'))
+            
+#             Email = email(db, mail, p)
+#             Enviacion = email.enviarCorreo(Email)
+#             print(Enviacion)
+#             if Enviacion:
+#                 flash('Email enviado')
+#                 return redirect(url_for('auth.login'))
+#             else:
+#                 flash('El Email es Invalido')
+#         return render_template('/login/recuperar_contraseña.html')
+   
+
 @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
 def recuperar_contraseña():
         #genreacion y envio de contraseña temporal
         if request.method == 'POST':
-            mail = request.form.get('email')
+            email = request.form.get('email')
             p = generar_contraseña_temp()
-            user = Usuario(email=mail,contraseñatemp=p)
-            
-            print(user.contraseñatemp)
-            
-            try:
-                Usuario.get_usuario_email(db, user)
-            except Exception as e:
-                flash('Error a la hora de enviar el email')
-                return redirect(url_for('auth.recuperar_contraseña'))
-            
-            Email = email(db, mail, p)
-            Enviacion = email.enviarCorreo(Email)
-            print(Enviacion)
-            if Enviacion:
-                flash('Email enviado')
-                return redirect(url_for('auth.login'))
-            else:
-                flash('El Email es Invalido')
+            print(p)
+            Usuario.update_temp_password_password(db,p,email)
         return render_template('/login/recuperar_contraseña.html')
     
 
 @auth.route('/cambiarcontraseña',methods = ['POST','GET'])
 def cambiar_contraseña():
     if request.method == 'GET':
-        id = current_user.id
-        logout_user() 
-    #confirma si la nueva clave es correcta y la guarda
+        if current_user.is_authenticated:
+            id = current_user.id
+            logout_user()
+        else:
+            flash('¡¡¡¡¡¡¡POR APRETAR F5 DONDE NO DEBIAS!!!!!!!!!!')
+            return redirect(url_for('auth.login'))
     if request.method == 'POST':
         id = request.form.get('id')
         contraseña1 = request.form.get('password')
         contraseña2 = request.form.get('passwordconfirm')
+        
         if contraseña1 == contraseña2:
-            try: 
-                cur = db.connection.cursor()
-                consulta = ('UPDATE usuarios SET contraseña = %s WHERE idusuario = %s')
-                cur.execute(consulta,[Usuario.generarhash(contraseña1), id])
-                db.connection.commit()
-                flash('Contraseña cambiada correctamente')
-                return redirect(url_for('views.index'))
-            except Exception as ex:
-                flash('No se pudo realizar la consulta SQL', ex)
-                print(ex)
-                return render_template('cambiarcontraseña.html', id=id)
+            Usuario.update_password(db, contraseña1, id)
+            
+            # Inicio de sesión
+            RetornoUsuario = Usuario.get_login_id(db,id)
+            login_user(RetornoUsuario)
+            flash('¡Correo y Contraseña establecidas correctamente!')
+            return redirect(url_for('home.index'))
         else:
             flash('Las contraseñas no coinciden')
-            return render_template('cambiarcontraseña.html', id=id)
-    return render_template('cambiarcontraseña.html', id=id)
+            return render_template('login/cambiarcontraseña.html', id=id)
+        
+    return render_template('login/cambiarcontraseña.html', id=id)
     
-@auth.route('/asd1', methods=['POST','GET'])
+@auth.route('/habilitarusuario', methods=['POST','GET'])
 def cambiar_correopass():
-    return '<h1> Cambiar contraseña y cambiar correo<h1>'
+    if request.method == 'GET':
+        if current_user.is_authenticated:
+            id = current_user.id
+            logout_user()
+        else:
+            flash('¡¡¡¡¡¡¡POR APRETAR F5 DONDE NO DEBIAS!!!!!!!!!!')
+            return redirect(url_for('auth.login'))
+    if request.method == 'POST':
+        id = request.form.get('id')
+        correo = request.form.get('correo')
+        contraseña1 = request.form.get('password')
+        contraseña2 = request.form.get('passwordconfirm')
+        
+        if not (Usuario.get_usuario_correo(db, correo)):
+            if contraseña1 == contraseña2:
+                Usuario.update_email(db, correo, id)
+                Usuario.update_password(db, contraseña1, id)
+                Usuario.update_temp_password(db,id)
+                Usuario.activate_user(db,id)
+                
+                # Inicio de sesión
+                RetornoUsuario = Usuario.get_login_id(db,id)
+                login_user(RetornoUsuario)
+                flash('¡Correo y Contraseña establecidas correctamente!')
+                return redirect(url_for('home.index'))
+            else:
+                flash('Las contraseñas no coinciden')
+                return render_template('login/cambiarcorreoypass.html', id=id)
+        else:
+            flash('Ya existe un correo con ese correo')
+            return render_template('login/cambiarcorreoypass.html', id=id)    
+        
+    return render_template('login/cambiarcorreoypass.html', id=id)
 
 # Creación de la ruta logout
 @auth.route("/log-out")
@@ -116,4 +166,4 @@ def cambiar_correopass():
 def logout():
     logout_user()
     flash('El usuario ha cerrado la sesión correctamente')
-    return redirect(url_for("views.index"))
+    return redirect(url_for("home.index"))
