@@ -18,9 +18,16 @@ def create_app(Settings_Module):
     # Registración de Blueprints
     from .views.home import home
     from .views.auth.auth import auth
+    from .views.auth.user.alumno import alumno
+    from .views.auth.user.bedel import bedel
+    from .views.auth.user.docente import docente
     
     app.register_blueprint(home, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
+
+    app.register_blueprint(bedel, url_prefix="/user/bedel")
+    app.register_blueprint(docente, url_prefix="/user/docente")
+    app.register_blueprint(alumno, url_prefix="/user/alumno")
     
     # Logeo
     @LogMan.user_loader

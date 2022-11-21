@@ -196,7 +196,7 @@ class Perfil():
     def get_perfil_via_id(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = ("select perfil from perfil where perfilid = %s")
+            consulta = ("select * from perfil where perfilid = %s")
             cur.execute(consulta,[id])
             return cur.fetchall()
         except Exception as ex:
@@ -215,9 +215,20 @@ class UsuarioPerfil():
     def get_usuarioperfil_via_userid(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = ("select * from UsuarioPerfil where usuarioid = %s")
+            consulta = ("select perfilid from UsuarioPerfil where usuarioid = %s")
             cur.execute(consulta,[id])
             return cur.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+        
+    @classmethod
+    def get_count_usuarioperfil(self, db, id):
+        try:
+            cur = db.connection.cursor()
+            consulta = ('select COUNT(UsuarioPerfilID) from UsuarioPerfil where usuarioid = %s')
+            cur.execute(consulta,[id])
+            return cur.fetchone()
         except Exception as ex:
             print(ex)
             raise Exception(ex)

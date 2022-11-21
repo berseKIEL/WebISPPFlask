@@ -1,11 +1,13 @@
 # Importación Modular
 from ...ext import db
 from ...models.models import Usuario
+from ...models.models import UsuarioPerfil
+from ...models.models import Perfil
 from ...func.randomizer import generar_contraseña_temp
 from ...func.sendemail import email
 
 # Importación de Flask
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Desarrollo de la vista Login
@@ -53,12 +55,62 @@ def login():
         else:
             flash('Usuario Inexistente', category='error')
 
-    return render_template("login/log_in.html")
+    return render_template("user/login/log_in.html")
 
-@auth.route('/verificacionderoles',methods=['GET','POST'])
+@auth.route('/verificacionderoles',methods=['GET'])
 @login_required
 def verificar_roles():
-    return '<h1>ME TENES PODRIDO CALDERON</h1>'
+    # Si tiene mas de dos roles
+    # Redirecciono al html "selecciona tu rol"
+    if current_user.is_authenticated:
+        id = current_user.id
+        countperfiles = UsuarioPerfil.get_count_usuarioperfil(db, id)[0]
+        if countperfiles >= 2:
+            return redirect(url_for('auth.seleccionar_perfil'))
+        else:
+            # Si tiene un rol,
+            # Redirecciona a su html correspondiente de su rol
+            
+            perfilobtenido = UsuarioPerfil.get_usuarioperfil_via_userid(db, id)[0][0]
+            
+            if perfilobtenido == 1:
+                return redirect(url_for('auth.adminview'))
+            elif perfilobtenido in [2, 3, 4, 6, 8]:
+                return redirect(url_for('docente.index'))
+            elif perfilobtenido == 5:
+                return redirect(url_for('bedel.index'))
+            elif perfilobtenido == 7:
+                return redirect(url_for('alumno.index'))
+    return jsonify({'Respuesta' : 'No se pudo realizar la redirección'})
+
+
+@auth.route('/seleccionarperfil',methods=['GET','POST'])
+@login_required
+def seleccionar_perfil():
+    if request.method == 'GET':
+        id = current_user.id
+        perfiles = UsuarioPerfil.get_usuarioperfil_via_userid(db, id)
+        perfilesid = []
+        perfilnames = []
+        
+        for i in perfiles:
+            perfilesid.append(i[0])
+
+        for i in perfilesid:
+            perfilname = Perfil.get_perfil_via_id(db, i)[0]
+            perfilnames.append(perfilname)
+        
+    if request.method == 'POST':
+        perfilobtenido = int(request.form.get('opcion'))
+        if perfilobtenido == 1:
+            return redirect(url_for('auth.adminview'))
+        elif perfilobtenido in [2, 3, 4, 6, 8]:
+            return redirect(url_for('docente.index'))
+        elif perfilobtenido == 5:
+            return redirect(url_for('bedel.index'))
+        elif perfilobtenido == 7:
+            return redirect(url_for('alumno.index'))                
+    return render_template('user/seleccionarperfil.html', perfilnames = perfilnames)
 
 # @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
 # def recuperar_contraseña():
@@ -117,12 +169,12 @@ def cambiar_contraseña():
             RetornoUsuario = Usuario.get_login_id(db,id)
             login_user(RetornoUsuario)
             flash('¡Correo y Contraseña establecidas correctamente!')
-            return redirect(url_for('home.index'))
+            return redirect(url_for('auth.verificar_roles'))
         else:
             flash('Las contraseñas no coinciden')
-            return render_template('login/cambiarcontraseña.html', id=id)
+            return render_template('user/login/cambiarcontraseña.html', id=id)
         
-    return render_template('login/cambiarcontraseña.html', id=id)
+    return render_template('user/login/cambiarcontraseña.html', id=id)
     
 @auth.route('/habilitarusuario', methods=['POST','GET'])
 def cambiar_correopass():
@@ -150,15 +202,15 @@ def cambiar_correopass():
                 RetornoUsuario = Usuario.get_login_id(db,id)
                 login_user(RetornoUsuario)
                 flash('¡Correo y Contraseña establecidas correctamente!')
-                return redirect(url_for('home.index'))
+                return redirect(url_for('auth.verificar_roles'))
             else:
                 flash('Las contraseñas no coinciden')
-                return render_template('login/cambiarcorreoypass.html', id=id)
+                return render_template('user/login/cambiarcorreoypass.html', id=id)
         else:
             flash('Ya existe un correo con ese correo')
-            return render_template('login/cambiarcorreoypass.html', id=id)    
+            return render_template('user/login/cambiarcorreoypass.html', id=id)    
         
-    return render_template('login/cambiarcorreoypass.html', id=id)
+    return render_template('user/login/cambiarcorreoypass.html', id=id)
 
 # Creación de la ruta logout
 @auth.route("/log-out")
