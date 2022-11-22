@@ -34,8 +34,8 @@
           data-bs-target="#navbar">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbar">
-          <div class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse flex-row-reverse" id="navbar">
+          <div class="navbar-nav">
             {% if current_user.is_authenticated %}
             <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Inicio</a>
               {{idperfil}}
@@ -52,6 +52,10 @@
     {% endblock %}
     
     {% block content %}
+    
+    {% endblock %}
+
+    {% block alertas %}
     <div>
       {% with messages = get_flashed_messages(with_categories=True) %}
        {% if messages %}
@@ -99,7 +103,7 @@
        {% endif %}
       {% endwith %}
     </div>
-    {% endblock %}
+    {%endblock%}
 
 
     {% block script%}
