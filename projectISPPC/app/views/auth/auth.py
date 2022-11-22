@@ -71,7 +71,7 @@ def verificar_roles():
             # Si tiene un rol,
             # Redirecciona a su html correspondiente de su rol
             
-            perfilobtenido = UsuarioPerfil.get_usuarioperfil_via_userid(db, id)[0][0]
+            perfilobtenido = UsuarioPerfil.get_perfilid_via_userid(db, id)[0][0]
             
             if perfilobtenido == 1:
                 return redirect(url_for('auth.adminview'))
@@ -89,7 +89,7 @@ def verificar_roles():
 def seleccionar_perfil():
     if request.method == 'GET':
         id = current_user.id
-        perfiles = UsuarioPerfil.get_usuarioperfil_via_userid(db, id)
+        perfiles = UsuarioPerfil.get_perfilid_via_userid(db, id)
         perfilesid = []
         perfilnames = []
         
@@ -219,3 +219,4 @@ def logout():
     logout_user()
     flash('El usuario ha cerrado la sesión correctamente')
     return redirect(url_for("home.index"))
+

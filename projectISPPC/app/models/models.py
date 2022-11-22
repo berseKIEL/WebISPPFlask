@@ -215,6 +215,17 @@ class UsuarioPerfil():
     def get_usuarioperfil_via_userid(self, db, id):
         try:
             cur = db.connection.cursor()
+            consulta = ("select * from UsuarioPerfil where usuarioid = %s")
+            cur.execute(consulta,[id])
+            return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+    
+    @classmethod
+    def get_perfilid_via_userid(self, db, id):
+        try:
+            cur = db.connection.cursor()
             consulta = ("select perfilid from UsuarioPerfil where usuarioid = %s")
             cur.execute(consulta,[id])
             return cur.fetchall()
@@ -229,6 +240,30 @@ class UsuarioPerfil():
             consulta = ('select COUNT(UsuarioPerfilID) from UsuarioPerfil where usuarioid = %s')
             cur.execute(consulta,[id])
             return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+        
+    @classmethod
+    def activate_user_perfil(self,db,id):
+        try:
+            cur = db.connection.cursor()
+            consulta = ('UPDATE usuarioperfil SET usuarioperfilactivo = 1 WHERE usuarioid = %s')
+            cur.execute(consulta, [(id)])
+            db.connection.commit()
+            return cur.lastrowid
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+        
+    @classmethod
+    def deactivate_user_perfil(self,db,id):
+        try:
+            cur = db.connection.cursor()
+            consulta = ('UPDATE usuarioperfil SET usuarioperfilactivo = 0 WHERE usuarioid = %s')
+            cur.execute(consulta, [(id)])
+            db.connection.commit()
+            return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
