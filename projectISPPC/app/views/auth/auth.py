@@ -112,40 +112,43 @@ def seleccionar_perfil():
             return redirect(url_for('alumno.index'))                
     return render_template('user/seleccionarperfil.html', perfilnames = perfilnames)
 
-# @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
-# def recuperar_contraseña():
-#         #genreacion y envio de contraseña temporal
-#         if request.method == 'POST':
-#             mail = request.form.get('email')
-#             p = generar_contraseña_temp()
-#             user = Usuario(email=mail,contraseñatemp=p)
-                        
-#             try:
-#                 Usuario.get_usuario_email(db, user)
-#             except Exception as e:
-#                 flash('Error a la hora de enviar el email')
-#                 return redirect(url_for('auth.recuperar_contraseña'))
-            
-#             Email = email(db, mail, p)
-#             Enviacion = email.enviarCorreo(Email)
-#             print(Enviacion)
-#             if Enviacion:
-#                 flash('Email enviado')
-#                 return redirect(url_for('auth.login'))
-#             else:
-#                 flash('El Email es Invalido')
-#         return render_template('/login/recuperar_contraseña.html')
-   
-
 @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
 def recuperar_contraseña():
         #genreacion y envio de contraseña temporal
         if request.method == 'POST':
-            email = request.form.get('email')
+            mail = request.form.get('email')
             p = generar_contraseña_temp()
-            print(p)
-            Usuario.update_temp_password_password(db,p,email)
-        return render_template('/login/recuperar_contraseña.html')
+            user = Usuario(usuariocorreo=mail,usuariocontraseñatemp=p)
+                        
+            try:
+                Usuario.get_usuario_email(db, user)
+            except Exception as e:
+                flash('Error a la hora de enviar el email')
+                return redirect(url_for('auth.recuperar_contraseña'))
+            
+            Email = email(mail, p)
+
+            Enviacion = email.enviarCorreo(Email)
+            
+            print(Enviacion)
+            
+            # if Enviacion:
+            #     flash('Email enviado')
+            #     return redirect(url_for('auth.login'))
+            # else:
+            #     flash('El Email es Invalido')
+        return render_template('user/login/recuperar_contraseña.html')
+   
+
+# @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
+# def recuperar_contraseña():
+#         #genreacion y envio de contraseña temporal
+#         if request.method == 'POST':
+#             email = request.form.get('email')
+#             p = generar_contraseña_temp()
+#             print(p)
+#             Usuario.update_temp_password_password(db,p,email)
+#         return render_template('/login/recuperar_contraseña.html')
     
 
 @auth.route('/cambiarcontraseña',methods = ['POST','GET'])

@@ -12,7 +12,7 @@ class email:
         self.emailcontraseña = os.environ['MAIL_PASSWORD']
         self.emailreceptor = emailreceptor
         self.asunto = 'Recuperar Contraseña'
-        self.cuerpo = '''   
+        self.cuerpo = '''
 Se solicito un cambio de contraseña
 Su contraseña temporal es: '''+p+'''
 La contraseña es de un solo uso, cambia la contraseña luego de iniciar'''
@@ -20,15 +20,14 @@ La contraseña es de un solo uso, cambia la contraseña luego de iniciar'''
     @classmethod
     def enviarCorreo(self, email):
         em = EmailMessage()
+        em.set_content(email.cuerpo)
         em['From'] = email.emailemisor
         em['To'] = email.emailreceptor
         em['Subject'] = email.asunto
-        em.set_content(email.cuerpo)
 
         contexto = ssl.create_default_context()
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=contexto) as smtp:
             smtp.login(email.emailemisor, email.emailcontraseña)
-            smtp.sendmail(email.emailemisor,
-                          email.emailreceptor, em.as_string())
+            smtp.sendmail(email.emailemisor, email.emailreceptor, em.as_string().encode('utf-8'))
         return True
