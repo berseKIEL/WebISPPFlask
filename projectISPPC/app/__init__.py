@@ -13,7 +13,6 @@ def create_app(Settings_Module):
     #inicialización de modulos externos
     db.init_app(app)
     LogMan.init_app(app)
-    mail.init_app(app)
         
     # Registración de Blueprints
     from .views.home import home
