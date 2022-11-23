@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, redirect, url_for
 
-from .ext import db, LogMan, mail
+from .ext import db, LogMan
 
 from .models.models import Usuario
 
