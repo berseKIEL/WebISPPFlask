@@ -132,11 +132,11 @@ def recuperar_contraseña():
             
             print(Enviacion)
             
-            # if Enviacion:
-            #     flash('Email enviado')
-            #     return redirect(url_for('auth.login'))
-            # else:
-            #     flash('El Email es Invalido')
+            if Enviacion:
+                flash('Email enviado')
+                return redirect(url_for('auth.login'))
+            else:
+                flash('El Email es Invalido')
         return render_template('user/login/recuperar_contraseña.html')
    
 
