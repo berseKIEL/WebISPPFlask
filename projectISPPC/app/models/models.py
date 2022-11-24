@@ -21,6 +21,17 @@ class Usuario(UserMixin):
         except Exception as ex:
             print(ex)
             raise Exception(ex)
+        
+    @classmethod
+    def get_usuario_id(self, mysql, iduser):
+        try:
+            cur = mysql.connection.cursor()
+            consulta = ("select * from usuario where usuarioid = %s")
+            cur.execute(consulta, [(iduser)])
+            return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
 
     @classmethod
     def get_usuario_email(self, mysql, user):

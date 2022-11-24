@@ -26,7 +26,7 @@ CREATE TABLE `alumno` (
   `AlumnoID` int NOT NULL AUTO_INCREMENT,
   `UsuarioPerfilID` int NOT NULL,
   PRIMARY KEY (`AlumnoID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ DROP TABLE IF EXISTS `alumnocarpo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alumnocarpo` (
-  `AlumnoCarpoID` varchar(45) NOT NULL,
+  `AlumnoCarpoID` int NOT NULL AUTO_INCREMENT,
   `CarpoID` int NOT NULL,
   `AlumnoID` int NOT NULL,
   `AlumnoCarpoActivo` tinyint DEFAULT '0',
@@ -57,14 +57,14 @@ DROP TABLE IF EXISTS `alumnocarpomateria`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alumnocarpomateria` (
-  `AlumnoCarpoMateriaID` varchar(45) NOT NULL,
-  `AlumnoCarpoID` varchar(45) NOT NULL,
+  `AlumnoCarpoMateriaID` int NOT NULL AUTO_INCREMENT,
+  `AlumnoCarpoID` int NOT NULL,
   `MateriaID` int NOT NULL,
   PRIMARY KEY (`AlumnoCarpoMateriaID`),
-  KEY `fk_AlumnoCarpo_has_materia_materia1_idx` (`MateriaID`),
-  KEY `fk_AlumnoCarpo_has_materia_AlumnoCarpo1_idx` (`AlumnoCarpoID`),
-  CONSTRAINT `fk_AlumnoCarpo_has_materia_AlumnoCarpo1` FOREIGN KEY (`AlumnoCarpoID`) REFERENCES `alumnocarpo` (`AlumnoCarpoID`),
-  CONSTRAINT `fk_AlumnoCarpo_has_materia_materia1` FOREIGN KEY (`MateriaID`) REFERENCES `materia` (`MateriaID`)
+  KEY `AlumnoCarpoID_idx` (`AlumnoCarpoID`),
+  KEY `AlumnoCarpoMateriaID_idx` (`MateriaID`),
+  CONSTRAINT `AlumnoCarpoID` FOREIGN KEY (`AlumnoCarpoID`) REFERENCES `alumnocarpo` (`AlumnoCarpoID`),
+  CONSTRAINT `AlumnoCarpoMateriaID` FOREIGN KEY (`MateriaID`) REFERENCES `materia` (`MateriaID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,7 +103,7 @@ CREATE TABLE `carpo` (
   CONSTRAINT `CARPOCarreraID` FOREIGN KEY (`CarreraID`) REFERENCES `carrera` (`CarreraID`),
   CONSTRAINT `CARPOOrientacionID` FOREIGN KEY (`OrientacionID`) REFERENCES `orientacion` (`OrientacionID`),
   CONSTRAINT `CARPOPlanID` FOREIGN KEY (`PlanDeEstudioID`) REFERENCES `plandeestudio` (`PlanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COMMENT='Combinacion de Carrera/Plan de estudio/Orientacion. Esta relación permite que se pueda diferenciar carreras únicas según su plan y orientación';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Combinacion de Carrera/Plan de estudio/Orientacion. Esta relación permite que se pueda diferenciar carreras únicas según su plan y orientación';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +117,7 @@ CREATE TABLE `carrera` (
   `CarreraID` int NOT NULL AUTO_INCREMENT,
   `CarreraNombre` varchar(255) NOT NULL,
   PRIMARY KEY (`CarreraID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COMMENT='En esta tabla se representan todas las carreras del instituto';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='En esta tabla se representan todas las carreras del instituto';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +136,7 @@ CREATE TABLE `materia` (
   PRIMARY KEY (`MateriaID`),
   KEY `idcarpomat_idx` (`CarpoIDMat`),
   CONSTRAINT `idcarpomat` FOREIGN KEY (`CarpoIDMat`) REFERENCES `carpo` (`CARPOID`)
-) ENGINE=InnoDB AUTO_INCREMENT=561 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `orientacion` (
   `OrientacionID` int NOT NULL AUTO_INCREMENT,
   `OrientacionNombre` varchar(255) NOT NULL,
   PRIMARY KEY (`OrientacionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COMMENT='En esta tabla se representan tres orientaciones que corresponden a una carrera';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='En esta tabla se representan tres orientaciones que corresponden a una carrera';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `perfil` (
   `PerfilID` int NOT NULL AUTO_INCREMENT,
   `Perfil` varchar(45) NOT NULL,
   PRIMARY KEY (`PerfilID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `personal` (
   `PersonalID` int NOT NULL AUTO_INCREMENT,
   `UsuarioPerfilID` int NOT NULL,
   PRIMARY KEY (`PersonalID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ DROP TABLE IF EXISTS `personalcarpo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personalcarpo` (
-  `PersonalCarpoID` int NOT NULL,
+  `PersonalCarpoID` int NOT NULL AUTO_INCREMENT,
   `PersonalID` int NOT NULL,
   `CarpoID` int NOT NULL,
   `PersonalCarpoActivo` tinyint DEFAULT NULL,
@@ -198,6 +198,25 @@ CREATE TABLE `personalcarpo` (
   KEY `fk_Personal_has_carpo_Personal1_idx` (`PersonalID`),
   CONSTRAINT `fk_Personal_has_carpo_carpo1` FOREIGN KEY (`CarpoID`) REFERENCES `carpo` (`CARPOID`),
   CONSTRAINT `fk_Personal_has_carpo_Personal1` FOREIGN KEY (`PersonalID`) REFERENCES `personal` (`PersonalID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `personalcarpomateria`
+--
+
+DROP TABLE IF EXISTS `personalcarpomateria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personalcarpomateria` (
+  `PersonalCarpoMateriaID` int NOT NULL AUTO_INCREMENT,
+  `PersonalCarpoID` int NOT NULL,
+  `MateriaID` int NOT NULL,
+  PRIMARY KEY (`PersonalCarpoMateriaID`),
+  KEY `fk_PersonalCarpo_has_materia_materia1_idx` (`MateriaID`),
+  KEY `PersonalCarpoID_idx` (`PersonalCarpoID`),
+  CONSTRAINT `MateriaID` FOREIGN KEY (`MateriaID`) REFERENCES `materia` (`MateriaID`),
+  CONSTRAINT `PersonalCarpoID` FOREIGN KEY (`PersonalCarpoID`) REFERENCES `personalcarpo` (`PersonalCarpoID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -216,25 +235,6 @@ CREATE TABLE `personaldatos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `personalmateria`
---
-
-DROP TABLE IF EXISTS `personalmateria`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `personalmateria` (
-  `PersonalMateriaID` varchar(45) NOT NULL,
-  `PersonalID` int NOT NULL,
-  `MateriaID` int NOT NULL,
-  PRIMARY KEY (`PersonalMateriaID`),
-  KEY `fk_PersonalCarpo_has_materia_materia1_idx` (`MateriaID`),
-  KEY `fk_PersonalCarpo_has_materia_PersonalCarpo1_idx` (`PersonalID`),
-  CONSTRAINT `fk_PersonalCarpo_has_materia_materia1` FOREIGN KEY (`MateriaID`) REFERENCES `materia` (`MateriaID`),
-  CONSTRAINT `fk_PersonalCarpo_has_materia_PersonalCarpo1` FOREIGN KEY (`PersonalID`) REFERENCES `personalcarpo` (`PersonalCarpoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `plandeestudio`
 --
 
@@ -245,7 +245,7 @@ CREATE TABLE `plandeestudio` (
   `PlanID` int NOT NULL AUTO_INCREMENT,
   `PlanNombre` varchar(255) NOT NULL,
   PRIMARY KEY (`PlanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COMMENT='En esta tabla se representan los diferentes planes de estudio';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='En esta tabla se representan los diferentes planes de estudio';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -265,7 +265,7 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`UsuarioID`),
   UNIQUE KEY `Usuario_UNIQUE` (`Usuario`),
   UNIQUE KEY `UsuarioCorreo_UNIQUE` (`UsuarioCorreo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2569 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -349,51 +349,45 @@ CREATE TABLE `usuarioperfil` (
   KEY `UsuarioPerfilPerfilID_idx` (`PerfilID`),
   CONSTRAINT `UsuarioPerfilPerfilID` FOREIGN KEY (`PerfilID`) REFERENCES `perfil` (`PerfilID`),
   CONSTRAINT `UsuarioPerfilUsuarioID` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2571 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb3 */ ;
-/*!50003 SET character_set_results = utf8mb3 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `PerfilInsertUsuario` AFTER UPDATE ON `usuarioperfil` FOR EACH ROW BEGIN
-	IF ((SELECT UsuarioPerfilActivo from usuarioperfil where usuarioperfilid = new.usuarioperfilid) = 1) THEN
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 7) THEN 
-		  INSERT INTO alumno(UsuarioPerfilID) VALUES(new.usuarioperfilid);
-		end if;
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 2) THEN 
-		  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
-		end if;
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 3) THEN 
-		  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
-		end if;
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 4) THEN 
-		  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
-		end if;
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 5) THEN 
-		  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
-		end if;
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 6) THEN 
-		  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
-		end if;
-		IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 8) THEN 
-		  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
-		end if;
-	END IF;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `PerfilInsertUsuario` AFTER INSERT ON `usuarioperfil` FOR EACH ROW BEGIN
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 7) THEN 
+	  INSERT INTO alumno(UsuarioPerfilID) VALUES(new.usuarioperfilid);
+	end if;
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 2) THEN 
+	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	end if;
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 3) THEN 
+	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	end if;
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 4) THEN 
+	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	end if;
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 5) THEN 
+	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	end if;
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 6) THEN 
+	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	end if;
+	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 8) THEN 
+	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	end if;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Dumping routines for database 'dbispp'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -404,4 +398,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-21 20:53:06
+-- Dump completed on 2022-11-23 20:54:22

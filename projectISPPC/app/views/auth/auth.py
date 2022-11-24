@@ -118,37 +118,22 @@ def recuperar_contraseña():
         if request.method == 'POST':
             mail = request.form.get('email')
             p = generar_contraseña_temp()
-            user = Usuario(usuariocorreo=mail,usuariocontraseñatemp=p)
-                        
-            try:
-                Usuario.get_usuario_email(db, user)
-            except Exception as e:
-                flash('Error a la hora de enviar el email')
-                return redirect(url_for('auth.recuperar_contraseña'))
             
-            Email = email(mail, p)
+            correo = Usuario.get_usuario_correo(db, mail)
+            
+            if correo:                       
+                Email = email.solicitar_contraseña_temporal(mail,p)
 
-            Enviacion = email.enviarCorreo(Email)
-            
-            print(Enviacion)
-            
-            if Enviacion:
-                flash('Email enviado')
-                return redirect(url_for('auth.login'))
+                if Email:
+                    flash('Se ha enviado un correo con su nueva contraseña')
+                    Usuario.update_temp_password_password(db,p,mail)
+                    print(p)
+                else:
+                    flash('Error no se pudo enviar el email')
             else:
-                flash('El Email es Invalido')
-        return render_template('user/login/recuperar_contraseña.html')
-   
-
-# @auth.route('/recuperarcontrasenia', methods = ['GET', 'POST'])
-# def recuperar_contraseña():
-#         #genreacion y envio de contraseña temporal
-#         if request.method == 'POST':
-#             email = request.form.get('email')
-#             p = generar_contraseña_temp()
-#             print(p)
-#             Usuario.update_temp_password_password(db,p,email)
-#         return render_template('/login/recuperar_contraseña.html')
+                flash('El correo solicitado no existe en la base de datos')
+                
+        return render_template('/user/login/recuperar_contraseña.html')
     
 
 @auth.route('/cambiarcontraseña',methods = ['POST','GET'])
@@ -166,12 +151,16 @@ def cambiar_contraseña():
         contraseña2 = request.form.get('passwordconfirm')
         
         if contraseña1 == contraseña2:
+            
             Usuario.update_password(db, contraseña1, id)
+            correo = Usuario.get_usuario_id(db, id)[2]
+            email.notificar_cambio_contraseña(correo)
             
             # Inicio de sesión
             RetornoUsuario = Usuario.get_login_id(db,id)
             login_user(RetornoUsuario)
-            flash('¡Correo y Contraseña establecidas correctamente!')
+            flash('Contraseña establecidas correctamente!')
+            
             return redirect(url_for('auth.verificar_roles'))
         else:
             flash('Las contraseñas no coinciden')
@@ -196,22 +185,23 @@ def cambiar_correopass():
         
         if not (Usuario.get_usuario_correo(db, correo)):
             if contraseña1 == contraseña2:
-                Usuario.update_email(db, correo, id)
-                Usuario.update_password(db, contraseña1, id)
-                Usuario.update_temp_password(db,id)
-                Usuario.activate_user(db,id)
-                
-                # Inicio de sesión
-                RetornoUsuario = Usuario.get_login_id(db,id)
-                login_user(RetornoUsuario)
-                flash('¡Correo y Contraseña establecidas correctamente!')
-                return redirect(url_for('auth.verificar_roles'))
+                if email.first_login(correo):
+                    Usuario.update_email(db, correo, id)
+                    Usuario.update_password(db, contraseña1, id)
+                    Usuario.update_temp_password(db,id)
+                    Usuario.activate_user(db,id)
+                    
+                    # Inicio de sesión
+                    RetornoUsuario = Usuario.get_login_id(db,id)
+                    login_user(RetornoUsuario)
+                    flash('¡Correo y Contraseña establecidas correctamente!')
+                    return redirect(url_for('auth.verificar_roles'))
+                else:
+                    flash('Error al enviar el correo')
             else:
                 flash('Las contraseñas no coinciden')
-                return render_template('user/login/cambiarcorreoypass.html', id=id)
         else:
             flash('Ya existe un correo con ese correo')
-            return render_template('user/login/cambiarcorreoypass.html', id=id)    
         
     return render_template('user/login/cambiarcorreoypass.html', id=id)
 
