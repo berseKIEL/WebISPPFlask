@@ -40,8 +40,8 @@ def login():
                 
                 # Si el usuario no esta activo, no tendrá contraseña ni correo
                 if RetornoUsuario.usuarioestado == 0:
-                    return redirect(url_for('auth.cambiar_correopass'))
-                
+                    return redirect(url_for('auth.verificar_first_login'))
+
                 if RetornoUsuario.usuario != RetornoUsuario.usuariocontraseña:
                     Usuario.update_temp_password(db,RetornoUsuario.id)
                 
@@ -147,7 +147,6 @@ def cambiar_contraseña():
             id = current_user.id
             logout_user()
         else:
-            flash('¡¡¡¡¡¡¡POR APRETAR F5 DONDE NO DEBIAS!!!!!!!!!!')
             return redirect(url_for('auth.login'))
     if request.method == 'POST':
         id = request.form.get('id')
@@ -168,19 +167,67 @@ def cambiar_contraseña():
             return redirect(url_for('auth.verificar_roles'))
         else:
             flash('Las contraseñas no coinciden')
-            return render_template('user/login/cambiarcontraseña.html', id=id)
+            return render_template('user/login/cambiar_contraseña.html', id=id)
         
-    return render_template('user/login/cambiarcontraseña.html', id=id)
+    return render_template('user/login/cambiar_contraseña.html', id=id)
     
+# @auth.route('/habilitarusuario', methods=['POST','GET'])
+# def cambiar_correopass():
+#     if request.method == 'GET':
+#         if current_user.is_authenticated:
+#             id = current_user.id
+#             logout_user()
+#         else:
+#             flash('¡¡¡¡¡¡¡POR APRETAR F5 DONDE NO DEBIAS!!!!!!!!!!')
+#             return redirect(url_for('auth.login'))
+#     if request.method == 'POST':
+#         id = request.form.get('id')
+#         correo = request.form.get('correo')
+#         contraseña1 = request.form.get('password')
+#         contraseña2 = request.form.get('passwordconfirm')
+        
+#         if not (Usuario.get_usuario_correo(db, correo)):
+#             if contraseña1 == contraseña2:
+#                 if email.first_login(correo):
+#                     Usuario.update_email(db, correo, id)
+#                     Usuario.update_password(db, contraseña1, id)
+#                     Usuario.update_temp_password(db,id)
+#                     Usuario.activate_user(db,id)
+                    
+#                     # Inicio de sesión
+#                     RetornoUsuario = Usuario.get_login_id(db,id)
+#                     login_user(RetornoUsuario)
+#                     flash('¡Correo y Contraseña establecidas correctamente!')
+#                     return redirect(url_for('auth.verificar_roles'))
+#                 else:
+#                     flash('Error al enviar el correo')
+#             else:
+#                 flash('Las contraseñas no coinciden')
+#         else:
+#             flash('Ya existe un correo con ese correo')
+        
+#     return render_template('user/login/cambiarcorreoypass.html', id=id)
+
+
+@auth.route('/verificarlogin',methods=['POST','GET'])
+@login_required
+def verificar_first_login():
+    id = current_user.id
+    correo = Usuario.get_usuario_id(db,id)[2]
+    if (correo):
+        return redirect(url_for('auth.habilitar_usuario'))
+    else:
+        return redirect(url_for('user.modificar_datos_personales'))
+
 @auth.route('/habilitarusuario', methods=['POST','GET'])
-def cambiar_correopass():
+def habilitar_usuario():
     if request.method == 'GET':
         if current_user.is_authenticated:
             id = current_user.id
             logout_user()
         else:
-            flash('¡¡¡¡¡¡¡POR APRETAR F5 DONDE NO DEBIAS!!!!!!!!!!')
             return redirect(url_for('auth.login'))
+        
     if request.method == 'POST':
         id = request.form.get('id')
         correo = request.form.get('correo')
@@ -207,7 +254,16 @@ def cambiar_correopass():
         else:
             flash('Ya existe un correo con ese correo')
         
-    return render_template('user/login/cambiarcorreoypass.html', id=id)
+    return render_template('user/login/habilitar_usuario.html', id=id)
+
+@auth.route('/testeo')
+def testeo():
+    return render_template('user/login/habilitar_usuario.html')
+
+@auth.route('/testeo2')
+def testeo2():
+    return render_template('user/login/habilitar_usuario_firstlogin.html')
+
 
 # Creación de la ruta logout
 @auth.route("/log-out")

@@ -11,20 +11,8 @@ body {
   background-position: 50% 0;
 }
 
-.container {
+form {
   height: 100%;
-  width: 100%;
-}
-
-.login {
-  width: 350px;
-  box-shadow: 0px 20px 25px -10px rgba(0,0,0,0.5);
-  border-radius: 20px;
-  background-color: var(--background);
-}
-
-.login-container {
-  width: 100%;
 }
 
 .form-custom {
@@ -35,4 +23,8 @@ body {
   border-radius: 10px;
   box-sizing: border-box;
   font-size: 14px;
+}
+
+.container-md {
+  max-width: 720px;
 }
