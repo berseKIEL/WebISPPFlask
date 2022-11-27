@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% block title %} Inicio de Sesión {% endblock %}
 
@@ -11,42 +11,45 @@
 />
 {% endblock %}
 
+{%block navbar%}
+{{super()}}
+{%endblock%}
+
 {% block content %}
 {{super()}}
-<div class="container">
-  <image src="{{url_for('static',filename = 'images/logoispp.jpg')}}">
-  <form
+<div class="container d-flex justify-content-center align-items-center">
+    <form
     action="{{url_for('auth.login')}}"
-    class="form"
+    class="login"
     id="login"
     method="POST">
-    <h1 class="tituloForm">Inicio de Sesión</h1>
-    <div class="formInput-grupo">
-      <input
-        type="text"
-        id="correo"
-        name="Lcorreo"
-        class="formInput"
-        autofocus
-        placeholder="Ingrese el Correo/Usuario"
-      />
+    <div class="login-container d-flex flex-column align-items-center py-3">
+      <img src="{{ url_for('static', filename='img/ispplogo.png')}}" class="img-fluid login-img">
+
+      <h1 class="mb-3">Bienvenido</h1>
+
+      <div class="mb-3 w-75">
+        <input
+          type="email"
+          id="correo"
+          name="Lcorreo"
+          class="form-control form-custom"
+          aria-describedby="emailHelp"
+          placeholder="Usuario - Correo"
+        />
+      </div>
+      <div class="mb-3 w-75">
+        <input
+          type="password"
+          id="password"
+          name="Lpassword"
+          class="form-control form-custom"
+          placeholder="Contraseña"
+        />
+      </div>
+      <button class="btn btn-primary mb-3" type="submit">Iniciar Sesión</button>
+      <a href="{{url_for('auth.recuperar_contraseña')}}" class="text-center mb-4">¿Olvidaste tu contraseña</a>
     </div>
-    <div class="formInput-grupo">
-      <input
-        type="password"
-        id="password"
-        name="Lpassword"
-        class="formInput"
-        autofocus
-        placeholder="Ingrese la Contraseña"
-      />
-    </div>
-    <div align="center">
-      <button class="formBoton" type="submit">Login</button>
-    </div>
-    <p class="formText">
-      <a href="{{url_for('auth.recuperar_contraseña')}}" class="formLink">¿Olvidaste tu contraseña?</a>
-    </p>
   </form>
 </div>
 {% endblock %}

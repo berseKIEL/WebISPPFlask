@@ -7,7 +7,7 @@ from ...func.randomizer import generar_contraseña_temp
 from ...func.sendemail import email
 
 # Importación de Flask
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, session
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Desarrollo de la vista Login
@@ -73,6 +73,9 @@ def verificar_roles():
             
             perfilobtenido = UsuarioPerfil.get_perfilid_via_userid(db, id)[0][0]
             
+            # Se añade a la sesión actual, el perfil obtenido
+            session['perfilid'] = perfilobtenido
+            
             if perfilobtenido == 1:
                 return redirect(url_for('auth.adminview'))
             elif perfilobtenido in [2, 3, 4, 6, 8]:
@@ -102,6 +105,7 @@ def seleccionar_perfil():
         
     if request.method == 'POST':
         perfilobtenido = int(request.form.get('opcion'))
+        session['perfilid'] = perfilobtenido
         if perfilobtenido == 1:
             return redirect(url_for('auth.adminview'))
         elif perfilobtenido in [2, 3, 4, 6, 8]:

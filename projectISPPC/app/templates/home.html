@@ -1,6 +1,11 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
-{% block css%}
+{% block titulo %}
+ISPP N°1
+{% endblock %}
+
+{% block head%}
+{{super()}}
 <link
   rel="stylesheet"
   type="text/css"
@@ -12,18 +17,28 @@
 {{super()}}
 {% endblock %}
 
-{% block title %}
-Home
+{% block sidebar %}
+{{super()}}
 {% endblock %}
 
-{% block content%}
-{{super()}}
-
-<div class="jumbotron mycustom-jumbotron">
-  <h1 class="display-4">¡Bienvenido!</h1>
-  <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-  <hr class="my-4">
-  <p>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>
+{%block content%}
+<div class="hero d-flex justify-content-center align-items-center">
+  <div class="container my-5">
+    <div class="row">
+      <div class="col d-flex justify-content-center flex-column">
+        <h1 class="display-3 titulo">
+          Instituto Superior del Profesorado Provincial N°1
+        </h1>
+        <span class="text-muted h5">Prof. Rodolfo Argentino Días</span>
+      </div>
+      <div class="col">
+        <img src="{{ url_for('static', filename='img/hero.jpeg')}}" class="img-fluid img-hero">
+      </div>
+    </div>
+  </div>
 </div>
+{% endblock %}
 
+{% block title %}
+Home
 {% endblock %}

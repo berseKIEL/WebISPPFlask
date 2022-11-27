@@ -1,45 +1,53 @@
+:root {
+  --color-azul: #1400FF;
+  --background: #FFFFFF;
+  --degrade: #3F33CA;
+}
+
 body {
-    --color-primary: rgb(122, 202, 233);
-    --color-primary-dark: rgb(31, 177, 230);
-    --color-primary-light: rgb(165, 214, 234);
-    --color-secondary: rgb(3, 132, 183);
-    --border-radius: 4px;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 18px;
-    background-color: var(--color-primary);
-    background-size: cover;
+  font-family: "Roboto Condensed", sans-serif;
+  background-color: var(--background);
+  width: auto;
+  height: auto;
 }
 
-.header-pagina {
-    background-color: #1e73be;
-    text-align: center;
-    height: 2.5rem;
+@media (min-width: 991.98px) {
+  main {
+    padding-left: 240px;
+  }
 }
 
-a {
-    color: white;
-    text-decoration: none;
-    background-color: transparent;
+/* Navbar */
+.navbar {
+box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
 }
 
-.mycustom-jumbotron {
-    border: transparent;
-    width: 765px;
-    margin: 50px auto 20px;
-    display: block;
-    padding-bottom: 0.8%;
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0; /* Height of navbar */
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 240px;
 }
 
-.alert {
-    width: 450px;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    left: 0;
-    margin: auto;
-    margin-top: 1rem;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    bottom: 2.5rem;
-    z-index: 1;
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
