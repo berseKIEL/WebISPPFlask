@@ -1,34 +1,5 @@
-{%extends 'base.html'%}
-
+{%extends 'home.html'%}
 
 {%block content%}
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-3 bg-dark py-3" id="sticky-sidebar">
-      <div class="sticky-top">
-        <a href="http://">
-          <h4 class="text-light mb-4">Datos Personales</h4>
-        </a>
 
-        <a href="http://">
-          <h4 class="text-light mb-4">Datos Laborales</h4>
-        </a>
-
-        {% if activo == 1 %}
-        <a href="http://">
-          <h4 class="text-light mb-4">Administrar usuarios</h4>
-        </a>
-
-        <a href="http://">
-            <h4 class="text-light mb-4">Administrar carreras</h4>
-        </a>
-        {%endif%}
-
-      </div>
-    </div>
-    <div class="col" id="main">
-      <h1>  </h1>
-    </div>
-  </div>
-</div>
 {%endblock%}

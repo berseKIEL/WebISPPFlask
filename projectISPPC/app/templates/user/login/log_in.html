@@ -17,12 +17,9 @@
 
 {% block content %}
 {{super()}}
+
 <div class="container d-flex justify-content-center align-items-center">
-    <form
-    action="{{url_for('auth.login')}}"
-    class="login"
-    id="login"
-    method="POST">
+  <form action="{{url_for('auth.login')}}" class="login" id="login" method="POST">
     <div class="login-container d-flex flex-column align-items-center py-3">
       <img src="{{ url_for('static', filename='img/ispplogo.png')}}" class="img-fluid login-img">
 
@@ -30,12 +27,11 @@
 
       <div class="mb-3 w-75">
         <input
-          type="email"
+          type="text"
           id="correo"
           name="Lcorreo"
           class="form-control form-custom"
-          aria-describedby="emailHelp"
-          placeholder="Usuario - Correo"
+          placeholder="DNI"
         />
       </div>
       <div class="mb-3 w-75">
@@ -52,9 +48,14 @@
     </div>
   </form>
 </div>
+
 {% endblock %}
 
 {%block script%} 
 {{super()}}
 <script src="{{url_for('static', filename='/scripts/login.js')}}"></script>
 {%endblock%}
+
+{% block alertas %}
+{{super()}}
+{% endblock %}

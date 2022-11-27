@@ -1,18 +1,32 @@
 {%if current_user.is_authenticated%}
-<nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-  <div class="position-sticky">
-    <div class="list-group list-group-flush mx-3 mt-4">
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-        <span>Datos Personales</span>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-        <span>Datos Academicos</span></a>
+<nav id="sidebarMenu" class="collapse d-md-block sidebar col-3 collapse bg-white">
+  <div class="position-sticky h-100">
+    <div class="list-group list-group-flush h-100 d-flex flex-column bd-highlight mb-3">
+      <div class="datosusuario">
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+          <span>Datos Personales</span>
+        </a>
+  
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+          <span>Datos Academicos</span>
+        </a>
+      </div>
+      <div class="datosperfil">
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+          <span>Reciclable</span>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+          <span>Reciclable</span>
+        </a>
+      </div>
 
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-        <span>Reciclable</span></a>
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-        <span>Reciclable</span></a>
+      <div class="cambiarperfil mt-auto bd-highlight">
+        <a href="{{url_for('auth.seleccionar_perfil')}}" class="list-group-item list-group-item-action py-2 ripple ">
+          <span>Cambiar Perfil</span>
+        </a>
+      </div>
+
     </div>
-  </div>
+  </div>  
 </nav>
 {%endif%}

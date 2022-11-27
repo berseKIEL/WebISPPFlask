@@ -4,6 +4,7 @@
 >
   <!-- Container wrapper -->
   <div class="container-fluid">
+    
     {% if current_user.is_authenticated%}
     <!-- Toggle button sidebar -->
     <button
@@ -17,14 +18,13 @@
       <i class="bi bi-list-task"></i>
     </button>
     {%endif%}
-
     <!-- Brand -->
     <a
       class="navbar-brand mx-2"
       href="{{url_for('home.index')}}"
       rel="home"
     >
-      I.S.P.P. N° 1 Prof. Rodolfo Argentino Díaz
+      I.S.P.P. N° 1
     </a>
 
     <!-- Toggle button navbar -->
@@ -37,7 +37,7 @@
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+    <i class="bi bi-caret-down-fill"></i>
     </button>
 
     <!-- Right links -->

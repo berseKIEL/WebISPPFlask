@@ -28,3 +28,13 @@ form {
 .container-md {
   max-width: 720px;
 }
+
+.font-size {
+  font-size: 12px;
+}
+
+@media screen and (min-width:767px) {
+  .font-size {
+    font-size: 14px;
+  }
+}

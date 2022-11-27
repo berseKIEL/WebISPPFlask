@@ -11,7 +11,7 @@
 {%endblock%} {%block navbar%} {{super()}} {%endblock%}
 
 {% block content %}
-<form action="{{ url_for('auth.habilitar_usuario') }}" class="form-usuario container d-flex justify-content-center align-items-center">
+<form action="{{ url_for('auth.habilitar_usuario') }}" class="form-usuario container d-flex justify-content-center align-items-center" method="POST">
   <div class="container-md container">
     <div class="card">
       <h1 class="card-header display-12 text-center">Habilitación de Usuario</h1>
@@ -54,7 +54,7 @@
       
       <hr class="w-100 m-0 mb-4" />
 
-      <div class="row mx-3 mb-4">
+      <div class="row mx-3 mb-4 font-size">
         <span class="h6 mb-1">
           Consideraciones Generales para la actualización de la Contraseña
         </span>
