@@ -272,8 +272,7 @@ class UsuarioPerfil():
     def get_count_usuarioperfil(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = (
-                'select COUNT(UsuarioPerfilID) from UsuarioPerfil where usuarioid = %s')
+            consulta = ('select COUNT(UsuarioPerfilID) from UsuarioPerfil where usuarioid = %s')
             cur.execute(consulta, [id])
             return cur.fetchone()
         except Exception as ex:
@@ -317,11 +316,11 @@ class UsuarioDatos():
         self.UsuarioSexoDNI = UsuarioSexoDNI
         
     @classmethod
-    def get_usuario_datos_DNI(mysql, dni):
+    def get_usuario_datos_id(self, mysql, id):
         try:
             cur = mysql.connection.cursor()
-            consulta = ("select * from usuariodatos where usuarioid = (select usuarioid from usuario where usuario = %s);")
-            cur.execute(consulta, [(dni)])
+            consulta = ("select * from usuariodatos where usuarioid = %s")
+            cur.execute(consulta, [(id)])
             return cur.fetchone()
         except Exception as ex:
             print(ex)

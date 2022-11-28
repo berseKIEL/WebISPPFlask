@@ -38,37 +38,23 @@
       </a>
       {%endif%}
 
-      
-      <div class="cambiarperfil mt-auto bd-highlight" id="cambiarperfil">
+
+      <div class="cambiarperfil mt-auto bd-highlight">
         <a href="{{url_for('auth.seleccionar_perfil')}}" class="list-group-item list-group-item-action py-2 ripple ">
           <span> <strong> Cambiar Perfil - <div id="perfilidobtenido" style="display:inline;"></div> </strong> </span>
         </a>
       </div>
-
+      
 
     </div>
   </div>  
 </nav>
 
 <script>
-  async function getPerfiles() {
-    const perfil_url = await fetch({{ url_for('user.obtener_count_perfiles')|tojson }});
-    obj = await perfil_url.json();
-    intobj = parseInt(obj['Respuesta'])
-
-    if (intobj < 2) {
-      document.getElementById('cambiarperfil').remove();
-    }
-    else if (intobj >= 2) {
-      {% if session['perfilid'] %}
-      const user_url = {{ url_for('user.obtener_nombre_perfil')|tojson }};
-      const perdilid = document.getElementById('perfilidobtenido')
-      fetch(user_url).then(response => response.json()).then(data => perdilid.innerHTML=data['Respuesta'])
-      {% endif %}
-    }
-  }
-
-  getPerfiles();
-
+  {% if session['perfilid'] %}
+  const user_url = {{ url_for('user.obtener_nombre_perfil')|tojson }};
+  const perdilid = document.getElementById('perfilidobtenido')
+  fetch(user_url).then(response => response.json()).then(data => perdilid.innerHTML=data['Respuesta'])
+  {% endif %}
 </script>
 {%endif%}

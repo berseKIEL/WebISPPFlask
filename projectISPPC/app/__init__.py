@@ -20,6 +20,7 @@ def create_app(Settings_Module):
     from .views.auth.user.alumno import alumno
     from .views.auth.user.bedel import bedel
     from .views.auth.user.docente import docente
+    from .views.auth.user.user import usuario
     
     app.register_blueprint(home, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
@@ -27,6 +28,8 @@ def create_app(Settings_Module):
     app.register_blueprint(bedel, url_prefix="/user/bedel")
     app.register_blueprint(docente, url_prefix="/user/docente")
     app.register_blueprint(alumno, url_prefix="/user/alumno")
+    
+    app.register_blueprint(usuario, url_prefix="/user")
     
     # Logeo
     @LogMan.user_loader

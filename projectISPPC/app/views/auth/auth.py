@@ -121,6 +121,19 @@ def seleccionar_perfil():
             return redirect(url_for('alumno.index'))
     return render_template('user/seleccionarperfil.html', perfilnames=perfilnames)
 
+@auth.route('/redireccionarperfil')
+@login_required
+def redireccionar_perfil():
+    perfilobtenido = session['perfilid']
+    if perfilobtenido == 1:
+        return redirect(url_for('auth.adminview'))
+    elif perfilobtenido in [2, 3, 4, 6, 8]:
+        return redirect(url_for('docente.index'))
+    elif perfilobtenido == 5:
+        return redirect(url_for('bedel.index'))
+    elif perfilobtenido == 7:
+        return redirect(url_for('alumno.index'))
+
 
 @auth.route('/recuperarcontrasenia', methods=['GET', 'POST'])
 def recuperar_contraseña():
@@ -217,15 +230,12 @@ def habilitar_usuario():
     return render_template('user/login/habilitar_usuario.html', id=id)
 
 
-@auth.route('/testeo')
-def testeo():
-    return render_template('user/login/habilitar_usuario.html')
-
-
 # Creación de la ruta logout
 @auth.route("/log-out")
 @login_required
 def logout():
     logout_user()
+    if 'perfilid' in session:
+        session.pop('perfilid', None)
     flash('El usuario ha cerrado la sesión correctamente')
     return redirect(url_for("home.index"))

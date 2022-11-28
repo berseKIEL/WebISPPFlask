@@ -5,39 +5,19 @@
      {% if category == "error" %}
         <div class="alert alert-danger alter-dismissible fade show" role="alert">
           {{ message }}
-          <button
-            type="button"
-            class="close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            text-center
-          >
-            <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </button>
         </div>
         {% elif category == 'success' %}
         <div class="alert alert-success alter-dismissible fade show" role="alert">
           {{ message }}
-          <button
-            type="button"
-            class="close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-            text-center
-          >
-            <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </button>
         </div>
         {% else %}
         <div class="alert alert-warning alter-dismissible fade show" role="alert">
           {{ message }}
-          <button
-            type="button"
-            class="close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </button>
         </div>
         {% endif %}
