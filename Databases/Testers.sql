@@ -45,10 +45,10 @@ INSERT INTO `perfil` VALUES (1,'Administrador'),(2,'Administrativo'),(3,'Rector'
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO Usuario (Usuario) VALUES (10000000),(10000001),(10000002),(10000003),(10000004),(10000005),(10000006),(10000007),(10000008),(10000009),(10000010);
+INSERT INTO `usuario` (usuario) VALUES (10000000),(10000001),(10000002),(10000003),(10000004),(10000005),(10000006),(10000007),(10000008),(10000009),(10000010);
 
 --
 -- Dumping data for table `usuarioperfil`
 --
 
-INSERT INTO UsuarioPerfil (UsuarioID, PerfilID) VALUES ((SELECT UsuarioID from Usuario where usuario = 10000000), 1),((SELECT UsuarioID from Usuario where usuario = 10000001), 5),((SELECT UsuarioID from Usuario where usuario = 10000002), 7),((SELECT UsuarioID from Usuario where usuario = 10000003), 6),((SELECT UsuarioID from Usuario where usuario = 10000004), 2),((SELECT UsuarioID from Usuario where usuario = 10000005), 3),((SELECT UsuarioID from Usuario where usuario = 10000006), 4),((SELECT UsuarioID from Usuario where usuario = 10000007), 8),((SELECT UsuarioID from Usuario where usuario = 10000008), 7),((SELECT UsuarioID from Usuario where usuario = 10000009), 7),((SELECT UsuarioID from Usuario where usuario = 10000010), 7);
+INSERT INTO `usuarioperfil` (usuarioid, perfilid) VALUES ((SELECT usuarioid from usuario where usuario = 10000000), 1),((SELECT usuarioid from usuario where usuario = 10000001), 5),((SELECT usuarioid from usuario where usuario = 10000002), 7),((SELECT usuarioid from usuario where usuario = 10000003), 6),((SELECT usuarioid from usuario where usuario = 10000004), 2),((SELECT usuarioid from usuario where usuario = 10000005), 3),((SELECT usuarioid from usuario where usuario = 10000006), 4),((SELECT usuarioid from usuario where usuario = 10000007), 8),((SELECT usuarioid from usuario where usuario = 10000008), 7),((SELECT usuarioid from usuario where usuario = 10000009), 7),((SELECT usuarioid from usuario where usuario = 10000010), 7);

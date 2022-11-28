@@ -172,22 +172,22 @@ DELIMITER ;;
 	  INSERT INTO alumno(UsuarioPerfilID) VALUES(new.usuarioperfilid);
 	end if;
 	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 2) THEN 
-	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	  INSERT INTO personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
 	end if;
 	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 3) THEN 
-	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	  INSERT INTO personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
 	end if;
 	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 4) THEN 
-	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	  INSERT INTO personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
 	end if;
 	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 5) THEN 
-	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	  INSERT INTO personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
 	end if;
 	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 6) THEN 
-	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	  INSERT INTO personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
 	end if;
 	IF ((SELECT perfilID FROM usuarioperfil WHERE usuarioperfilid = new.usuarioperfilid) = 8) THEN 
-	  INSERT INTO Personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
+	  INSERT INTO personal(UsuarioPerfilID) VALUES(new.UsuarioPerfilID);
 	end if;
 END */;;
 DELIMITER ;
