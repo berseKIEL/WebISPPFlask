@@ -53,6 +53,7 @@ def login():
                     return redirect(url_for('auth.cambiar_contraseña'))
 
                 return redirect(url_for('auth.verificar_roles'))
+            
             else:
                 flash('Contraseña Incorrecta', category='error')
         else:
@@ -75,20 +76,13 @@ def verificar_roles():
             # Si tiene un rol,
             # Redirecciona a su html correspondiente de su rol
 
-            perfilobtenido = UsuarioPerfil.get_perfilid_via_userid(db, id)[
-                0][0]
+            perfilobtenido = UsuarioPerfil.get_perfilid_via_userid(db, id)[0][0]
 
             # Se añade a la sesión actual, el perfil obtenido
             session['perfilid'] = perfilobtenido
-
-            if perfilobtenido == 1:
-                return redirect(url_for('auth.adminview'))
-            elif perfilobtenido in [2, 3, 4, 6, 8]:
-                return redirect(url_for('docente.index'))
-            elif perfilobtenido == 5:
-                return redirect(url_for('bedel.index'))
-            elif perfilobtenido == 7:
-                return redirect(url_for('alumno.index'))
+            
+            return redirect(url_for('user.index'))
+        
     return jsonify({'Respuesta': 'No se pudo realizar la redirección'})
 
 
@@ -110,29 +104,21 @@ def seleccionar_perfil():
 
     if request.method == 'POST':
         perfilobtenido = int(request.form.get('opcion'))
+    
         session['perfilid'] = perfilobtenido
-        if perfilobtenido == 1:
-            return redirect(url_for('auth.adminview'))
-        elif perfilobtenido in [2, 3, 4, 6, 8]:
-            return redirect(url_for('docente.index'))
-        elif perfilobtenido == 5:
-            return redirect(url_for('bedel.index'))
-        elif perfilobtenido == 7:
-            return redirect(url_for('alumno.index'))
+        
+        return redirect(url_for('user.index'))
+    
+        # if perfilobtenido == 1:
+        #     return redirect(url_for('auth.adminview'))
+        # elif perfilobtenido in [2, 3, 4, 6, 8]:
+        #     return redirect(url_for('docente.index'))
+        # elif perfilobtenido == 5:
+        #     return redirect(url_for('bedel.index'))
+        # elif perfilobtenido == 7:
+        #     return redirect(url_for('alumno.index'))
+        
     return render_template('user/seleccionarperfil.html', perfilnames=perfilnames)
-
-@auth.route('/redireccionarperfil')
-@login_required
-def redireccionar_perfil():
-    perfilobtenido = session['perfilid']
-    if perfilobtenido == 1:
-        return redirect(url_for('auth.adminview'))
-    elif perfilobtenido in [2, 3, 4, 6, 8]:
-        return redirect(url_for('docente.index'))
-    elif perfilobtenido == 5:
-        return redirect(url_for('bedel.index'))
-    elif perfilobtenido == 7:
-        return redirect(url_for('alumno.index'))
 
 
 @auth.route('/recuperarcontrasenia', methods=['GET', 'POST'])

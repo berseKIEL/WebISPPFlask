@@ -12,13 +12,4 @@ docente = Blueprint('docente', __name__)
 @docente.route('/')
 @login_required
 def index():
-    # Obtener el perfil que es
-    perfilid = 0
-    
-    if session['perfilid']:
-        perfilid=session['perfilid']
-        
-    perfil = Perfil.get_perfil_via_id(db, perfilid)[0][1]
-    consulta = UsuarioDatos.get_usuario_datos_id(db, current_user.id)
-    
-    return render_template('user/home.html', perfil=perfil, consulta=consulta)
+    return

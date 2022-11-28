@@ -1,5 +1,3 @@
-create schema dbispp;
-use dbispp;
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
 -- Host: localhost    Database: dbispp
@@ -28,7 +26,7 @@ CREATE TABLE `alumno` (
   `AlumnoID` int NOT NULL AUTO_INCREMENT,
   `UsuarioPerfilID` int NOT NULL,
   PRIMARY KEY (`AlumnoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +79,7 @@ CREATE TABLE `alumnodatos` (
   `AlumnoDatosID` int NOT NULL,
   PRIMARY KEY (`AlumnoDatosID`),
   CONSTRAINT `AlumnoID` FOREIGN KEY (`AlumnoDatosID`) REFERENCES `alumno` (`AlumnoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +136,7 @@ CREATE TABLE `materia` (
   PRIMARY KEY (`MateriaID`),
   KEY `idcarpomat_idx` (`CarpoIDMat`),
   CONSTRAINT `idcarpomat` FOREIGN KEY (`CarpoIDMat`) REFERENCES `carpo` (`CARPOID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +164,7 @@ CREATE TABLE `perfil` (
   `PerfilID` int NOT NULL AUTO_INCREMENT,
   `Perfil` varchar(45) NOT NULL,
   PRIMARY KEY (`PerfilID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,7 +178,7 @@ CREATE TABLE `personal` (
   `PersonalID` int NOT NULL AUTO_INCREMENT,
   `UsuarioPerfilID` int NOT NULL,
   PRIMARY KEY (`PersonalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +198,7 @@ CREATE TABLE `personalcarpo` (
   KEY `fk_Personal_has_carpo_Personal1_idx` (`PersonalID`),
   CONSTRAINT `fk_Personal_has_carpo_carpo1` FOREIGN KEY (`CarpoID`) REFERENCES `carpo` (`CARPOID`),
   CONSTRAINT `fk_Personal_has_carpo_Personal1` FOREIGN KEY (`PersonalID`) REFERENCES `personal` (`PersonalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,7 +217,7 @@ CREATE TABLE `personalcarpomateria` (
   KEY `PersonalCarpoID_idx` (`PersonalCarpoID`),
   CONSTRAINT `MateriaID` FOREIGN KEY (`MateriaID`) REFERENCES `materia` (`MateriaID`),
   CONSTRAINT `PersonalCarpoID` FOREIGN KEY (`PersonalCarpoID`) REFERENCES `personalcarpo` (`PersonalCarpoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +231,7 @@ CREATE TABLE `personaldatos` (
   `PersonalID` int NOT NULL,
   PRIMARY KEY (`PersonalID`),
   CONSTRAINT `PersonalID` FOREIGN KEY (`PersonalID`) REFERENCES `personal` (`PersonalID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +265,7 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`UsuarioID`),
   UNIQUE KEY `Usuario_UNIQUE` (`Usuario`),
   UNIQUE KEY `UsuarioCorreo_UNIQUE` (`UsuarioCorreo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -305,7 +303,7 @@ CREATE TABLE `usuariodatos` (
   `UsuarioSexoDNI` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`UsuarioID`),
   CONSTRAINT `UsuarioIDDatos` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +329,7 @@ CREATE TABLE `usuariodomicilio` (
   `UsuarioCP` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`UsuarioID`),
   CONSTRAINT `UsuarioIDDomicilio` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -351,7 +349,7 @@ CREATE TABLE `usuarioperfil` (
   KEY `UsuarioPerfilPerfilID_idx` (`PerfilID`),
   CONSTRAINT `UsuarioPerfilPerfilID` FOREIGN KEY (`PerfilID`) REFERENCES `perfil` (`PerfilID`),
   CONSTRAINT `UsuarioPerfilUsuarioID` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
