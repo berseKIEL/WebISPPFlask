@@ -8,7 +8,11 @@
   rel="stylesheet"
   href="{{url_for('static',filename='css/first_login.css')}}"
 />
-{%endblock%} {%block navbar%} {{super()}} {%endblock%}
+{%endblock%}
+
+{%block navbar%}
+{{super()}}
+{%endblock%}
 
 {% block content %}
 <form action="{{ url_for('auth.habilitar_usuario') }}" class="form-usuario container d-flex justify-content-center align-items-center" method="POST">

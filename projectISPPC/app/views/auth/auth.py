@@ -45,13 +45,10 @@ def login():
                 if RetornoUsuario.usuarioestado == 0:
                     return redirect(url_for('auth.habilitar_usuario'))
 
-                if RetornoUsuario.usuario != RetornoUsuario.usuariocontraseña:
-                    Usuario.update_temp_password(db, RetornoUsuario.id)
-
                 # Si el usuario posee una contraseña temporal, se realiza una redirección hacia cambiar contraseña
                 if RetornoUsuario.usuariocontraseñatemp:
                     return redirect(url_for('auth.cambiar_contraseña'))
-
+                
                 return redirect(url_for('auth.verificar_roles'))
             
             else:
@@ -67,21 +64,24 @@ def login():
 def verificar_roles():
     # Si tiene mas de dos roles
     # Redirecciono al html "selecciona tu rol"
-    if current_user.is_authenticated:
-        id = current_user.id
-        countperfiles = UsuarioPerfil.get_count_usuarioperfil(db, id)[0]
-        if countperfiles >= 2:
-            return redirect(url_for('auth.seleccionar_perfil'))
-        else:
-            # Si tiene un rol,
-            # Redirecciona a su html correspondiente de su rol
+    # Controla si el usuario posee una contraseña temporal
+    if current_user.usuariocontraseñatemp:    
+        Usuario.update_temp_password(db, current_user.id)
+    
+    id = current_user.id
+    countperfiles = UsuarioPerfil.get_count_usuarioperfil(db, id)[0]
+    if countperfiles >= 2:
+        return redirect(url_for('auth.seleccionar_perfil'))
+    else:
+        # Si tiene un rol,
+        # Redirecciona a su html correspondiente de su rol
 
-            perfilobtenido = UsuarioPerfil.get_perfilid_via_userid(db, id)[0][0]
+        perfilobtenido = UsuarioPerfil.get_perfilid_via_userid(db, id)[0][0]
 
-            # Se añade a la sesión actual, el perfil obtenido
-            session['perfilid'] = perfilobtenido
-            
-            return redirect(url_for('user.index'))
+        # Se añade a la sesión actual, el perfil obtenido
+        session['perfilid'] = perfilobtenido
+        
+        return redirect(url_for('user.index'))
         
     return jsonify({'Respuesta': 'No se pudo realizar la redirección'})
 
@@ -125,11 +125,13 @@ def seleccionar_perfil():
 def recuperar_contraseña():
     # genreacion y envio de contraseña temporal
     if request.method == 'POST':
-        mail = request.form.get('email')
+        
+        mail = request.form.get('correo')
+        
         p = generar_contraseña_temp()
 
-        correo = Usuario.get_usuario_correo(db, mail)
-
+        correo = Usuario.get_usuario_correo(db, mail)[0]
+        
         if correo:
             Email = email.solicitar_contraseña_temporal(mail, p)
 
@@ -137,6 +139,7 @@ def recuperar_contraseña():
                 flash('Se ha enviado un correo con su nueva contraseña', category='success')
                 Usuario.update_temp_password_password(db, p, mail)
                 print(p)
+                return redirect(url_for('auth.login'))
             else:
                 flash('Error no se pudo enviar el email', category='error')
         else:
@@ -167,13 +170,15 @@ def cambiar_contraseña():
 
             # Inicio de sesión
             RetornoUsuario = Usuario.get_login_id(db, id)
+            
             login_user(RetornoUsuario)
+            
             flash('Contraseña establecidas correctamente!', category='sucess')
 
             return redirect(url_for('auth.verificar_roles'))
         else:
             flash('Las contraseñas no coinciden', category='error')
-            return render_template('user/login/cambiar_contraseña.html', id=id)
+            return render_template('user/login/habilitar_usuario.html', id=id)
 
     return render_template('user/login/cambiar_contraseña.html', id=id)
 
@@ -184,6 +189,7 @@ def habilitar_usuario():
         if current_user.is_authenticated:
             id = current_user.id
             logout_user()
+            flash('Actualiza los siguientes datos para ingresar.')
         else:
             return redirect(url_for('auth.login'))
 
@@ -204,6 +210,7 @@ def habilitar_usuario():
                     # Inicio de sesión
                     RetornoUsuario = Usuario.get_login_id(db, id)
                     login_user(RetornoUsuario)
+                    
                     flash('¡Correo y Contraseña establecidas correctamente!', category='sucess')
                     return redirect(url_for('auth.verificar_roles'))
                 else:

@@ -59,8 +59,7 @@ class Usuario(UserMixin):
     def get_usuario_correo(self, mysql, correo):
         try:
             cur = mysql.connection.cursor()
-            consulta = (
-                "select usuariocorreo from usuario where usuariocorreo = %s")
+            consulta = ("select usuariocorreo from usuario where usuariocorreo = %s")
             cur.execute(consulta, [(correo)])
             return cur.fetchone()
         except Exception as ex:
