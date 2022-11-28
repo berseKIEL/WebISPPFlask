@@ -9,7 +9,7 @@ from ....ext import db
 # Desarrollo de la vista Alumno
 alumno = Blueprint('alumno', __name__)
 
-@alumno.route('/')
+@alumno.route('/miscarreras')
 @login_required
-def index():
-    return
+def mostrar_carreras_usuarioperfil():
+    return render_template('user/perfiles/miscarreras.html')

@@ -9,7 +9,12 @@ from ....ext import db
 # Desarrollo de la vista Bedel
 bedel = Blueprint('bedel', __name__)
 
-@bedel.route('/')
+# @bedel.route('/')
+# @login_required
+# def cargar_carpos():
+#     pass
+
+@bedel.route('/miscarreras')
 @login_required
-def index():
-    return
+def mostrar_carreras_usuarioperfil():
+    return render_template('user/perfiles/miscarreras.html')
