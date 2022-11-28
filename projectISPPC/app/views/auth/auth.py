@@ -44,9 +44,12 @@ def login():
                 # Si el usuario no esta activo, no tendrá contraseña ni correo
                 if RetornoUsuario.usuarioestado == 0:
                     return redirect(url_for('auth.habilitar_usuario'))
+                
+                if RetornoUsuario.usuario != RetornoUsuario.usuariocontraseñatemp:
+                    Usuario.update_temp_password(db, current_user.id)
 
                 # Si el usuario posee una contraseña temporal, se realiza una redirección hacia cambiar contraseña
-                if RetornoUsuario.usuariocontraseñatemp:
+                if RetornoUsuario.usuariocontraseñatemp and not RetornoUsuario.usuariocontraseña:
                     return redirect(url_for('auth.cambiar_contraseña'))
                 
                 return redirect(url_for('auth.verificar_roles'))
@@ -64,10 +67,7 @@ def login():
 def verificar_roles():
     # Si tiene mas de dos roles
     # Redirecciono al html "selecciona tu rol"
-    # Controla si el usuario posee una contraseña temporal
-    if current_user.usuariocontraseñatemp:    
-        Usuario.update_temp_password(db, current_user.id)
-    
+        
     id = current_user.id
     countperfiles = UsuarioPerfil.get_count_usuarioperfil(db, id)[0]
     if countperfiles >= 2:
