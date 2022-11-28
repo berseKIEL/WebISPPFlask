@@ -1,4 +1,4 @@
-SECRET_KEY = 'testpassword'
+SECRET_KEY = 'key-secret'
 
 MYSQL_HOST = 'localhost'
 MYSQL_USER = 'root'
