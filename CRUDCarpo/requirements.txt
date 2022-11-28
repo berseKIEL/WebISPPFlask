@@ -1,7 +1,0 @@
-Flask
-flask_cors
-flask_mysqldb
-flask_wtf
-flask_login
-python-dotenv
-requests
