@@ -80,8 +80,11 @@ def verificar_roles():
 
         # Se añade a la sesión actual, el perfil obtenido
         session['perfilid'] = perfilobtenido
+        session['usuarioperfilactivo'] = UsuarioPerfil.get_usuarioperfil_via_user_activo(db, current_user.id, session['perfilid'])
         
-        return redirect(url_for('user.index'))
+        # session['usuarioperfilactivo'] 
+        
+        return redirect(url_for('usuario.index'))
         
     return jsonify({'Respuesta': 'No se pudo realizar la redirección'})
 
@@ -92,6 +95,7 @@ def seleccionar_perfil():
     if request.method == 'GET':
         id = current_user.id
         perfiles = UsuarioPerfil.get_perfilid_via_userid(db, id)
+        
         perfilesid = []
         perfilnames = []
 
@@ -107,7 +111,9 @@ def seleccionar_perfil():
     
         session['perfilid'] = perfilobtenido
         
-        return redirect(url_for('user.index'))
+        session['usuarioperfilactivo'] = UsuarioPerfil.get_usuarioperfil_via_user_activo(db, current_user.id, session['perfilid'])
+                
+        return redirect(url_for('usuario.index'))
     
         # if perfilobtenido == 1:
         #     return redirect(url_for('auth.adminview'))

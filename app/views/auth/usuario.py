@@ -3,11 +3,11 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import UsuarioDatos, Perfil, UsuarioPerfil
-from ....ext import db
+from ...models.models import UsuarioDatos, Perfil, UsuarioPerfil
+from ...ext import db
 
 # Desarrollo de la vista usuario
-usuario = Blueprint('user', __name__)
+usuario = Blueprint('usuario', __name__)
 
 
 @usuario.route('/')
@@ -23,9 +23,8 @@ def index():
     consulta = UsuarioDatos.get_usuario_datos_id(db, current_user.id)
     return render_template('user/home.html', perfil=perfil, consulta=consulta)
 
+
 # Se utiliza para obtener el nombre del perfil que selecciono actualmente
-
-
 @usuario.route('/obtenernombredelperfil')
 @login_required
 def obtener_nombre_perfil():

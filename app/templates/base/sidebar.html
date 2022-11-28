@@ -10,12 +10,16 @@
       <a href="#" class="list-group-item list-group-item-action py-2 ripple">
         <span><strong> Datos Academicos </strong></span>
       </a>
+      <!-- Si el usuarioperfil del perfil que se logio está habilitado -->
+      {% if session['usuarioperfilactivo']%}
       <a href="#" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong> Administración de Usuarios</strong> </span>
       </a>
       <a href="#" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong>Administración de Carreras </strong> </span>
       </a>
+      {%endif%}
+
       {%endif%}
 
       <!-- Docentes -->
@@ -52,7 +56,7 @@
 
 <script>
   async function getPerfiles() {
-    const perfil_url = await fetch({{ url_for('user.obtener_count_perfiles')|tojson }});
+    const perfil_url = await fetch({{ url_for('usuario.obtener_count_perfiles')|tojson }});
     obj = await perfil_url.json();
     intobj = parseInt(obj['Respuesta'])
 
@@ -61,7 +65,7 @@
     }
     else if (intobj >= 2) {
       {% if session['perfilid'] %}
-      const user_url = {{ url_for('user.obtener_nombre_perfil')|tojson }};
+      const user_url = {{ url_for('usuario.obtener_nombre_perfil')|tojson }};
       const perdilid = document.getElementById('perfilidobtenido')
       fetch(user_url).then(response => response.json()).then(data => perdilid.innerHTML=data['Respuesta'])
       {% endif %}
@@ -69,6 +73,5 @@
   }
 
   getPerfiles();
-
 </script>
 {%endif%}

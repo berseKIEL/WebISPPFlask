@@ -20,7 +20,7 @@ def create_app(Settings_Module):
     from .views.auth.user.alumno import alumno
     from .views.auth.user.bedel import bedel
     from .views.auth.user.docente import docente
-    from .views.auth.user import usuario
+    from .views.auth.usuario import usuario
     
     app.register_blueprint(home, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
