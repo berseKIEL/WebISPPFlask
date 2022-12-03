@@ -43,7 +43,7 @@ def mostrar_carreras_usuarioperfil():
     carpoTotales = Carpo.get_carpo_nombres(db)
     if session['usuarioperfilactivo'] == 0:
         
-        return render_template('user/perfiles/añadircarpo.html', carpo = carpoTotales)
+        return render_template('user/perfiles/bedel/añadircarpo.html', carpo = carpoTotales)
     else:
         carpoid = personalcarpo.cantcarpo(db,session['personalid'])
         carposUsuario=[]
@@ -58,13 +58,13 @@ def mostrar_carreras_usuarioperfil():
                     
         for a in aux:
             carpoTotales.remove(a)       
-        return render_template('user/perfiles/miscarreras.html',carposUsuario = carposUsuario, carpo = carpoTotales)
+        return render_template('user/perfiles/bedel/miscarreras.html',carposUsuario = carposUsuario, carpo = carpoTotales)
     
 
 @bedel.route('/DatosAcademicos')
 @login_required
 def mostrar_DatosAcademicos_usuarioperfil():
-    return render_template('user/perfiles/DatosAcademicos.html')
+    return render_template('user/perfiles/bedel/DatosAcademicos.html')
 
 @bedel.route('/activarperfil', methods = ['POST'])
 @login_required
@@ -147,7 +147,7 @@ def editar_carrera():
     carpos.append(carpoid)
     for i in range(3):
         carpos.append([carpoIds[(i)],carponombres[i+1]])
-    return render_template('user/perfiles/editarcarreras.html',carpos = carpos)
+    return render_template('user/perfiles/bedel/editarcarreras.html',carpos = carpos)
 
 
 
@@ -203,7 +203,7 @@ def mostrar_alumnos():
         # for i in carpos:
         #     carpo.append(Carpo.get_carpo_nombres_from_id(db,i[0]))
 
-    return render_template('user/perfiles/adminusuarios/adminusuarios.html',nombreapellido = nombreapellido, carpo = carpo)
+    return render_template('user/perfiles/bedel/adminusuarios.html',nombreapellido = nombreapellido, carpo = carpo)
 
 @bedel.route('/resetearcontraseña', methods = ['POST'])
 @login_required
