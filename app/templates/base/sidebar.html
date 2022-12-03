@@ -2,20 +2,20 @@
 <nav id="sidebarMenu" class="collapse d-md-block sidebar col-3 collapse bg-white">
   <div class="position-sticky h-100">
     <div class="list-group list-group-flush h-100 d-flex flex-column bd-highlight mb-3">
-      <a href="" class="list-group-item list-group-item-action py-2 ripple">
+      <a href="{{url_for('usuario.mostrar_Datospersonales_usuarioperfil')}}" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong>Datos Personales</strong> </span>
       </a>
       <!-- Bedeles -->
       {%if session['perfilid'] == 5%}
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-        <span><strong> Datos Academicos </strong></span>
+      <a href="{{url_for('bedel.mostrar_DatosAcademicos_usuarioperfil')}}" class="list-group-item list-group-item-action py-2 ripple">
+        <span><strong> Datos Laborales </strong></span>
       </a>
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+      <a href="{{url_for('bedel.mostrar_carreras_usuarioperfil')}}" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong> Mis carreras </strong>  </span>
       </a>
       <!-- Si el usuarioperfil del perfil que se logio está habilitado -->
       {% if session['usuarioperfilactivo']%}
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+      <a href="{{url_for('bedel.mostrar_alumnos')}}" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong> Administración de Usuarios</strong> </span>
       </a>
       <a href="#" class="list-group-item list-group-item-action py-2 ripple">
@@ -40,7 +40,7 @@
       <a href="#" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong> Datos Academicos</strong> </span>
       </a>
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+      <a href="{{url_for('alumno.mostrar_carreras_usuarioperfil')}}" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong> Mis carreras </strong>  </span>
       </a>
       {%endif%}
