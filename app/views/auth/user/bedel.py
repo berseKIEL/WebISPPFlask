@@ -36,6 +36,8 @@ bedel = Blueprint('bedel', __name__)
 
 #             return render_template('user/perfiles/miscarreras.html',carpo = carpo)
 
+
+#Funcionaaaaaaaaa
 @bedel.route('/miscarreras', methods = ['GET','POST'])
 @login_required
 def mostrar_carreras_usuarioperfil():
