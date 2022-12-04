@@ -1,5 +1,5 @@
 .fondo {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #757575;
     border-radius: 20px;
     background-color: var(--background);
 }

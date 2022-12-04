@@ -3,37 +3,55 @@
 {%block head%}
 {{super()}}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/datospersonales.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
 {%endblock%}
 
 {%block content%}
-<div class="row py-5 justify-content-center">
-    <div class="col-md-6 py-5">
-        <div class="container">
-            <form>
-                <h2 class="text-center mb-4">Datos de Secundaria</h2>
-                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 mb-4 justify-content-center">
-                    <div class="col mb-2 text-center">
-                        <label for="nombreInstitucion">Institucion</label>
-                        <input type="text" id="nombreInstitucion" name="nombreInstitucion">
+<div class="row contenedor">
+    <div class="col-2"></div>
+    <div class="col-md-10">
+        <div class="m-4">
+            <form class="row p-3 mb-2 fondo" action=""
+                method="POST" id="datossecundaria">
+                <div class="container-fluid">
+                    <h2 class="mb-4 col text-center" id="actualiarDatosSec">
+                        Datos de Secundaria
+                    </h2>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <input type="text" id="institucion" name="institucion" 
+                                class="form-control form-custom" value=""/>
+                            <label for="institucion">Institucion</label>
+                        </div>
+
+                        <div class="col">
+                            <input type="text" id="añoEgreso" name="añoEgreso"
+                                class="form-control form-custom"
+                                value=""/>
+                            <label for="añoEgreso">Año egreso</label>
+                        </div>
                     </div>
-                    <div class="col mb-2 text-center">
-                        <label for="AñoEgreso">Año de egreso</label>
-                        <input type="text" id="AñoEgreso" name="AñoEgreso">
+
+                    <div class="row mb-4">
+                        <div class="col">
+                            <input type="text" id="orientacion" name="orientacion"
+                                class="form-control form-custom" value=""/>
+                            <label for="orientacion">Orientacion</label>
+                        </div>
+
+                        <div class="col">
+                            <input type="file" id="tituloSec" name="tituloSec"
+                                class="form-control form-custom" value=""/>
+                            <label for="tituloSec">Titulo Secundario</label>
+                        </div>
                     </div>
-                    <div class="col mb-2 text-center">
-                        <label for="Orientacion">Orientacion</label>
-                        <input type="text" id="Orientacion" name="Orientacion">
+
+                    <div class="col-12 mb-1 text-center">
+                        <input type="submit" class="btn btn-primary" value="Guardar" />
                     </div>
-                    <div class="col mb-4 text-center">
-                        <label for="TituloSec">Titulo de secundario *</label>
-                        <input type="file" id="TituloSec" name="TituloSec">
-                    </div>
-                    <input type="submit" value="Guardar">
                 </div>
-
-
             </form>
         </div>
     </div>
-</div>
-{%endblock%}
+    {%endblock%}
