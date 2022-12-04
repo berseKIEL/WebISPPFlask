@@ -97,13 +97,9 @@ DELIMITER ;;
 END */;;
 DELIMITER ;
 DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `usuariodomicilio_insert` AFTER INSERT ON `usuario` FOR EACH ROW BEGIN
+/*!50003 CREATE*/  /*!50003 TRIGGER `usuariodatosdom_insert` AFTER INSERT ON `usuario` FOR EACH ROW BEGIN
 	INSERT INTO usuariodomicilio (usuarioid) VALUES (new.usuarioid);
-END */;;
-DELIMITER ;
-DELIMITER ;;
-/*!50003 CREATE*/  /*!50003 TRIGGER `usuariodatos_insert` AFTER INSERT ON `usuario` FOR EACH ROW BEGIN
-	INSERT INTO usuariodatos (usuarioid) VALUES (new.usuarioid);
+  INSERT INTO usuariodatos (usuarioid) VALUES (new.usuarioid);
 END */;;
 DELIMITER ;
 
@@ -214,7 +210,12 @@ CREATE TABLE alumno (
   UsuarioPerfilID int NOT NULL,
   PRIMARY KEY (AlumnoID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+DELIMITER ;;
+/*!50003 CREATE*/  /*!50003 TRIGGER `alumnodomprocsec_insert` AFTER INSERT ON `alumno` FOR EACH ROW BEGIN
+	INSERT INTO alumnodomproc (alumnoid) VALUES (new.alumnoid);	
+	INSERT INTO alumnosecundaria (alumnoid) VALUES (new.alumnoid);
+END */;;
+DELIMITER ;
 
 --
 -- Table structure for table `alumnocarpo`
