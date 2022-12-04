@@ -1,5 +1,3 @@
-create schema dbispp;
-use dbispp;
 --
 -- Table structure for table `carrera`
 --
