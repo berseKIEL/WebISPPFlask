@@ -111,7 +111,8 @@ CREATE TABLE usuariodatos (
   UsuarioFechaNac date DEFAULT NULL,
   UsuarioSexoDNI varchar(45) DEFAULT NULL,
   UsuarioNacionalidad varchar(100) NULL,
-  Observaciones varchar(120),
+  UsuarioTelefono varchar(100) NULL,
+  Observaciones varchar(120) NULL,
   PRIMARY KEY (UsuarioID),
   CONSTRAINT UsuarioIDDatos FOREIGN KEY (UsuarioID) REFERENCES usuario (UsuarioID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

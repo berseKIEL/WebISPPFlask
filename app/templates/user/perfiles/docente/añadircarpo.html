@@ -1,4 +1,4 @@
-{%extends 'home.html'%}
+{%extends 'user/home.html'%}
 
 {%block head%}
 {{super()}}
@@ -20,7 +20,7 @@
                 </div>
                 
                 <div class="card-text px-5 py-2">
-                    <form action="{{url_for('alumno.activar_usuarioperfil')}}" method="post">
+                    <form action="{{url_for('docente.seleccionar_materias')}}" method="post">
                         <select name="Carpo">
                             {% for car in carpo %}
                                 {% if car[2] == None%}

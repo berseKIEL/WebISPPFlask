@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo
+from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia
 from ....ext import db
 
 # Desarrollo de la vista docente
@@ -39,15 +39,31 @@ def mostrar_carreras_usuarioperfil():
 def mostrar_datossecundaria_usuarioperfil():
     return render_template('user/perfiles/docente/datossecundaria.html')
 
+@docente.route('/seleccionarmaterias', methods=['POST'])
+@login_required
+def seleccionar_materias():
+    carpoid = request.form.get('Carpo')
+    
+    materias = Materia.get_materia_by_carpoidmat(db,carpoid)
+    print(type(materias))
+
+    # if personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid):
+    #     UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
+    #     session['usuarioperfilactivo'] = 1
+        
+    return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
+
 
 @docente.route('/activarperfil', methods=['POST'])
 @login_required
 def activar_usuarioperfil():
     carpoid = request.form.get('Carpo')
 
-    if personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid):
-        UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
-        session['usuarioperfilactivo'] = 1
+    print()
+
+    # if personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid):
+    #     UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
+    #     session['usuarioperfilactivo'] = 1
         
     return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
 

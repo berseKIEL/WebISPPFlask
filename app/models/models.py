@@ -429,6 +429,18 @@ class usuarioDatos():
             raise Exception(ex)
 
 
+class usuarioDomicilio():
+    @classmethod
+    def get_usuario_domicilio_id(self,mysql, id):
+        try:
+            cur = mysql.connection.cursor()
+            consulta = ("select * from usuariodomicilio where usuarioid = %s")
+            cur.execute(consulta, [(id)])
+            return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
 class personal():
     def __init__(self, personalid, usuarioperfilid) -> None:
 
@@ -446,6 +458,7 @@ class personal():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
+            
 
 
 class alumno():
@@ -589,7 +602,6 @@ class Carpo():
 
         except Exception as ex:
             raise Exception(ex)
-
 
 class Plan():
     def __init__(self, PlanID, PlanNombre) -> None:
@@ -767,6 +779,16 @@ class Materia():
         self.MateriaAño = MateriaAño
         self.MateriaTipo = MateriaTipo
         self.CarpoIDMat = CarpoIDMat
+
+    @classmethod
+    def get_materia_by_carpoidmat(self, mysql, carpoid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * FROM materia WHERE carpoidmat = %s'
+            cur.execute(sql, [carpoid])
+            return cur.fetchall()
+        except Exception as ex:
+            raise Exception(ex)
 
     @classmethod
     def add_Materia(self, mysql, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat):

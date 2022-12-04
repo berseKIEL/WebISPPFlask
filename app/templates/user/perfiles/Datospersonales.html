@@ -1,4 +1,4 @@
-{%extends 'home.html'%}
+{%extends 'user/home.html'%}
 
 {%block head%}
 {{super()}}
@@ -25,87 +25,172 @@
   <div class="col-2"></div>
   <div class="col-md-10">
     <div class="m-4">
-      <form class="row p-3 mb-2 fondo" action="">
+      <form class="row p-3 mb-2 fondo" action="{{ url_for('usuario.editar_datospersonales_usuario') }}" method="POST">
         <div class="container-fluid">
           <h2 class="mb-4 col text-center" id="modDatos">Modificar/Actualizar Datos Personales</h2>
+          {%if datosPersonales%}
+          {% for datosPersonal in datosPersonales %}
+          <div class="row mb-4">
+              <div class="col">
+                  <input
+                  type="text"
+                  id="cuil"
+                  name="cuil"
+                  placeholder="x-xx.xxx.xxx-x"
+                  class="form-control form-custom"
+                  value="{{datosPersonal[0]}}"
+                  />
+                  <label for="cuil">Cuil *</label>
+              </div>
 
-            <div class="row mb-4">
-                <div class="col justify-content-center form-floating">
-                    <input
-                    type="text"
-                    id="cuil"
-                    name="cuil"
-                    placeholder="x-xx.xxx.xxx-x"
-                    class="form-control form-custom"
-                    />
-                    <label for="cuil">Cuil *</label>
-                </div>
+              <div class="col">
+                  <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Escribe tu nombre"
+                  class="form-control form-custom "
+                  />
+                  <label for="nombre">Nombre</label>
+              </div>
+      
+              <div class="col">
+                  <input
+                      type="text"
+                      id="apellido"
+                      name="apellido"
+                      placeholder="Escribe tu apellido"
+                      class="form-control form-custom "
+                  />
+                  <label for="apellido">Apellido *</label>
+              </div>
+          </div>
 
-                <div class="col justify-content-center form-floating">
-                    <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    placeholder="Escribe tu nombre"
-                    class="form-control form-custom "
-                    />
-                    <label for="nombre">Nombre</label>
-                </div>
-        
-                <div class="col justify-content-center form-floating">
-                    <input
-                        type="text"
-                        id="apellido"
-                        name="apellido"
-                        placeholder="Escribe tu apellido"
-                        class="form-control form-custom "
-                    />
-                    <label for="apellido">Apellido *</label>
-                </div>
+          <div class="row mb-4">
+            <div class="col">
+              <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  placeholder="nombre@ejemplo.com"
+                  class="form-control form-custom"
+              />
+              <label for="email">Email *</label>
+
+          </div>
+
+          <div class="col">
+              <input
+                  type="text"
+                  id="telefono"
+                  name="telefono"
+                  required="true"
+                  placeholder="xxxxxxxxxx"
+                  class="form-control form-custom"
+              />
+              <label class="labelforms" for="telefono">Telefono *</label>
+
+          </div>
+
+          <div class="col">
+              <input
+                  type="text"
+                  name="fechanac"
+                  id="fechanac"
+                  placeholder="xx/xx/xxxx"
+                  class="form-control form-custom"
+              />
+              <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
+
+          </div>
+          </div>
+          {% endfor %}
+
+          {%else%}
+          <div class="row mb-4">
+            <div class="col">
+                <input
+                type="text"
+                id="cuil"
+                name="cuil"
+                placeholder="x-xx.xxx.xxx-x"
+                class="form-control form-custom"
+                required
+                />
+                <label for="cuil">Cuil *</label>
             </div>
 
-            <div class="row mb-4">
-              <div class="col justify-content-center form-floating">
+            <div class="col">
+                <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Escribe tu nombre"
+                class="form-control form-custom "
+                required
+                />
+                <label for="nombre">Nombre</label>
+            </div>
+    
+            <div class="col">
                 <input
                     type="text"
-                    name="email"
-                    id="email"
-                    placeholder="nombre@ejemplo.com"
+                    id="apellido"
+                    name="apellido"
+                    placeholder="Escribe tu apellido"
                     class="form-control form-custom"
+                    required
                 />
-                <label for="email">Email *</label>
+                <label for="apellido">Apellido *</label>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  placeholder="nombre@ejemplo.com"
+                  class="form-control form-custom"
+                  required
+              />
+              <label for="email">Email *</label>
 
             </div>
 
-            <div class="col justify-content-center form-floating">
-                <input
-                    type="text"
-                    id="telefono"
-                    name="telefono"
-                    required="true"
-                    placeholder="xxxxxxxxxx"
-                    class="form-control form-custom"
-                />
-                <label class="labelforms" for="telefono">Telefono *</label>
+            <div class="col">
+              <input
+                  type="text"
+                  id="telefono"
+                  name="telefono"
+                  required="true"
+                  placeholder="xxxxxxxxxx"
+                  class="form-control form-custom"
+                  required
+              />
+              <label class="labelforms" for="telefono">Telefono *</label>
 
             </div>
 
-            <div class="col justify-content-center form-floating">
-                <input
-                    type="text"
-                    name="fechanac"
-                    id="fechanac"
-                    placeholder="xx/xx/xxxx"
-                    class="form-control form-custom"
-                />
-                <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
+            <div class="col">
+              <input
+                  type="text"
+                  name="fechanac"
+                  id="fechanac"
+                  placeholder="xx/xx/xxxx"
+                  class="form-control form-custom"
+                  required
+              />
+              <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
 
             </div>
-            </div>
+          </div>
 
-            <div class="col-12 mb-1 text-center">
-                <input type="button" class="btn btn-primary" value="Guardar" />
-            </div>
+          {%endif%}
+          <div class="col-12 mb-1 text-center">
+              <input type="submit" class="btn btn-primary" value="Guardar" />
+          </div>
 
         </div>
       </form>

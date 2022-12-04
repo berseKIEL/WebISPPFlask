@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends "user/home.html" %}
 
 {%block head%}
 {{super()}}
@@ -6,8 +6,6 @@
 {%endblock%}
 
 {%block content%}
-{{super()}}
-
 {% if session['perfilid']%}
 <div class="row justify-content-end pt-5" style="margin:0;">
     <div class="col-md-10 col-12 pt-3">

@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ...models.models import Perfil, UsuarioPerfil, alumno, personal, usuarioDatos
+from ...models.models import Perfil, UsuarioPerfil, alumno, personal, usuarioDatos, usuarioDomicilio
 from ...ext import db
 
 # Desarrollo de la vista usuario
@@ -50,4 +50,16 @@ def obtener_count_perfiles():
 @usuario.route('/datospersonales')
 @login_required
 def mostrar_Datospersonales_usuarioperfil():
-    return render_template('user/perfiles/Datospersonales.html')
+    # Obtener DatosPersonales
+    datosPersonales = usuarioDatos.get_usuario_datos_id(db, current_user.id)
+    
+    datosDomicilio = usuarioDomicilio.get_usuario_domicilio_id(db,current_user.id)
+    
+    return render_template('user/perfiles/Datospersonales.html', datosPersonales = datosPersonales,datosDomicilio=datosDomicilio)
+
+
+@usuario.route('/edit/datospersonales', methods=['POST'])
+@login_required
+def editar_datospersonales_usuario():
+    
+    return jsonify({'Respuesta': 'control remoto'})

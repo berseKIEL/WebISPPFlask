@@ -16,20 +16,16 @@
             <div class="card col-12 col-md-8 text-center">
 
                 <div class="card-header text-center">
-                    <h4 class="mb-0"> Seleccione una carrera</h4>
+                    <h4 class="mb-0"> Seleccione una Materia</h4>
                 </div>
                 
                 <div class="card-text px-5 py-2">
-                    <form action="{{url_for('bedel.activar_usuarioperfil')}}" method="post">
+                    <form action="{{url_for('docente.seleccionar_materias')}}" method="post">
                         <select name="Carpo">
-                            {% for car in carpo %}
-                                {% if car[2] == None%}
-                                <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
-                                {% else %}
-                                <option value="{{car[0]}}">{{car[1]}} {{car[2]}} {{car[3]}}</option>
-                                {% endif %}
-                                
+                            {% for car in materias %}
+                                <option value="{{car[0]}}">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</option>
                             {% endfor %}
+                                <input type="hidden" value="{{materias[0][2]}}" name="carpoid">
                         </select><br>
                         <input type="submit">
                     </form>
