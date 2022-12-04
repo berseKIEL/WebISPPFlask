@@ -418,37 +418,54 @@ class usuarioDatos():
         try:
             cur = db.connection.cursor()
             # consulta = ('INSERT INTO usuariodatos(usuarioid, UsuarioNombre,UsuarioApellido, observaciones) VALUES(%s,%s,%s,%s)')
-            consulta = ('UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, Observaciones %s where usuarioid = %s')
+            consulta = (
+                'UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, Observaciones %s where usuarioid = %s')
 
-            cur.execute(consulta, [UsuarioNombre,UsuarioApellido, observaciones, usuarioid])
+            cur.execute(consulta, [UsuarioNombre,
+                        UsuarioApellido, observaciones, usuarioid])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-    
+
     @classmethod
-    def update_usuariodatos(self, db,UsuarioID, UsuarioNombre, UsuarioApellido, UsuarioCUIL, UsuarioFechaNac, UsuarioSexoDNI, UsuarioNacionalidad, UsuarioTelefono):
+    def update_usuariodatos(self, db, UsuarioID, UsuarioNombre, UsuarioApellido, UsuarioCUIL, UsuarioFechaNac, UsuarioSexoDNI, UsuarioNacionalidad, UsuarioTelefono):
         try:
             cur = db.connection.cursor()
             consulta = ('UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, UsuarioCUIL = %s, UsuarioFechaNac = %s, UsuarioSexoDNI = %s, UsuarioNacionalidad = %s, UsuarioTelefono = %s where usuarioid = %s')
 
-            cur.execute(consulta, [UsuarioNombre, UsuarioApellido, UsuarioCUIL, UsuarioFechaNac, UsuarioSexoDNI, UsuarioNacionalidad, UsuarioTelefono, UsuarioID])
+            cur.execute(consulta, [UsuarioNombre, UsuarioApellido, UsuarioCUIL, UsuarioFechaNac,
+                        UsuarioSexoDNI, UsuarioNacionalidad, UsuarioTelefono, UsuarioID])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-    
+
 
 class usuarioDomicilio():
     @classmethod
-    def get_usuario_domicilio_id(self,mysql, id):
+    def get_usuario_domicilio_id(self, mysql, id):
         try:
             cur = mysql.connection.cursor()
             consulta = ("select * from usuariodomicilio where usuarioid = %s")
             cur.execute(consulta, [(id)])
             return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+        
+    @classmethod
+    def update_usuariodom(self, db, UsuarioProvincia, UsuarioDepartamento, UsuarioLocalidad, UsuarioCiudad, UsuarioBarrio, UsuarioCalle, UsuarioAltura, UsuarioPiso, UsuarioNumDep, UsuarioManzana, UsuarioCP, UsuarioID):
+        try:
+            cur = db.connection.cursor()
+            consulta = ('UPDATE usuariodomicilio SET UsuarioProvincia = %s, UsuarioDepartamento = %s, UsuarioLocalidad = %s, UsuarioCiudad = %s, UsuarioBarrio = %s, UsuarioCalle = %s, UsuarioAltura = %s, UsuarioPiso = %s, UsuarioNumDep = %s, UsuarioManzana = %s, UsuarioCP = %s where usuarioid = %s')
+
+            cur.execute(consulta, [UsuarioProvincia, UsuarioDepartamento, UsuarioLocalidad, UsuarioCiudad, UsuarioBarrio, UsuarioCalle, UsuarioAltura, UsuarioPiso, UsuarioNumDep, UsuarioManzana, UsuarioCP, UsuarioID])
+            
+            db.connection.commit()
+            return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
@@ -470,7 +487,6 @@ class personal():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-            
 
 
 class alumno():
@@ -505,9 +521,10 @@ class alumno():
             print(ex)
             raise Exception(ex)
 
+
 class alumnodomproc():
     @classmethod
-    def get_usuario_domproc_id(self,mysql, id):
+    def get_usuario_domproc_id(self, mysql, id):
         try:
             cur = mysql.connection.cursor()
             consulta = ("select * from alumnodomproc where alumnoid = %s")
@@ -516,7 +533,7 @@ class alumnodomproc():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-    
+
 
 class Carpo():
     def __init__(self, carpoid, carreraid, plandeestudioid, orientacionid, carpoprograma, estado) -> None:
@@ -626,6 +643,7 @@ class Carpo():
 
         except Exception as ex:
             raise Exception(ex)
+
 
 class Plan():
     def __init__(self, PlanID, PlanNombre) -> None:
@@ -901,7 +919,8 @@ class personalmateriadatos():
         try:
             cur = db.connection.cursor()
             sql = 'INSERT INTO personalmateriadatos VALUES(%s,%s,%s,%s,%s,%s,%s)'
-            cur.execute(sql, [personalcarpomateriaid, cargahoraria, situacionrevista, fciniciocargo, turnocargo, numcontrol, TituloProfesional])
+            cur.execute(sql, [personalcarpomateriaid, cargahoraria, situacionrevista,
+                        fciniciocargo, turnocargo, numcontrol, TituloProfesional])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
@@ -916,8 +935,6 @@ class personalmateriadatos():
             return cur.fetchall()
         except Exception as ex:
             raise Exception(ex)
-
-    
 
 
 class personalcarpo():
@@ -966,17 +983,18 @@ class personalcarpo():
             print(ex)
             raise Exception(ex)
 
-    
     @classmethod
     def get_carpoid_not_personalid(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = ("SELECT carpoid from carpo where carpoid not in (select CARPOID From personalCarpo where personalid = %s) order by carpoid")
+            consulta = (
+                "SELECT carpoid from carpo where carpoid not in (select CARPOID From personalCarpo where personalid = %s) order by carpoid")
             cur.execute(consulta, [(id)])
             return cur.fetchall()
         except Exception as ex:
             print(ex)
             raise Exception(ex)
+
 
 class personalcarpomateria():
     def __init__(self, PersonalCarpoMateriaID, PersonalCarpoID, MateriaID) -> None:
@@ -988,7 +1006,8 @@ class personalcarpomateria():
     def cargar_personalcarpomateria(self, mysql, PersonalCarpoID, MateriaID):
         try:
             cur = mysql.connection.cursor()
-            consulta = ("INSERT INTO personalcarpomateria(PersonalCarpoID, MateriaID) VALUES(%s,%s)")
+            consulta = (
+                "INSERT INTO personalcarpomateria(PersonalCarpoID, MateriaID) VALUES(%s,%s)")
             cur.execute(consulta, [PersonalCarpoID, MateriaID])
             mysql.connection.commit()
             return cur.lastrowid
@@ -1041,12 +1060,13 @@ class alumnocarpo():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-    
+
     @classmethod
     def get_carpoid_not_alumnoid(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = ("SELECT carpoid from carpo where carpoid not in (select CARPOID From AlumnoCarpo where alumnoid = %s) order by carpoid")
+            consulta = (
+                "SELECT carpoid from carpo where carpoid not in (select CARPOID From AlumnoCarpo where alumnoid = %s) order by carpoid")
             cur.execute(consulta, [(id)])
             return cur.fetchall()
         except Exception as ex:

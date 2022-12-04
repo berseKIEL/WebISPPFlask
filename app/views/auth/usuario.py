@@ -21,7 +21,7 @@ def index():
     if session['perfilid'] != 7:
         session['personalid'] = personal.get_personalid(
             db, session['usuarioperfilid'])
-            
+
     else:
         session['alumnoid'] = alumno.get_alumnoid_by_usuarioperfilid(
             db, session['usuarioperfilid'])
@@ -112,20 +112,79 @@ def editar_datospersonales_usuario():
         error = 'Falta completar el Genero del DNI'
 
     if not (error):
-        usuarioDatos.update_usuariodatos(db, current_user.id, nombre, apellido, cuil, fecnac, sexodni, nac, telefono)
+        usuarioDatos.update_usuariodatos(
+            db, current_user.id, nombre, apellido, cuil, fecnac, sexodni, nac, telefono)
 
         correo = Usuario.get_usuario_correo(db, email)[0]
-        
+
         if not correo:
             Usuario.update_email(db, email, current_user.id)
-            flash('¡Datos actualizado Correctamente!',category='success')
+            flash('¡Datos actualizado Correctamente!', category='success')
             return redirect(url_for('usuario.mostrar_Datospersonales_usuarioperfil'))
         if correo == email:
-            flash('¡Datos actualizado Correctamente!',category='success')
+            flash('¡Datos actualizado Correctamente!', category='success')
             return redirect(url_for('usuario.mostrar_Datospersonales_usuarioperfil'))
         else:
             flash('Se actualizo los datos a Excepción del correo: - Ya existe -')
             return redirect(url_for('usuario.mostrar_Datospersonales_usuarioperfil'))
+
+    else:
+        flash(error)
+        return redirect(url_for('usuario.mostrar_Datospersonales_usuarioperfil'))
+
+
+@usuario.route('/edit/datosdomicilio', methods=['POST'])
+@login_required
+def editar_datosdomicilio_usuario():
+    provincia = request.form.get('provincia')
+    departamento = request.form.get('departamento')
+    localidad = request.form.get('localidad')
+    ciudad = request.form.get('ciudad')
+    barrio = request.form.get('barrio')
+    calle = request.form.get('calle')
+    altura = request.form.get('altura')
+    piso = request.form.get('piso')
+    numdep = request.form.get('numdep')
+    manzana = request.form.get('manzana')
+    cp = request.form.get('cp')
+
+    error = None
+
+    if not provincia and not provincia.strip():
+        error = 'Falta completar la provincia'
+
+    if not departamento and not departamento.strip():
+        error = 'Falta completar la departamento'
+
+    if not localidad and not localidad.strip():
+        error = 'Falta completar el localidad'
+
+    if not ciudad and not ciudad.strip():
+        error = 'Falta completar el ciudad'
+
+    if not barrio and not barrio.strip():
+        error = 'Falta completar el barrio'
+
+    if not calle and not calle.strip():
+        error = 'Falta completar el calle'
+
+    if not altura and not altura.strip():
+        error = 'Falta completar la altura'
+
+    if not piso and not piso.strip():
+        error = 'Falta completar el Piso'
+
+    if not numdep and not numdep.strip():
+        error = 'Falta completar el Numero de departamento'
+
+    if not manzana and not manzana.strip():
+        error = 'Falta completar la manzana'
+
+    if not cp and not cp.strip():
+        error = 'Falta completar el Codigo Postal'
+
+    if not (error):
+        usuarioDomicilio.update_usuariodom(db,provincia, departamento, localidad,ciudad, barrio, calle, altura, piso, numdep, manzana, cp, current_user.id)
 
     else:
         flash(error)
