@@ -9,6 +9,12 @@
   type="text/css"
   href="{{ url_for('static',filename='css/login.css') }}"
 />
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/general.css') }}"
+/>
 {% endblock %}
 
 {%block navbar%}
@@ -18,9 +24,10 @@
 {% block content %}
 {{super()}}
 
-<div class="container d-flex justify-content-center align-items-center">
-  <form action="{{url_for('auth.login')}}" class="login" id="login" method="POST">
-    <div class="login-container d-flex flex-column align-items-center py-3">
+<form action="{{url_for('auth.login')}}" class="d-flex justify-content-center align-items-center" id="login" method="POST">
+  <div class="container login">
+
+    <div class="d-flex flex-column align-items-center py-3">
       <img src="{{ url_for('static', filename='img/ispplogo.png')}}" class="img-fluid login-img">
 
       <h1 class="mb-3">Bienvenido</h1>
@@ -46,8 +53,8 @@
       <button class="btn btn-primary mb-3" type="submit">Iniciar Sesión</button>
       <a href="{{url_for('auth.recuperar_contraseña')}}" class="text-center mb-4">¿Olvidaste tu contraseña</a>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 
 {% endblock %}
 

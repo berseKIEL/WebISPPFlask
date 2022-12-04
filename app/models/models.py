@@ -107,14 +107,6 @@ class Usuario(UserMixin):
                         user = Usuario(row[0], row[1], row[2], Usuario.revisar_contraseña_hasheada(
                             row[3], user.usuariocontraseña), temp, row[5])
                     return user
-            else:
-                row = Usuario.get_usuario_email(mysql, user)
-                if row != None:
-                    user = Usuario(row[0], row[1], row[2], Usuario.revisar_contraseña_hasheada(
-                        row[3], user.usuariocontraseña), row[4], row[5])
-                    return user
-                else:
-                    return None
         except Exception as ex:
             print(ex)
             raise Exception(ex)
