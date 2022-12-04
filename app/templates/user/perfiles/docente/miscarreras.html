@@ -23,19 +23,19 @@
             {% for car in carposUsuario %}
             <tr>
                 {% if car[2] == None %}
-                <td>
-                    {{car[1]}} {{car[3]}}
-                </td>
-
-                <input type="hidden" value="{{car[0]}}" name="carpoid" />
+                <form action="">
+                  <td>{{car[1]}} {{car[3]}}</td>
+                  <input type="hidden" value="{{car[0]}}" name="carpoid" />
+                  <td><input type="submit" value="Ver Materias"></td>
+                </form>
 
                 {% else %}
-                <td>
-                    {{car[1]}} {{car[2]}} {{car[3]}}
-                </td>
-
-                <input type="hidden" value="{{car[0]}}" name="carpoid" />
-
+                <form action="">
+                  <td>{{car[1]}} {{car[2]}} {{car[3]}}</td>
+                  <input type="hidden" value="{{car[0]}}" name="carpoid" />
+                  <td><input type="submit" value="Ver Materias"></td>
+                  
+                </form>
                 {% endif %}
             </tr>
             {% endfor %}
