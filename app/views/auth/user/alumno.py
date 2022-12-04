@@ -35,11 +35,12 @@ def mostrar_carreras_usuarioperfil():
 
         
         return render_template('user/perfiles/alumno/miscarreras.html', carpo = carpoTotales)
+    
 @alumno.route('/datossecundaria')
 @login_required
 def mostrar_datossecundaria_usuarioperfil():
-
     return render_template('user/perfiles/alumno/datossecundaria.html')
+
 
 @alumno.route('/activaralumno', methods = ['POST'])
 @login_required
