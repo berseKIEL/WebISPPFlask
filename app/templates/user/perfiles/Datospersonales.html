@@ -1,12 +1,6 @@
-{%extends 'user/home.html'%}
+{%extends 'user/home.html'%} {%block head%} {{super()}}
 
-{%block head%}
-{{super()}}
-
-<link
-  rel="stylesheet"
-  href="{{ url_for('static',filename='css/user.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
 
 <link
   rel="stylesheet"
@@ -18,216 +12,153 @@
   href="{{ url_for('static',filename='css/datospersonales.css') }}"
 />
 
-{%endblock%}
-
-{%block content%}
+{%endblock%} {%block content%}
 <div class="row contenedor">
   <div class="col-2"></div>
   <div class="col-md-10">
     <div class="m-4">
-      <form class="row p-3 mb-2 fondo" action="{{ url_for('usuario.editar_datospersonales_usuario') }}" method="POST">
+      <form
+        class="row p-3 mb-2 fondo"
+        action="{{ url_for('usuario.editar_datospersonales_usuario') }}"
+        method="POST"
+        id="datospersonales"
+      >
         <div class="container-fluid">
-          <h2 class="mb-4 col text-center" id="modDatos">Modificar/Actualizar Datos Personales</h2>
-          {%if datosPersonales%}
-          {% for datosPersonal in datosPersonales %}
+          <h2 class="mb-4 col text-center" id="modDatos">
+            Modificar/Actualizar Datos Personales
+          </h2>
           <div class="row mb-4">
-              <div class="col">
-                  <input
-                  type="text"
-                  id="cuil"
-                  name="cuil"
-                  placeholder="xx-xx.xxx.xxx-x"
-                  class="form-control form-custom"
-                  value="{{datosPersonal[3]}}"
-                  />
-                  <label for="cuil">Cuil *</label>
-              </div>
-
-              <div class="col">
-                <input
+            <div class="col">
+              <input
                 type="text"
                 id="cuil"
                 name="cuil"
                 placeholder="xx-xx.xxx.xxx-x"
                 class="form-control form-custom"
-                value="{{datosPersonal[5]}}"
-                />
-                <label for="cuil">Nacionalidad *</label>
-            </div>
-              
-          </div>
-
-          <div class="row mb-4">
-            <div class="col">
-              <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              placeholder="Escribe tu nombre"
-              class="form-control form-custom "
-              value="{{datosPersonal[1]}}"
+                value="{{datosPersonales[3]}}"
+                required
               />
-              <label for="nombre">Nombre</label>
+              <label for="cuil">Cuil *</label>
             </div>
-    
+
             <div class="col">
-                <input
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    placeholder="Escribe tu apellido"
-                    class="form-control form-custom "
-                    value="{{datosPersonal[2]}}"
-                />
-                <label for="apellido">Apellido *</label>
+              <input
+                type="text"
+                id="nacionalidad"
+                name="nacionalidad"
+                placeholder="Ingrese su nacionalidad"
+                class="form-control form-custom"
+                value="{{datosPersonales[6]}}"
+                required
+              />
+              <label for="nacionalidad">Nacionalidad *</label>
             </div>
           </div>
 
           <div class="row mb-4">
-            <div class="col-md-3">
+            <div class="col">
               <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder="nombre@ejemplo.com"
-                  class="form-control form-custom"
-                  value="{{current_user.usuariocorreo}}"
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Escribe tu nombre"
+                class="form-control form-custom"
+                value="{{datosPersonales[1]}}"
+                required
+              />
+              <label for="nombre">Nombre *</label>
+            </div>
+
+            <div class="col">
+              <input
+                type="text"
+                id="apellido"
+                name="apellido"
+                placeholder="Escribe tu apellido"
+                class="form-control form-custom"
+                value="{{datosPersonales[2]}}"
+                required
+              />
+              <label for="apellido">Apellido *</label>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <input
+                type="text"
+                name="email"
+                id="email"
+                placeholder="nombre@ejemplo.com"
+                class="form-control form-custom"
+                value="{{current_user.usuariocorreo}}"
+                required
               />
               <label for="email">Email *</label>
+            </div>
 
-          </div>
-
-          <div class="col-md-3">
+            <div class="col">
               <input
-                  type="text"
-                  id="telefono"
-                  name="telefono"
-                  required="true"
-                  placeholder="xxxxxxxxxx"
-                  class="form-control form-custom"
-                  value="{{datosPersonal[0]}}"
+                type="text"
+                id="telefono"
+                name="telefono"
+                placeholder="xxxxxxxxxx"
+                class="form-control form-custom"
+                value="{{datosPersonales[7]}}"
+                required
               />
               <label class="labelforms" for="telefono">Telefono *</label>
-
+            </div>
           </div>
 
-          <div class="col-md-12">
-              <input
-                  type="text"
-                  name="fechanac"
-                  id="fechanac"
-                  placeholder="xx/xx/xxxx"
-                  class="form-control form-custom"
-                  value="{{datosPersonal[0]}}"
-              />
-              <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
-
-          </div>
-          </div>
-          {% endfor %}
-
-          {%else%}
           <div class="row mb-4">
             <div class="col">
-                <input
-                type="text"
-                id="cuil"
-                name="cuil"
-                placeholder="xx-xx.xxx.xxx-x"
+              <input
+                type="date"
+                name="fechanac"
+                id="fechanac"
+                placeholder="xx/xx/xxxx"
                 class="form-control form-custom"
-                
-                />
-                <label for="cuil">Cuil *</label>
-            </div>
-
-            <div class="col">
-              <input
-              type="text"
-              id="nacionalidad"
-              name="nacionalidad"
-              placeholder="Argentina"
-              class="form-control form-custom"
+                value="{{datosPersonales[4]}}"
+                required
               />
-              <label for="cuil">Nacionalidad *</label>
-          </div>
-            
-          </div>
-
-          <div class="row mb-4">
-            <div class="col">
-              <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              placeholder="Escribe tu nombre"
-              class="form-control form-custom "
-              
-              />
-              <label for="nombre">Nombre</label>
-            </div>
-    
-            <div class="col">
-                <input
-                    type="text"
-                    id="apellido"
-                    name="apellido"
-                    placeholder="Escribe tu apellido"
-                    class="form-control form-custom "
-                    
-                />
-                <label for="apellido">Apellido *</label>
-            </div>
-          </div>
-
-          <div class="row mb-4">
-            <div class="col">
-              <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder="nombre@ejemplo.com"
-                  class="form-control form-custom"
-                  value="{{current_user.usuariocorreo}}"                 
-              />
-              <label for="email">Email *</label>
-
+              <label class="labelforms" for="fechanac"
+                >Fecha de Nacimiento</label
+              >
             </div>
 
             <div class="col">
-                <input
-                    type="text"
-                    id="telefono"
-                    name="telefono"
-                    required="true"
-                    placeholder="xxxxxxxxxx"
-                    class="form-control form-custom"
-                />
-                <label class="labelforms" for="telefono">Telefono *</label>
-
+              <select
+                name="sexodni"
+                id="sexodni"
+                class="form-select form-custom"
+                required
+              >
+                {%if datosPersonales[5] == 'Femenino'%}
+                <option value="{{datosPersonales[5]}}">{{datosPersonales[5]}}</option>
+                <option value="Masculino">Masculino</option>
+                {%elif datosPersonales[5] == 'Masculino' %}
+                <option value="{{datosPersonales[5]}}">{{datosPersonales[5]}}</option>
+                <option value="Femenino">Femenino</option>
+                {%else%}
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                {%endif%}
+              </select>
+              <label for="sexodni">Genero DNI *</label>
             </div>
-
-            <div class="col-12 col-md-3">
-                <input
-                    type="date"
-                    name="fechanac"
-                    id="fechanac"
-                    placeholder="xx/xx/xxxx"
-                    class="form-control form-custom"
-                    
-                />
-                <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
-            </div>
-
           </div>
-          {%endif%}
+
           <div class="col-12 mb-1 text-center">
-              <input type="submit" class="btn btn-primary" value="Guardar" />
+            <input type="submit" class="btn btn-primary" value="Guardar" />
           </div>
-
         </div>
       </form>
 
-      <form class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4" action="">
+      <form
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4"
+        action=""
+      >
         <h2 class="bg-light mb-4 col-md-12 text-center">
           Domicilio de Residencia
         </h2>
@@ -275,7 +206,10 @@
       </form>
 
       {%if session['perfilid'] == 7%}
-      <form class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4" action="">
+      <form
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4"
+        action=""
+      >
         <h2 class="bg-light mb-4 col-md-12 text-center">
           Domicilio de Procedencia
         </h2>
@@ -327,5 +261,17 @@
     </div>
   </div>
 </div>
+{%endblock%} {%block script%} {{super()}}
 
+<script>
+  let formDP = document.getElementById("datospersonales");
+
+  var elements = formDP.elements;
+
+  for (var i = 0, element; (element = elements[i++]); ) {
+    if (element.value === "None") {
+      element.value = "";
+    }
+  }
+</script>
 {%endblock%}

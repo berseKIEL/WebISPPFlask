@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia,personalcarpomateria
+from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia,personalcarpomateria, personalmateriadatos
 from ....ext import db
 
 # Desarrollo de la vista docente
@@ -51,18 +51,36 @@ def seleccionar_materias():
     return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
 
 
+
 @docente.route('/activarperfil', methods=['POST'])
 @login_required
 def activar_usuarioperfil():
     carpoid = request.form.get('carpoid')
     materiaid = request.form.get('materia')
 
-    personalcarpoid = personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[1]
-    personalcarpomateria.cargar_personalcarpomateria(db,personalcarpoid,materiaid)
-    UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
-    session['usuarioperfilactivo'] = 1
+    CargaHoraria = request.form.get('CargaHoraria')
+    SituacionRevista = request.form.get('SituacionRevista')
+    FechaInCargo = request.form.get('FechaInCargo')
+    TurnoCargo = request.form.get('TurnoCargo')
+    NumControl = request.form.get('NumControl')
+    TituloProfesional = request.form.get('TituloProfesional')
+
+    if ((((((CargaHoraria == '') or SituacionRevista == '') or FechaInCargo == '') or TurnoCargo == '') or NumControl == '') or TituloProfesional == ''):
+
+        flash('faltan completar datos')
+        materias = Materia.get_materia_by_carpoidmat(db,carpoid)
+        return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
+
+    else:
+        personalcarpoid = personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[1]
+        personalcarpomateriaid = personalcarpomateria.cargar_personalcarpomateria(db,personalcarpoid,materiaid)
+
+        personalmateriadatos.insert_into_personalmateriadatos(db,personalcarpomateriaid,CargaHoraria,SituacionRevista,FechaInCargo,TurnoCargo,NumControl,TituloProfesional)
+
+        UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
+        session['usuarioperfilactivo'] = 1
         
-    return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
+        return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
 
 @docente.route('/agregarcarrera', methods = ['POST'])
 @login_required

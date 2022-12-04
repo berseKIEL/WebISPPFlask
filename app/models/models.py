@@ -417,11 +417,10 @@ class usuarioDatos():
     def insert_usuariodatos(self, db, usuarioid, UsuarioNombre, UsuarioApellido, observaciones):
         try:
             cur = db.connection.cursor()
-            consulta = (
-                'INSERT INTO usuariodatos(usuarioid, UsuarioNombre,UsuarioApellido, observaciones) VALUES(%s,%s,%s,%s)')
+            # consulta = ('INSERT INTO usuariodatos(usuarioid, UsuarioNombre,UsuarioApellido, observaciones) VALUES(%s,%s,%s,%s)')
+            consulta = ('UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, Observaciones %s where usuarioid = %s')
 
-            cur.execute(consulta, [usuarioid, UsuarioNombre,
-                        UsuarioApellido, observaciones])
+            cur.execute(consulta, [UsuarioNombre,UsuarioApellido, observaciones, usuarioid])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
@@ -429,14 +428,12 @@ class usuarioDatos():
             raise Exception(ex)
     
     @classmethod
-    def insert_usuariodatos(self, db, usuarioid, UsuarioNombre, UsuarioApellido, observaciones):
+    def update_usuariodatos(self, db,UsuarioID, UsuarioNombre, UsuarioApellido, UsuarioCUIL, UsuarioFechaNac, UsuarioSexoDNI, UsuarioNacionalidad, UsuarioTelefono):
         try:
             cur = db.connection.cursor()
-            consulta = (
-                'INSERT INTO usuariodatos(usuarioid, UsuarioNombre,UsuarioApellido, observaciones) VALUES(%s,%s,%s,%s)')
+            consulta = ('UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, UsuarioCUIL = %s, UsuarioFechaNac = %s, UsuarioSexoDNI = %s, UsuarioNacionalidad = %s, UsuarioTelefono = %s where usuarioid = %s')
 
-            cur.execute(consulta, [usuarioid, UsuarioNombre,
-                        UsuarioApellido, observaciones])
+            cur.execute(consulta, [UsuarioNombre, UsuarioApellido, UsuarioCUIL, UsuarioFechaNac, UsuarioSexoDNI, UsuarioNacionalidad, UsuarioTelefono, UsuarioID])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
@@ -889,6 +886,40 @@ class Materia():
             raise Exception(ex)
 
 
+class personalmateriadatos():
+    def __init__(self, personalcarpomateriaid, cargahoraria, situacionrevista, fciniciocargo, turnocargo, numcontrol, TituloProfesional) -> None:
+        self.personalcarpomateriaid = personalcarpomateriaid
+        self.cargahoraria = cargahoraria
+        self.situacionrevista = situacionrevista
+        self.fciniciocargo = fciniciocargo
+        self.turnocargo = turnocargo
+        self.numcontrol = numcontrol
+        self.TituloProfesional = TituloProfesional
+
+    @classmethod
+    def insert_into_personalmateriadatos(self, db, personalcarpomateriaid, cargahoraria, situacionrevista, fciniciocargo, turnocargo, numcontrol, TituloProfesional):
+        try:
+            cur = db.connection.cursor()
+            sql = 'INSERT INTO personalmateriadatos VALUES(%s,%s,%s,%s,%s,%s,%s)'
+            cur.execute(sql, [personalcarpomateriaid, cargahoraria, situacionrevista, fciniciocargo, turnocargo, numcontrol, TituloProfesional])
+            db.connection.commit()
+            return cur.lastrowid
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def select_personalmateriadatos(self, db, personalcarpomateriaid):
+        try:
+            cur = db.connection.cursor()
+            sql = 'SELECT * FROM personalmateriadatos WHERE personalcarpomateriaid = %s'
+            cur.execute(sql, [personalcarpomateriaid])
+            return cur.fetchall()
+        except Exception as ex:
+            raise Exception(ex)
+
+    
+
+
 class personalcarpo():
     def __init__(self, personalcarpoid, personalid, carpoid, personalcarpoactivo) -> None:
         self.personalcarpoid = personalcarpoid
@@ -960,7 +991,7 @@ class personalcarpomateria():
             consulta = ("INSERT INTO personalcarpomateria(PersonalCarpoID, MateriaID) VALUES(%s,%s)")
             cur.execute(consulta, [PersonalCarpoID, MateriaID])
             mysql.connection.commit()
-            return True
+            return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
