@@ -119,7 +119,7 @@ def seleccionar_perfil():
         # elif perfilobtenido == 7:
         #     return redirect(url_for('alumno.index'))
         
-    return render_template('user/seleccionarperfil.html', perfilnames=perfilnames)
+    return render_template('user/perfiles/seleccionarperfil.html', perfilnames=perfilnames)
 
 
 @auth.route('/recuperarcontrasenia', methods=['GET', 'POST'])

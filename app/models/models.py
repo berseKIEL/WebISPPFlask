@@ -383,7 +383,7 @@ class usuarioDatos():
         self.UsuarioCUIL = UsuarioCUIL
         self.UsuarioFechaNac = UsuarioFechaNac
         self.UsuarioSexoDNI = UsuarioSexoDNI
-        
+
     @classmethod
     def get_usuario_datos_id(self, mysql, id):
         try:
@@ -394,12 +394,13 @@ class usuarioDatos():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-        
+
     @classmethod
     def get_cuilfnac_id(self, mysql, id):
         try:
             cur = mysql.connection.cursor()
-            consulta = ("select usuariocuil, usuariofechanac from usuariodatos where usuarioid = %s")
+            consulta = (
+                "select usuariocuil, usuariofechanac from usuariodatos where usuarioid = %s")
             cur.execute(consulta, [(id)])
             return cur.fetchone()
         except Exception as ex:
@@ -411,7 +412,7 @@ class usuarioDatos():
         try:
             cur = mysql.connection.cursor()
             consulta = (
-                'SELECT UsuarioNombre,UsuarioApellido, observaciones FROM usuariodatos WHERE usuarioid = %s')
+                'SELECT UsuarioNombre, UsuarioApellido, observaciones FROM usuariodatos WHERE usuarioid = %s')
             cur.execute(consulta, [usuarioid])
             NombreApellido = cur.fetchone()
             # usuarioPerfilesid = cur.fetchall()
@@ -557,6 +558,291 @@ class Carpo():
             print(ex)
             raise Exception(ex)
 
+    @classmethod
+    def get_result_ori(self, mysql, carreraid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT orientacion.OrientacionID,orientacion.OrientacionNombre FROM carrera JOIN carpo ON carrera.carreraID= carpo.carreraID JOIN orientacion ON orientacion.OrientacionID = carpo.OrientacionID WHERE carrera.carreraID=%s'
+            cur.execute(sql, [carreraid])
+            ori = cur.fetchall()
+            if len(ori) == 0:
+                ori = None
+            return ori
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def search_carpo(self, mysql, CarreraID,OrientacionID,PlanID):
+        try:
+            cur=mysql.connection.cursor()
+            if OrientacionID<1:
+                sql='SELECT carpoid FROM carpo WHERE carreraid = %s AND plandeestudioid = %s'
+                cur.execute(sql,[CarreraID,PlanID])
+            else:
+                sql = 'Select carpoid from carpo where carreraid = %s and plandeestudioid = %s and OrientacionID = %s'
+                cur.execute(sql,[CarreraID,PlanID,OrientacionID])
+            CarpoID = cur.fetchone()
+            return CarpoID[0]
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def name_carpo(self,mysql,CarpoID):
+        try:
+            cur=mysql.connection.cursor()
+            sql="SELECT CarreraNombre, OrientacionNombre, PlanNombre FROM (((carpo AS C left join carrera AS car ON C.CarreraID = car.CarreraID) inner join plandeestudio AS P ON C.PlanDeEstudioID = P.PlanID) LEFT join orientacion AS ori ON C.OrientacionID = ori.OrientacionID) WHERE C.CARPOID = %s;"
+            cur.execute(sql,[CarpoID])
+            nombre = cur.fetchone()
+            return nombre 
+
+        except Exception as ex:
+            raise Exception(ex)
+
+class Plan():
+    def __init__(self, PlanID, PlanNombre) -> None:
+        self.PlanID = PlanID
+        self.PlanNombre = PlanNombre
+
+    @classmethod
+    def add_Plan(self, mysql, PlanNombre):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'INSERT INTO plandeestudio(PlanNombre) VALUES (%s)'
+            cur.execute(sql, [PlanNombre])
+            mysql.connection.commit()
+            return cur.lastrowid
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_Plan_all(self, mysql):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * FROM plandeestudio'
+            cur.execute(sql)
+            Plan = cur.fetchall()
+            return Plan
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_Plan_id(self, mysql, PlanID):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * from plandeestudio WHERE PlanID=%s'
+            cur.execute(sql, [PlanID])
+            Plan = cur.fetchone()
+            if Plan:
+                return Plan
+            else:
+                return "vacio"
+
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def edit_Plan(self, mysql, PlanID, PlanNombre):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'UPDATE plandeestudio SET PlanNombre = %s WHERE PlanID = %s'
+            cur.execute(sql, [PlanNombre, PlanID])
+            mysql.connection.commit()
+            return True
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def delete_Plan(self, mysql, PlanID):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'delete from plandeestudio where PlanID = %s'
+            cur.execute(sql, ([int(PlanID)]))
+            mysql.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_plan_via_oricar(self, mysql, carreraid, orientacionid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT p.PlanID,p.PlanNombre, carpo.CARPOID FROM plandeestudio p JOIN carpo ON p.PlanID = carpo.PlanDeEstudioID WHERE carreraID = %s AND orientacionID = %s'
+            cur.execute(sql, [carreraid, orientacionid])
+            ori = cur.fetchall()
+            return ori
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_plan_via_car(self, mysql, carreraid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT p.PlanID,p.PlanNombre, carpo.CARPOID FROM plandeestudio p JOIN carpo ON p.PlanID = carpo.PlanDeEstudioID WHERE carreraID = %s'
+            cur.execute(sql, [carreraid])
+            planes = cur.fetchall()
+            return planes
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_nombre_ori_plan(self, mysql, car, ori):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT carreranombre from carrera WHERE carreraid=%s'
+            cur.execute(sql, [car])
+            car = cur.fetchone()
+
+            nombre = car[0] + '/'
+
+            sql = 'SELECT orientacionnombre from orientacion WHERE orientacionid=%s'
+            cur.execute(sql, [ori])
+            ori = cur.fetchone()
+            if ori != None:
+                nombre = nombre + ori[0] + '/'
+            return nombre
+        except Exception as ex:
+            raise Exception(ex)
+
+
+class Carrera():
+    def __init__(self, CarreraID, CarreraNombre) -> None:
+        self.CarreraID = CarreraID
+        self.CarreraNombre = CarreraNombre
+
+    @classmethod
+    def add_Carrera(self, mysql, CarreraNombre):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'INSERT INTO Carrera(CarreraNombre) VALUES (%s)'
+            cur.execute(sql, [CarreraNombre])
+            mysql.connection.commit()
+            return cur.lastrowid
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_Carrera_all(self, mysql):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * FROM Carrera'
+            cur.execute(sql)
+            Carrera = cur.fetchall()
+            return Carrera
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_Carrera_id(self, mysql, CarreraID):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * from Carrera WHERE CarreraID=%s'
+            cur.execute(sql, [CarreraID])
+            Carrera = cur.fetchone()
+            if Carrera:
+                return Carrera
+            else:
+                return "vacio"
+
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def edit_Carrera(self, mysql, CarreraID, CarreraNombre):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'UPDATE Carrera SET CarreraNombre = %s WHERE CarreraID = %s'
+            cur.execute(sql, [CarreraNombre, CarreraID])
+            mysql.connection.commit()
+            return True
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def delete_Carrera(self, mysql, CarreraID):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'delete from Carrera where CarreraID = %s'
+            cur.execute(sql, ([int(CarreraID)]))
+            mysql.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+
+class Materia():
+    def __init__(self, MateriaID, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat) -> None:
+        self.MateriaID = MateriaID
+        self.MateriaNombre = MateriaNombre
+        self.MateriaAño = MateriaAño
+        self.MateriaTipo = MateriaTipo
+        self.CarpoIDMat = CarpoIDMat
+
+    @classmethod
+    def add_Materia(self, mysql, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'INSERT INTO Materia(MateriaNombre, MateriaAño, MateriaTipo,CarpoIDMat) VALUES (%s, %s, %s,%s)'
+            cur.execute(sql, [MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat])
+            mysql.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_Materia_all(self, mysql, CarpoIDMat):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT materiaid,MateriaNombre, Materiaaño, materiatipo FROM Materia where CarpoIDMat = %s ORDER BY MateriaTipo ASC'
+            cur.execute(sql,[CarpoIDMat])
+            Materia = cur.fetchall()
+            return Materia
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_Materia_id(self, mysql, MateriaID):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * from Materia WHERE MateriaID=%s'
+            cur.execute(sql, [MateriaID])
+            Materia = cur.fetchone()
+            if Materia:
+                return Materia
+            else:
+                return "vacio"
+
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def edit_Materia(self, mysql, MateriaID, MateriaNombre, MateriaAño, MateriaTipo):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'UPDATE Materia SET MateriaNombre = %s, MateriaAño = %s, MateriaTipo = %s WHERE MateriaID = %s'
+            cur.execute(sql, [MateriaNombre, MateriaAño,
+                        MateriaTipo, MateriaID])
+            mysql.connection.commit()
+            return True
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def delete_Materia(self, mysql, MateriaID):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'delete from Materia where MateriaID = %s'
+            cur.execute(sql, ([int(MateriaID)]))
+            mysql.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+    
+    @classmethod
+    def cantidadDeAños(self, mysql,idcarpo):
+        try:
+            cur = mysql.connection.cursor()
+            sql='SELECT COUNT(DISTINCT(m.MateriaAño)) FROM carpo c JOIN materia m ON c.CARPOID = m.carpoidmat WHERE CARPOID = %s'            
+            cur.execute(sql,[idcarpo])
+            año = cur.fetchone()
+            año=año[0]
+            return año
+        except Exception as ex:
+            raise Exception(ex)
 
 class personalcarpo():
     def __init__(self, personalcarpoid, personalid, carpoid, personalcarpoactivo) -> None:
@@ -604,7 +890,6 @@ class personalcarpo():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-
 
 class alumnocarpo():
     def __init__(self, alumnocarpoid, carpoid, alumnoid, alumnocarpoactivo) -> None:

@@ -16,7 +16,7 @@
                 <div class="card">
                     <h2 class="card-header text-center my-2"> Seleccione un Perfil </h2>
                     <select class="mb-3 col-8 col-md-6 mx-auto text-center form-custom mt-4" name="opcion">
-                        <option selected disabled>Perfil</option>
+                        <option disabled>Perfil</option>
                         {% for i in perfilnames %}
                         <option value='{{i[0]}}' >{{i[1]}}</option>
                         {%endfor%}
@@ -37,7 +37,7 @@
             <div class="container pt-5" >
                 <div class="card">
                     <h2 class="card-header text-center my-2"> Seleccione un Perfil </h2>
-                    <select class="mb-3 col-8 col-md-6 mx-auto text-center form-custom mt-4" name="opcion">
+                    <select class="mb-3 col-8 col-md-6 mx-auto text-center form-custom mt-4" name="opcion" id="perfilselect">
                         <option selected disabled>Perfil</option>
                         {% for i in perfilnames %}
                         <option value='{{i[0]}}' >{{i[1]}}</option>
@@ -53,5 +53,17 @@
     </div>
 </div>
 {%endif%}
+
+{%endblock%}
+
+{% block script%}
+{{super()}}
+<script>
+    carposelect = document.getElementById("perfilselect");
+    
+    if (perfilselect.value == "") {
+        perfilselect.value = "0";
+    }
+</script>
 
 {%endblock%}

@@ -111,6 +111,7 @@
                 </form>
 
 
+                {%if session['perfilid'] == 7%}
                 <h2 class="bg-light mb-4 col-md-12 text-center">Domicilio de Procedencia</h2>
                 <form class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4">
                     <div class="col">
@@ -158,6 +159,7 @@
                     </div>
 
                 </form>
+                {%endif%}
             </form>
         </div>
     </div>

@@ -59,14 +59,14 @@ def mostrar_carreras_usuarioperfil():
                     aux.append(car)
                     
         for a in aux:
-            carpoTotales.remove(a)       
+            carpoTotales.remove(a)
         return render_template('user/perfiles/bedel/miscarreras.html',carposUsuario = carposUsuario, carpo = carpoTotales)
     
 
 @bedel.route('/DatosAcademicos')
 @login_required
 def mostrar_DatosAcademicos_usuarioperfil():
-    return render_template('user/perfiles/bedel/DatosAcademicos.html')
+    return render_template('user/perfiles/DatosAcademicos.html')
 
 @bedel.route('/activarperfil', methods = ['POST'])
 @login_required
@@ -138,21 +138,6 @@ def eliminar_carrera():
     return redirect(url_for('bedel.mostrar_carreras_usuarioperfil'))
 
 
-
-@bedel.route('/editarcarrera', methods = ['POST'])
-@login_required
-def editar_carrera():
-    carpoid = request.form.get('carpoid')
-    carponombres = Carpo.get_carpo_nombres_from_id(db,carpoid)
-    carpoIds = Carpo.get_carpo_ids(db,carpoid)
-    carpos = []
-    carpos.append(carpoid)
-    for i in range(3):
-        carpos.append([carpoIds[(i)],carponombres[i+1]])
-    return render_template('user/perfiles/bedel/editarcarreras.html',carpos = carpos)
-
-
-
 @bedel.route('/administrar_usuarios', methods = ['POST','GET'])
 @login_required
 def mostrar_alumnos():
@@ -215,3 +200,9 @@ def resetear_contraseña():
     Usuario.resetear_contraseña(db,usuarioid)
     flash('Usuario reseteado')
     return redirect(url_for('bedel.mostrar_alumnos'))
+
+@bedel.route('/carpo/', methods=['GET','POST'])
+@login_required
+def ingresar_carpo():
+    print(request.args.get('id'))
+    return render_template('user/perfiles/bedel/ingresarcarpo.html')

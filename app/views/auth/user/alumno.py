@@ -16,7 +16,7 @@ def mostrar_carreras_usuarioperfil():
     carpoTotales = Carpo.get_carpo_nombres(db)
     if session['usuarioperfilactivo'] == 0:
         
-        return render_template('user/perfiles/Alumnos/añadircarpo.html', carpo = carpoTotales)
+        return render_template('user/perfiles/alumno/añadircarpo.html', carpo = carpoTotales)
     else:
         print(alumnocarpo.get_carpoid_by_alumnoid(db,session['alumnoid']))
         # carpoid = personalcarpo.cantcarpo(db,session['alumnolid'])

@@ -1,3 +1,5 @@
+create schema dbispp;
+use dbispp;
 --
 -- Table structure for table `carrera`
 --
@@ -107,9 +109,11 @@ CREATE TABLE usuariodatos (
   UsuarioID int NOT NULL,
   UsuarioNombre varchar(100) DEFAULT NULL,
   UsuarioApellido varchar(100) DEFAULT NULL,
-  UsuarioCUIL int DEFAULT NULL,
+  UsuarioCUIL varchar(15) DEFAULT NULL,
   UsuarioFechaNac date DEFAULT NULL,
   UsuarioSexoDNI varchar(45) DEFAULT NULL,
+  UsuarioNacionalidad varchar(100) NULL,
+  Observaciones varchar(120),
   PRIMARY KEY (UsuarioID),
   CONSTRAINT UsuarioIDDatos FOREIGN KEY (UsuarioID) REFERENCES usuario (UsuarioID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -121,7 +125,6 @@ CREATE TABLE usuariodatos (
 DROP TABLE IF EXISTS usuariodomicilio;
 CREATE TABLE usuariodomicilio (
   UsuarioID int NOT NULL,
-  UsuarioNacionalidad varchar(100) DEFAULT NULL,
   UsuarioProvincia varchar(100) DEFAULT NULL,
   UsuarioDepartamento varchar(100) DEFAULT NULL,
   UsuarioLocalidad varchar(100) DEFAULT NULL,
@@ -244,13 +247,38 @@ CREATE TABLE alumnocarpomateria (
 -- Table structure for table `alumnodatos`
 --
 
-DROP TABLE IF EXISTS alumnodatos;
-CREATE TABLE alumnodatos (
-  AlumnoDatosID int NOT NULL,
-  PRIMARY KEY (AlumnoDatosID),
-  CONSTRAINT AlumnoID FOREIGN KEY (AlumnoDatosID) REFERENCES alumno (AlumnoID)
+DROP TABLE IF EXISTS alumnosecundaria;
+CREATE TABLE alumnosecundaria (
+  AlumnoID int NOT NULL,
+  TituloSecundaria varchar(100),
+  AñoEgreso varchar(100),
+  Modalidad varchar(100),
+  PRIMARY KEY (AlumnoID),
+  CONSTRAINT AlumnoIDSec FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+--
+-- Table structure for table `alumnodomproc`
+--
+
+DROP TABLE IF EXISTS alumnodomproc;
+CREATE TABLE alumnodomproc (
+  AlumnoID int NOT NULL,
+  AlumnoProvincia varchar(100) DEFAULT NULL,
+  AlumnoDepartamento varchar(100) DEFAULT NULL,
+  AlumnoLocalidad varchar(100) DEFAULT NULL,
+  AlumnoCiudad varchar(100) DEFAULT NULL,
+  AlumnoBarrio varchar(150) DEFAULT NULL,
+  AlumnoCalle varchar(100) DEFAULT NULL,
+  AlumnoAltura varchar(100) DEFAULT NULL,
+  AlumnoPiso varchar(100) DEFAULT NULL,
+  AlumnoNumDep varchar(100) DEFAULT NULL,
+  AlumnoManzana varchar(100) DEFAULT NULL,
+  AlumnoCP int DEFAULT NULL,
+  PRIMARY KEY (AlumnoID),
+  CONSTRAINT AlumnoIDDom FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `personal`
@@ -303,9 +331,15 @@ CREATE TABLE personalcarpomateria (
 -- Table structure for table `personaldatos`
 --
 
-DROP TABLE IF EXISTS personaldatos;
-CREATE TABLE personaldatos (
-  PersonalID int NOT NULL,
-  PRIMARY KEY (PersonalID),
-  CONSTRAINT PersonalID FOREIGN KEY (PersonalID) REFERENCES personal (PersonalID)
+DROP TABLE IF EXISTS personalmateriadatos;
+CREATE TABLE personalmateriadatos (
+  PersonalCarpoMateriaID int NOT NULL,
+  CargaHoraria int,
+  SituacionRevista varchar(40),
+  FcInicioCargo date,
+  TurnoCargo varchar(30),
+  NumControl varchar(15),
+  TituloPersonal varchar(100),
+  PRIMARY KEY (PersonalCarpoMateriaID),
+  CONSTRAINT PersonalCarpoMateriaID FOREIGN KEY (PersonalCarpoMateriaID) REFERENCES personalcarpomateria (PersonalCarpoMateriaID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,69 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}
+Carreras
+{% endblock %}
+
+{% block head%}
+{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/home.css') }}"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/nonbootstrap/carpo.css') }}"
+/>
+{% endblock %}
+
+{% block navbar %}
+{{super()}}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content%}
+<section>
+  <div class="contenedor"  style="padding-top:52px;">
+    <table class="style-table">
+      <thead>
+          <!-- <th>id</th> -->
+          <th>{{nombre}}</th>
+      </thead>
+      
+      <tbody id="select">
+          {% for carpo in lista %}
+          <tr id="{{carpo[0]}}" class="fila">
+              <td class="td">
+                  <div class="{%if listaValores[0] == -1%} edit {%endif%}">
+                      <span class="titulo">
+                          {{carpo[1]}}
+                      </span>
+                  </div>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  </div>
+</section>
+
+
+<form action="{{url_for('home.mostrarCarreras')}}" id="form-dbclick" method="post">
+  <input type="hidden" name="planid" id="planid" value="{{listaValores[2]}}">
+  <input type="hidden" name="carreraid" id="carreraid" value="{{listaValores[0]}}" />
+  <input type="hidden" name="orientacionid" id="orientacionid" value="{{listaValores[1]}}" />
+  <input type="hidden" name="accion" value="dbclickcarrera">
+</form>
+
+{% endblock %}
+
+{% block script %}
+{{super()}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="{{url_for('static', filename='/js/carreras.js')}}"></script>
+{% endblock %}
