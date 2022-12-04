@@ -48,18 +48,27 @@ def mostrar_carreras_usuarioperfil():
         return render_template('user/perfiles/bedel/añadircarpo.html', carpo = carpoTotales)
     else:
         carpoid = personalcarpo.cantcarpo(db,session['personalid'])
+        
         carposUsuario=[]
+        
         for i in carpoid:
             carpo = Carpo.get_carpo_nombres_from_id(db,i)
             carposUsuario.append(carpo)
+            
         aux = []
+        
         for car in carpoTotales:
             for i in carpoid:
+                print(car[0] , '=' , i[0])
                 if(car[0] == i[0]):
+                    print(car[0] , '=' , i[0])
                     aux.append(car)
                     
         for a in aux:
             carpoTotales.remove(a)
+            
+        print(carpoTotales)
+            
         return render_template('user/perfiles/bedel/miscarreras.html',carposUsuario = carposUsuario, carpo = carpoTotales)
     
 

@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # Reciclaje de codigo
 '''
 try:
-    cur = mysql.connection.cursor()
+    cur = db.connection.cursor()
     consulta = ("select * from y where x = %s")
     cur.execute(consulta, [(query)])
     return cur.fetchone()
@@ -562,33 +562,34 @@ class Carpo():
             return ori
         except Exception as ex:
             raise Exception(ex)
-        
+
     @classmethod
-    def search_carpo(self, mysql, CarreraID,OrientacionID,PlanID):
+    def search_carpo(self, mysql, CarreraID, OrientacionID, PlanID):
         try:
-            cur=mysql.connection.cursor()
-            if OrientacionID<1:
-                sql='SELECT carpoid FROM carpo WHERE carreraid = %s AND plandeestudioid = %s'
-                cur.execute(sql,[CarreraID,PlanID])
+            cur = mysql.connection.cursor()
+            if OrientacionID < 1:
+                sql = 'SELECT carpoid FROM carpo WHERE carreraid = %s AND plandeestudioid = %s'
+                cur.execute(sql, [CarreraID, PlanID])
             else:
                 sql = 'Select carpoid from carpo where carreraid = %s and plandeestudioid = %s and OrientacionID = %s'
-                cur.execute(sql,[CarreraID,PlanID,OrientacionID])
+                cur.execute(sql, [CarreraID, PlanID, OrientacionID])
             CarpoID = cur.fetchone()
             return CarpoID[0]
         except Exception as ex:
             raise Exception(ex)
 
     @classmethod
-    def name_carpo(self,mysql,CarpoID):
+    def name_carpo(self, mysql, CarpoID):
         try:
-            cur=mysql.connection.cursor()
-            sql="SELECT CarreraNombre, OrientacionNombre, PlanNombre FROM (((carpo AS C left join carrera AS car ON C.CarreraID = car.CarreraID) inner join plandeestudio AS P ON C.PlanDeEstudioID = P.PlanID) LEFT join orientacion AS ori ON C.OrientacionID = ori.OrientacionID) WHERE C.CARPOID = %s;"
-            cur.execute(sql,[CarpoID])
+            cur = mysql.connection.cursor()
+            sql = "SELECT CarreraNombre, OrientacionNombre, PlanNombre FROM (((carpo AS C left join carrera AS car ON C.CarreraID = car.CarreraID) inner join plandeestudio AS P ON C.PlanDeEstudioID = P.PlanID) LEFT join orientacion AS ori ON C.OrientacionID = ori.OrientacionID) WHERE C.CARPOID = %s;"
+            cur.execute(sql, [CarpoID])
             nombre = cur.fetchone()
-            return nombre 
+            return nombre
 
         except Exception as ex:
             raise Exception(ex)
+
 
 class Plan():
     def __init__(self, PlanID, PlanNombre) -> None:
@@ -758,6 +759,7 @@ class Carrera():
         except Exception as ex:
             raise Exception(ex)
 
+
 class Materia():
     def __init__(self, MateriaID, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat) -> None:
         self.MateriaID = MateriaID
@@ -771,7 +773,8 @@ class Materia():
         try:
             cur = mysql.connection.cursor()
             sql = 'INSERT INTO Materia(MateriaNombre, MateriaAño, MateriaTipo,CarpoIDMat) VALUES (%s, %s, %s,%s)'
-            cur.execute(sql, [MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat])
+            cur.execute(sql, [MateriaNombre, MateriaAño,
+                        MateriaTipo, CarpoIDMat])
             mysql.connection.commit()
         except Exception as ex:
             raise Exception(ex)
@@ -781,7 +784,7 @@ class Materia():
         try:
             cur = mysql.connection.cursor()
             sql = 'SELECT materiaid,MateriaNombre, Materiaaño, materiatipo FROM Materia where CarpoIDMat = %s ORDER BY MateriaTipo ASC'
-            cur.execute(sql,[CarpoIDMat])
+            cur.execute(sql, [CarpoIDMat])
             Materia = cur.fetchall()
             return Materia
         except Exception as ex:
@@ -823,18 +826,19 @@ class Materia():
             mysql.connection.commit()
         except Exception as ex:
             raise Exception(ex)
-    
+
     @classmethod
-    def cantidadDeAños(self, mysql,idcarpo):
+    def cantidadDeAños(self, mysql, idcarpo):
         try:
             cur = mysql.connection.cursor()
-            sql='SELECT COUNT(DISTINCT(m.MateriaAño)) FROM carpo c JOIN materia m ON c.CARPOID = m.carpoidmat WHERE CARPOID = %s'            
-            cur.execute(sql,[idcarpo])
+            sql = 'SELECT COUNT(DISTINCT(m.MateriaAño)) FROM carpo c JOIN materia m ON c.CARPOID = m.carpoidmat WHERE CARPOID = %s'
+            cur.execute(sql, [idcarpo])
             año = cur.fetchone()
-            año=año[0]
+            año = año[0]
             return año
         except Exception as ex:
             raise Exception(ex)
+
 
 class personalcarpo():
     def __init__(self, personalcarpoid, personalid, carpoid, personalcarpoactivo) -> None:
@@ -851,7 +855,6 @@ class personalcarpo():
                 "INSERT INTO personalcarpo(personalid, carpoid) VALUES(%s,%s)")
             cur.execute(consulta, [personalid, carpoid])
             mysql.connection.commit()
-
             return True
         except Exception as ex:
             print(ex)
@@ -883,6 +886,7 @@ class personalcarpo():
             print(ex)
             raise Exception(ex)
 
+
 class alumnocarpo():
     def __init__(self, alumnocarpoid, carpoid, alumnoid, alumnocarpoactivo) -> None:
 
@@ -899,7 +903,7 @@ class alumnocarpo():
                 'INSERT INTO alumnocarpo(alumnoid,carpoid) VALUES(%s,%s)')
             cur.execute(consulta, [alumnoid, carpoid])
             db.connection.commit()
-            return cur.lastrowid
+            return True
         except Exception as ex:
             print(ex)
             raise Exception(ex)
@@ -923,7 +927,18 @@ class alumnocarpo():
             consulta = (
                 "select carpoid from alumnocarpo where alumnoid = %s")
             cur.execute(consulta, [id])
-            return cur.fetchone()
+            return cur.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+    
+    @classmethod
+    def get_carpoid_not_alumnoid(self, db, id):
+        try:
+            cur = db.connection.cursor()
+            consulta = ("SELECT carpoid from carpo where carpoid not in (select CARPOID From AlumnoCarpo where alumnoid = %s) order by carpoid")
+            cur.execute(consulta, [(id)])
+            return cur.fetchall()
         except Exception as ex:
             print(ex)
             raise Exception(ex)
