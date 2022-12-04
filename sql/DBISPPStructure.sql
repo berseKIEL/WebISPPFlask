@@ -247,12 +247,12 @@ CREATE TABLE alumnocarpomateria (
 
 DROP TABLE IF EXISTS alumnosecundaria;
 CREATE TABLE alumnosecundaria (
-  AlumnoDatosID int NOT NULL,
+  AlumnoID int NOT NULL,
   TituloSecundaria varchar(100),
   AñoEgreso varchar(100),
   Modalidad varchar(100),
-  PRIMARY KEY (AlumnoDatosID),
-  CONSTRAINT AlumnoID FOREIGN KEY (AlumnoDatosID) REFERENCES alumno (AlumnoID)
+  PRIMARY KEY (AlumnoID),
+  CONSTRAINT AlumnoIDSec FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -262,7 +262,7 @@ CREATE TABLE alumnosecundaria (
 
 DROP TABLE IF EXISTS alumnodomproc;
 CREATE TABLE alumnodomproc (
-  AlumnoDatosID int NOT NULL,
+  AlumnoID int NOT NULL,
   AlumnoProvincia varchar(100) DEFAULT NULL,
   AlumnoDepartamento varchar(100) DEFAULT NULL,
   AlumnoLocalidad varchar(100) DEFAULT NULL,
@@ -274,8 +274,8 @@ CREATE TABLE alumnodomproc (
   AlumnoNumDep varchar(100) DEFAULT NULL,
   AlumnoManzana varchar(100) DEFAULT NULL,
   AlumnoCP int DEFAULT NULL,
-  PRIMARY KEY (AlumnoDatosID),
-  CONSTRAINT AlumnoID FOREIGN KEY (AlumnoDatosID) REFERENCES alumno (AlumnoID)
+  PRIMARY KEY (AlumnoID),
+  CONSTRAINT AlumnoIDDom FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
