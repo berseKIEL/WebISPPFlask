@@ -3,11 +3,12 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos ,Perfil,Carpo,alumnocarpo
+from ....models.models import usuarioDatos, Perfil, Carpo, alumnocarpo
 from ....ext import db
 
 # Desarrollo de la vista Alumno
 alumno = Blueprint('alumno', __name__)
+
 
 @alumno.route('/miscarreras')
 @login_required
@@ -15,10 +16,10 @@ def mostrar_carreras_usuarioperfil():
 
     carpoTotales = Carpo.get_carpo_nombres(db)
     if session['usuarioperfilactivo'] == 0:
-        
-        return render_template('user/perfiles/alumno/añadircarpo.html', carpo = carpoTotales)
+
+        return render_template('user/perfiles/alumno/añadircarpo.html', carpo=carpoTotales)
     else:
-        print(alumnocarpo.get_carpoid_by_alumnoid(db,session['alumnoid']))
+        print(alumnocarpo.get_carpoid_by_alumnoid(db, session['alumnoid']))
         # carpoid = personalcarpo.cantcarpo(db,session['alumnolid'])
         # carposUsuario=[]
         # for i in carpoid:
@@ -29,20 +30,19 @@ def mostrar_carreras_usuarioperfil():
         #     for i in carpoid:
         #         if(car[0] == i[0]):
         #             aux.append(car)
-                    
+
         # for a in aux:
         #     carpoTotales.remove(a)
+        return render_template('user/perfiles/alumno/miscarreras.html', carpo=carpoTotales)
 
-        
-        return render_template('user/perfiles/alumno/miscarreras.html', carpo = carpoTotales)
-    
+
 @alumno.route('/datossecundaria')
 @login_required
 def mostrar_datossecundaria_usuarioperfil():
     return render_template('user/perfiles/alumno/datossecundaria.html')
 
 
-@alumno.route('/activaralumno', methods = ['POST'])
+@alumno.route('/activaralumno', methods=['POST'])
 @login_required
 def activar_alumno():
     # carpoid = request.form.get('Carpo')
