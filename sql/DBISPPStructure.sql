@@ -231,7 +231,7 @@ CREATE TABLE alumnocarpo (
   KEY fk_carpo_has_Alumno_Alumno1_idx (AlumnoID),
   KEY fk_carpo_has_Alumno_carpo1_idx (CarpoID),
   CONSTRAINT fk_carpo_has_Alumno_Alumno1 FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID),
-  CONSTRAINT fk_carpo_has_Alumno_carpo1 FOREIGN KEY (CarpoID) REFERENCES carpo (CARPOID)
+  CONSTRAINT fk_carpo_has_Alumno_carpo1 FOREIGN KEY (CarpoID) REFERENCES carpo (CARPOID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -247,7 +247,7 @@ CREATE TABLE alumnocarpomateria (
   PRIMARY KEY (AlumnoCarpoMateriaID),
   KEY AlumnoCarpoID_idx (AlumnoCarpoID),
   KEY AlumnoCarpoMateriaID_idx (MateriaID),
-  CONSTRAINT AlumnoCarpoID FOREIGN KEY (AlumnoCarpoID) REFERENCES alumnocarpo (AlumnoCarpoID),
+  CONSTRAINT AlumnoCarpoID FOREIGN KEY (AlumnoCarpoID) REFERENCES alumnocarpo (AlumnoCarpoID) ON DELETE CASCADE, 
   CONSTRAINT AlumnoCarpoMateriaID FOREIGN KEY (MateriaID) REFERENCES materia (MateriaID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -315,7 +315,7 @@ CREATE TABLE personalcarpo (
   KEY fk_Personal_has_carpo_carpo1_idx (CarpoID),
   KEY fk_Personal_has_carpo_Personal1_idx (PersonalID),
   CONSTRAINT fk_Personal_has_carpo_carpo1 FOREIGN KEY (CarpoID) REFERENCES carpo (CARPOID),
-  CONSTRAINT fk_Personal_has_carpo_Personal1 FOREIGN KEY (PersonalID) REFERENCES personal (PersonalID)
+  CONSTRAINT fk_Personal_has_carpo_Personal1 FOREIGN KEY (PersonalID) REFERENCES personal (PersonalID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -332,7 +332,7 @@ CREATE TABLE personalcarpomateria (
   KEY fk_PersonalCarpo_has_materia_materia1_idx (MateriaID),
   KEY PersonalCarpoID_idx (PersonalCarpoID),
   CONSTRAINT MateriaID FOREIGN KEY (MateriaID) REFERENCES materia (MateriaID),
-  CONSTRAINT PersonalCarpoID FOREIGN KEY (PersonalCarpoID) REFERENCES personalcarpo (PersonalCarpoID)
+  CONSTRAINT PersonalCarpoID FOREIGN KEY (PersonalCarpoID) REFERENCES personalcarpo (PersonalCarpoID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -350,5 +350,5 @@ CREATE TABLE personalmateriadatos (
   NumControl varchar(15),
   TituloPersonal varchar(100),
   PRIMARY KEY (PersonalCarpoMateriaID),
-  CONSTRAINT PersonalCarpoMateriaID FOREIGN KEY (PersonalCarpoMateriaID) REFERENCES personalcarpomateria (PersonalCarpoMateriaID)
+  CONSTRAINT PersonalCarpoMateriaID FOREIGN KEY (PersonalCarpoMateriaID) REFERENCES personalcarpomateria (PersonalCarpoMateriaID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
