@@ -28,8 +28,9 @@
 
       <!-- Alumno -->
       {%if session['perfilid'] == 7%}
-      <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-        <span> <strong> Datos Academicos</strong> </span>
+      <a href="{{url_for('alumno.mostrar_datossecundaria_usuarioperfil')}}"
+        class="list-group-item list-group-item-action py-2 ripple">
+        <span> <strong> Datos Secundaria</strong> </span>
       </a>
       <a href="{{url_for('alumno.mostrar_carreras_usuarioperfil')}}" class="list-group-item list-group-item-action py-2 ripple">
         <span> <strong> Mis carreras </strong>  </span>
