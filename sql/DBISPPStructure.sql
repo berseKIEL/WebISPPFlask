@@ -91,7 +91,7 @@ CREATE TABLE usuario (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50003 TRIGGER `InsertTempPassword` BEFORE INSERT ON `usuario` FOR EACH ROW BEGIN
-	IF (NEW.UsuarioContraseñaTemp IS NULL) THEN
+	IF (NEW.UsuarioContraseñaTemp IS NULL and NEW.UsuarioContraseña IS NULL) THEN
 		SET NEW.UsuarioContraseñaTemp := NEW.Usuario;
 	END IF;
 END */;;

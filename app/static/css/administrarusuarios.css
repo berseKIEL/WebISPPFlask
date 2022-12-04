@@ -4,9 +4,13 @@
     background-color: var(--background);
 }
 .tabla{
-    max-width: 50%;
     background-color: rgb(255, 255, 255);
     border-bottom: 1px solid #757575;
     border-radius: 20px;
     background-color: var(--background);
+    height: 200px;
+}
+
+@media screen and (max-width:767px) {
+
 }

@@ -45,7 +45,18 @@ INSERT INTO `perfil` VALUES (1,'Administrador'),(2,'Administrativo'),(3,'Rector'
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (usuario) VALUES (10000000),(10000001),(10000002),(10000003),(10000004),(10000005),(10000006),(10000007),(10000008),(10000009),(10000010);
+INSERT INTO `usuario` (Usuario, UsuarioCorreo, UsuarioContraseña, UsuarioActivo) VALUES 
+(10000000,'correofalso00@gmail.com','pbkdf2:sha256:260000$qYtgwa0BnAXDUb8b$da499d8ce8e08384e26c78b0b2ad6197302f7e7cef64d9e18eb74a07874f4115',1),
+(10000001,'correofalso01@gmail.com','pbkdf2:sha256:260000$fCI4A1cSJ1aIYJPC$25125ee1d2ba225cf2a1fad2da56b499c23e7ff1737c2c187062997ee83dca23',1),
+(10000002,'correofalso02@gmail.com','pbkdf2:sha256:260000$iLULXWFIegSmRs3O$3d76c2c888e5b046e03880913fc131f07140ba1e34e6815987320bf8c63e6805',1),
+(10000003,'correofalso03@gmail.com','pbkdf2:sha256:260000$QG98gCbg97T3A6Rd$766c17444a6663325f8167778b295e43526c72afc6d4d86eece112ce70d76efd',1),
+(10000004,'correofalso04@gmail.com','pbkdf2:sha256:260000$aQ4WF7CONneunt7B$5acd703c069e2a28ac40608bef07b12d9be2f2e87d4eafc25d49a06dbdc339f2',1),
+(10000005,'correofalso05@gmail.com','pbkdf2:sha256:260000$Sii2ROdAg63frxnj$8741ff7cf5095dea18a832964667ce7573d70e823f39d0e0f5e888c2d38999c3',1),
+(10000006,'correofalso06@gmail.com','pbkdf2:sha256:260000$Wc7ydeWUQP7O6mWm$c2be7136f17c3c0c13d4ca7ce816707d6c57cfc8ae8c264aaa3824d6ff9f519c',1),
+(10000007,'correofalso07@gmail.com','pbkdf2:sha256:260000$ix09Dl4pbeKV28bx$c82fe25e0c5f7a95b484a0f257cd64eafe474835925107514ff8e38626f2e156',1),
+(10000008,'correofalso08@gmail.com','pbkdf2:sha256:260000$NdWVQm5syY60l3OX$28bef8a7dd19e5da8fe08ea8c76d68931021562f8b65f7ee99f16685cb96a8b2',1),
+(10000009,'correofalso09@gmail.com','pbkdf2:sha256:260000$6XbVxHan6tgRalXP$59b69d79d89be3f9b6a7aed2e60efe12c9b0262e20b744ddc7d235cd5e5966f6',1),
+(10000010,'correofalso10@gmail.com','pbkdf2:sha256:260000$gQASDeN0oY6t3fjc$4dc936854b41bdc963b52dcef0e16dbf2b94f430cdc64e5e76eae88e156f67f6',1);
 
 --
 -- Dumping data for table `usuarioperfil`

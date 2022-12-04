@@ -37,6 +37,8 @@ def login():
         # Preguntar si el usuario retornado no es nulo
         if RetornoUsuario != None:
 
+            print(RetornoUsuario.usuariocontraseña)
+            print(RetornoUsuario.usuariocontraseñatemp)
             if RetornoUsuario.usuariocontraseña or RetornoUsuario.usuariocontraseñatemp:
 
                 login_user(RetornoUsuario)  # Logear al Flask-Login
