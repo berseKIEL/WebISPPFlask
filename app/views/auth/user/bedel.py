@@ -47,29 +47,44 @@ def mostrar_carreras_usuarioperfil():
         
         return render_template('user/perfiles/bedel/añadircarpo.html', carpo = carpoTotales)
     else:
-        carpoid = personalcarpo.cantcarpo(db,session['personalid'])
+        listaCarpo = personalcarpo.cantcarpo(db, session['personalid'])
+        carpoNombres = []
         
-        carposUsuario=[]
-        
-        for i in carpoid:
-            carpo = Carpo.get_carpo_nombres_from_id(db,i)
-            carposUsuario.append(carpo)
+        for x in listaCarpo:
+            carpoNombres.append(Carpo.get_carpo_nombres_from_id(db,x[0]))
             
-        aux = []
+        print(carpoNombres)
         
-        for car in carpoTotales:
-            for i in carpoid:
-                print(car[0] , '=' , i[0])
-                if(car[0] == i[0]):
-                    print(car[0] , '=' , i[0])
-                    aux.append(car)
+        # Segundo se obtiene, los carpos que me falta inscribirme
+        listaCarpoRestante = personalcarpo.get_carpoid_not_personalid(db, session['personalid'])
+        carpoRestantes = []
+        for x in listaCarpoRestante:
+            carpoRestantes.append(Carpo.get_carpo_nombres_from_id(db,x[0]))
+        
+        print(carpoRestantes)
+        # carpoid = personalcarpo.cantcarpo(db,session['personalid'])
+        
+        # carposUsuario=[]
+        
+        # for i in carpoid:
+        #     carpo = Carpo.get_carpo_nombres_from_id(db,i)
+        #     carposUsuario.append(carpo)
+            
+        # aux = []
+        
+        # for car in carpoTotales:
+        #     for i in carpoid:
+        #         print(car[0] , '=' , i[0])
+        #         if(car[0] == i[0]):
+        #             print(car[0] , '=' , i[0])
+        #             aux.append(car)
                     
-        for a in aux:
-            carpoTotales.remove(a)
+        # for a in aux:
+        #     carpoTotales.remove(a)
             
-        print(carpoTotales)
+        # print(carpoTotales)
             
-        return render_template('user/perfiles/bedel/miscarreras.html',carposUsuario = carposUsuario, carpo = carpoTotales)
+        return render_template('user/perfiles/bedel/miscarreras.html',carposUsuario = carpoNombres, carpo = carpoRestantes)
     
 
 @bedel.route('/DatosAcademicos')
@@ -82,7 +97,7 @@ def mostrar_DatosAcademicos_usuarioperfil():
 def activar_usuarioperfil():
     carpoid = request.form.get('Carpo')
 
-    if personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid):
+    if personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[0]:
         UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
         session['usuarioperfilactivo'] = 1
 
@@ -98,7 +113,7 @@ def agregar_carrera():
     if (carpoid==None):
         flash('No puedes inscribirte sin seleccionar una carrera')    
     else:
-        personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)
+        personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[0]
         
     return redirect(url_for('bedel.mostrar_carreras_usuarioperfil'))
 

@@ -96,7 +96,16 @@ DELIMITER ;;
 	END IF;
 END */;;
 DELIMITER ;
-
+DELIMITER ;;
+/*!50003 CREATE*/  /*!50003 TRIGGER `usuariodomicilio_insert` AFTER INSERT ON `usuario` FOR EACH ROW BEGIN
+	INSERT INTO usuariodomicilio (usuarioid) VALUES (new.usuarioid);
+END */;;
+DELIMITER ;
+DELIMITER ;;
+/*!50003 CREATE*/  /*!50003 TRIGGER `usuariodatos_insert` AFTER INSERT ON `usuario` FOR EACH ROW BEGIN
+	INSERT INTO usuariodatos (usuarioid) VALUES (new.usuarioid);
+END */;;
+DELIMITER ;
 
 --
 -- Table structure for table `usuariodatos`

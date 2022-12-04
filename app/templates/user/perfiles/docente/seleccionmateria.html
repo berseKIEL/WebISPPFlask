@@ -20,8 +20,8 @@
                 </div>
                 
                 <div class="card-text px-5 py-2">
-                    <form action="{{url_for('docente.seleccionar_materias')}}" method="post">
-                        <select name="Carpo">
+                    <form action="{{url_for('docente.activar_usuarioperfil')}}" method="post">
+                        <select name="materia">
                             {% for car in materias %}
                                 <option value="{{car[0]}}">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</option>
                             {% endfor %}

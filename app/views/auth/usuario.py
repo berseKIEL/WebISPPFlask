@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ...models.models import Perfil, UsuarioPerfil, alumno, personal, usuarioDatos, usuarioDomicilio
+from ...models.models import Perfil, UsuarioPerfil, alumno, personal, usuarioDatos, usuarioDomicilio, alumnodomproc
 from ...ext import db
 
 # Desarrollo de la vista usuario
@@ -55,11 +55,27 @@ def mostrar_Datospersonales_usuarioperfil():
     
     datosDomicilio = usuarioDomicilio.get_usuario_domicilio_id(db,current_user.id)
     
-    return render_template('user/perfiles/Datospersonales.html', datosPersonales = datosPersonales,datosDomicilio=datosDomicilio)
+    perfilid = session['perfilid']
+    
+    alumnoid = session['alumnoid']
+    
+    if perfilid == 7:
+        datosDomicilioProc = alumnodomproc.get_usuario_domproc_id(db,alumnoid)
+    
+    return render_template('user/perfiles/Datospersonales.html', datosPersonales = datosPersonales,datosDomicilio=datosDomicilio, datosDomicilioProc = datosDomicilioProc)
 
 
 @usuario.route('/edit/datospersonales', methods=['POST'])
 @login_required
 def editar_datospersonales_usuario():
+    cuil = request.form.get('cuil')
+    nombre = request.form.get('nombre')
+    apellido = request.form.get('apellido')
+    email = request.form.get('email')
+    telefono = request.form.get('telefono')
+    fecnac = request.form.get('cuil')
+    nac = request.form.get('nacionalidad')
+    
+        
     
     return jsonify({'Respuesta': 'control remoto'})

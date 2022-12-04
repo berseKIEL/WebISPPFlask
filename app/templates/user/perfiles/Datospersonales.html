@@ -36,50 +36,68 @@
                   type="text"
                   id="cuil"
                   name="cuil"
-                  placeholder="x-xx.xxx.xxx-x"
+                  placeholder="xx-xx.xxx.xxx-x"
                   class="form-control form-custom"
-                  value="{{datosPersonal[0]}}"
+                  value="{{datosPersonal[3]}}"
                   />
                   <label for="cuil">Cuil *</label>
               </div>
 
               <div class="col">
-                  <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  placeholder="Escribe tu nombre"
-                  class="form-control form-custom "
-                  />
-                  <label for="nombre">Nombre</label>
-              </div>
-      
-              <div class="col">
-                  <input
-                      type="text"
-                      id="apellido"
-                      name="apellido"
-                      placeholder="Escribe tu apellido"
-                      class="form-control form-custom "
-                  />
-                  <label for="apellido">Apellido *</label>
-              </div>
+                <input
+                type="text"
+                id="cuil"
+                name="cuil"
+                placeholder="xx-xx.xxx.xxx-x"
+                class="form-control form-custom"
+                value="{{datosPersonal[5]}}"
+                />
+                <label for="cuil">Nacionalidad *</label>
+            </div>
+              
           </div>
 
           <div class="row mb-4">
             <div class="col">
+              <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Escribe tu nombre"
+              class="form-control form-custom "
+              value="{{datosPersonal[1]}}"
+              />
+              <label for="nombre">Nombre</label>
+            </div>
+    
+            <div class="col">
+                <input
+                    type="text"
+                    id="apellido"
+                    name="apellido"
+                    placeholder="Escribe tu apellido"
+                    class="form-control form-custom "
+                    value="{{datosPersonal[2]}}"
+                />
+                <label for="apellido">Apellido *</label>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-3">
               <input
                   type="text"
                   name="email"
                   id="email"
                   placeholder="nombre@ejemplo.com"
                   class="form-control form-custom"
+                  value="{{current_user.usuariocorreo}}"
               />
               <label for="email">Email *</label>
 
           </div>
 
-          <div class="col">
+          <div class="col-md-3">
               <input
                   type="text"
                   id="telefono"
@@ -87,18 +105,20 @@
                   required="true"
                   placeholder="xxxxxxxxxx"
                   class="form-control form-custom"
+                  value="{{datosPersonal[0]}}"
               />
               <label class="labelforms" for="telefono">Telefono *</label>
 
           </div>
 
-          <div class="col">
+          <div class="col-md-12">
               <input
                   type="text"
                   name="fechanac"
                   id="fechanac"
                   placeholder="xx/xx/xxxx"
                   class="form-control form-custom"
+                  value="{{datosPersonal[0]}}"
               />
               <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
 
@@ -113,23 +133,37 @@
                 type="text"
                 id="cuil"
                 name="cuil"
-                placeholder="x-xx.xxx.xxx-x"
+                placeholder="xx-xx.xxx.xxx-x"
                 class="form-control form-custom"
-                required
+                
                 />
                 <label for="cuil">Cuil *</label>
             </div>
 
             <div class="col">
-                <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                placeholder="Escribe tu nombre"
-                class="form-control form-custom "
-                required
-                />
-                <label for="nombre">Nombre</label>
+              <input
+              type="text"
+              id="nacionalidad"
+              name="nacionalidad"
+              placeholder="Argentina"
+              class="form-control form-custom"
+              />
+              <label for="cuil">Nacionalidad *</label>
+          </div>
+            
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Escribe tu nombre"
+              class="form-control form-custom "
+              
+              />
+              <label for="nombre">Nombre</label>
             </div>
     
             <div class="col">
@@ -138,8 +172,8 @@
                     id="apellido"
                     name="apellido"
                     placeholder="Escribe tu apellido"
-                    class="form-control form-custom"
-                    required
+                    class="form-control form-custom "
+                    
                 />
                 <label for="apellido">Apellido *</label>
             </div>
@@ -153,40 +187,38 @@
                   id="email"
                   placeholder="nombre@ejemplo.com"
                   class="form-control form-custom"
-                  required
+                  value="{{current_user.usuariocorreo}}"                 
               />
               <label for="email">Email *</label>
 
             </div>
 
             <div class="col">
-              <input
-                  type="text"
-                  id="telefono"
-                  name="telefono"
-                  required="true"
-                  placeholder="xxxxxxxxxx"
-                  class="form-control form-custom"
-                  required
-              />
-              <label class="labelforms" for="telefono">Telefono *</label>
+                <input
+                    type="text"
+                    id="telefono"
+                    name="telefono"
+                    required="true"
+                    placeholder="xxxxxxxxxx"
+                    class="form-control form-custom"
+                />
+                <label class="labelforms" for="telefono">Telefono *</label>
 
             </div>
 
-            <div class="col">
-              <input
-                  type="text"
-                  name="fechanac"
-                  id="fechanac"
-                  placeholder="xx/xx/xxxx"
-                  class="form-control form-custom"
-                  required
-              />
-              <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
-
+            <div class="col-12 col-md-3">
+                <input
+                    type="date"
+                    name="fechanac"
+                    id="fechanac"
+                    placeholder="xx/xx/xxxx"
+                    class="form-control form-custom"
+                    
+                />
+                <label class="labelforms" for="fechanac">Fecha de Nac. *</label>
             </div>
+
           </div>
-
           {%endif%}
           <div class="col-12 mb-1 text-center">
               <input type="submit" class="btn btn-primary" value="Guardar" />
