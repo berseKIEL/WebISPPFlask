@@ -1,0 +1,69 @@
+{%extends 'user/home.html'%} {%block head%} {{super()}}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+{%endblock%}
+
+{%block content%}
+<div class="row contenedor">
+  <div class="col-2"></div>
+  <div class="col-md-10">
+    <div class="m-4">
+        {%if materiasinscriptas != None%}
+        <table>
+            <thead>
+                <tr> 
+                    <td>Id</td>
+                    <td>Nombre</td>
+                    <td>Año</td>
+                    <td>Tipo</td>   
+                </tr>
+                
+            </thead>
+            <tbody>
+                {% for mat in materiasinscriptas %}
+                <tr>
+                    <td>{{mat[0]}}</td>
+                    <td>{{mat[1]}}</td>
+                    <td>{{mat[2]}}</td>
+                    <td>{{mat[3]}}</td>
+                    <td>
+                        <form action="{{ url_for('alumno.borrar_materia') }}" method="post">
+                            <input type="hidden" value="{{materias[0][2]}}" name="carpoid" />
+                            <input type="hidden" value="{{mat[0]}}" name="materiaid">
+                            <input type="hidden" value="{{alumnocarpoid}}" name="alumnocarpoid">
+                            <input type="submit" value="X">
+                        </form>
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+      <form class="row p-3 mb-2 fondo" action="{{ url_for('alumno.agregar_materia') }}" method="POST" id="datospersonales">
+        <div class="container-fluid">
+          <h2 class="mb-4 col text-center">Inscribirse a una materia</h2>
+
+          <input type="hidden" value="{{materias[0][2]}}" name="carpoid" />
+          <input type="hidden" value="{{alumnocarpoid}}" name="alumnocarpoid">
+
+          <div class="row mb-4">
+            <select name="materia" class="form-select-sm form-custom">
+              {% for car in materias %}
+              <option value="{{car[0]}}">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          
+          <div class="col-12 mb-1 text-center">
+            <input type="submit" class="btn btn-primary" value="Guardar" />
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{%endblock%}

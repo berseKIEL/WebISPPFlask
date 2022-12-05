@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos, Perfil, Carpo, alumnocarpo, UsuarioPerfil, alumnodomproc, alumnosecundaria
+from ....models.models import usuarioDatos, Perfil, Carpo, alumnocarpo, UsuarioPerfil, alumnodomproc, alumnosecundaria,Materia,alumnocarpomateria
 from ....ext import db
 
 # Desarrollo de la vista Alumno
@@ -32,6 +32,60 @@ def mostrar_carreras_usuarioperfil():
             carpoRestantes.append(Carpo.get_carpo_nombres_from_id(db,x[0]))
         
         return render_template('user/perfiles/alumno/miscarreras.html', carposUsuario = carpoNombres, carpo = carpoRestantes)
+
+@alumno.route('/agregarMateria', methods = ['POST'])
+@login_required
+def agregar_materia():
+    carpoid = request.form.get('carpoid')
+    materiaid = request.form.get('materia')
+    alumnocarpoid = request.form.get('alumnocarpoid')
+
+    print(alumnocarpoid, ' alumnocarpoid')
+    alumnocarpomateria.insert_alumnocarpomateria(db,materiaid, alumnocarpoid)
+
+    return redirect(url_for('alumno.mis_materias', carpoid=carpoid))
+
+@alumno.route('/borrarMateria', methods = ['POST'])
+@login_required
+def borrar_materia():
+    carpoid = request.form.get('carpoid')
+    materiaid = request.form.get('materiaid')
+    alumnocarpoid = request.form.get('alumnocarpoid')
+
+    print(alumnocarpoid, ' alumnocarpoid ', materiaid, ' materiaid')
+    alumnocarpomateria.delete_alumnocarpomateria(db,materiaid, alumnocarpoid)
+
+    return redirect(url_for('alumno.mis_materias', carpoid=carpoid))
+
+
+@alumno.route('/Materias', methods = ['POST','GET'])
+@login_required
+def mis_materias():
+    if request.method == 'POST':
+        carpoid = request.form.get('carpoid')
+    else:
+        carpoid = request.args.get('carpoid')
+        #Obtiene materias para inscribir
+    if (carpoid==None):
+        flash('No puedes inscribirte sin seleccionar una carrera')  
+        return redirect(url_for('alumno.mostrar_carreras_usuarioperfil'))  
+    else:
+        print(carpoid,'  sadasd ',session['alumnoid'])
+        alumnocarpoid = alumnocarpo.get_alumnocarpoid_by_alumnoidcarpoid(db,carpoid,session['alumnoid'])
+
+        if alumnocarpoid == None:
+            materias = Materia.get_materia_by_carpoidmat(db,carpoid)
+        else:
+            materias = Materia.get_materia_by_alumno_filtrer(db,alumnocarpoid[0],carpoid)
+
+    #Obtiene materias inscriptas
+    materiasinscriptasid = alumnocarpomateria.get_materiaid_by_alumnocarpoid(db,alumnocarpoid)
+    if materiasinscriptasid == None:
+        materiasinscriptas = materiasinscriptasid
+    else:
+        materiasinscriptas = Materia.get_materia_by_alumno_filtrerIn(db,alumnocarpoid[0],carpoid)
+    return render_template('user/perfiles/alumno/seleccionarmateria.html', materias = materias, alumnocarpoid = alumnocarpoid[0][0], carpoid = carpoid, materiasinscriptas = materiasinscriptas)
+    
 
 
 @alumno.route('/datossecundaria', methods=['GET','POST'])

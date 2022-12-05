@@ -24,6 +24,10 @@
                 {% else %}
                 <td class="col-6">{{car[1]}} {{car[2]}} {{car[3]}}</td>
                 {% endif %}
+                <form action="{{url_for('alumno.mis_materias')}}" method="post">
+                  <input type="hidden" value="{{car[0]}}" name="carpoid">
+                  <td><input type="submit" value="Mis Materias"></td>
+                </form>
               </tr>
               {% endfor %}
             </tbody>
