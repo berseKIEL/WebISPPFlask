@@ -888,6 +888,18 @@ class Materia():
             return cur.fetchall()
         except Exception as ex:
             raise Exception(ex)
+            
+
+
+    @classmethod
+    def get_materia_by_carpoidmat_filtrer(self, mysql, personalcarpoid, carpoid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * from materia where materiaid not in (select materiaid From personalCarpomateria where personalcarpoid = %s) and carpoidmat = %s order by materiaid'
+            cur.execute(sql, [personalcarpoid,carpoid])
+            return cur.fetchall()
+        except Exception as ex:
+            raise Exception(ex)
 
     @classmethod
     def add_Materia(self, mysql, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat):
@@ -1069,6 +1081,42 @@ class personalcarpomateria():
         self.PersonalCarpoMateriaID = PersonalCarpoMateriaID
         self.PersonalCarpoID = PersonalCarpoID
         self.MateriaID = MateriaID
+
+
+    @classmethod
+    def eliminar_personalcarpomateria(self, mysql, PersonalCarpoID, MateriaID):
+        try:
+            cur = mysql.connection.cursor()
+            consulta = ('DELETE FROM personalcarpomateria WHERE PersonalCarpoID = %s AND MateriaID = %s')
+            cur.execute(consulta, [PersonalCarpoID, MateriaID])
+            mysql.connection.commit()
+            return True
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
+    @classmethod
+    def get_personalcarpomateriaid(self, mysql, PersonalCarpoID, MateriaID):
+        try:
+            cur = mysql.connection.cursor()
+            consulta = ('SELECT personalcarpomateriaid FROM personalcarpomateria WHERE PersonalCarpoID = %s AND MateriaID = %s')
+            cur.execute(consulta, [PersonalCarpoID, MateriaID])
+            return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
+    @classmethod
+    def select_personalcarpomateria(self, mysql, PersonalCarpoID):
+        try:
+            cur = mysql.connection.cursor()
+            consulta = ('SELECT * FROM personalcarpomateria WHERE PersonalCarpoID = %s')
+            cur.execute(consulta, [PersonalCarpoID])
+            
+            return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
 
     @classmethod
     def cargar_personalcarpomateria(self, mysql, PersonalCarpoID, MateriaID):

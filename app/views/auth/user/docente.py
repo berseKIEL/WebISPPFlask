@@ -12,8 +12,10 @@ docente = Blueprint('docente', __name__)
 @docente.route('/miscarreras')
 @login_required
 def mostrar_carreras_usuarioperfil():
+    carpoTotales = Carpo.get_carpo_nombres(db)
+    print(len(personalcarpo.cantcarpo(db,session['personalid'])), ' condicion')
     if session['usuarioperfilactivo'] == 0:
-        carpoTotales = Carpo.get_carpo_nombres(db)
+        
         return render_template('user/perfiles/docente/añadircarpo.html', carpo=carpoTotales)
     else:
         # Primero se obitene los carpos que estoy inscriptos
@@ -22,17 +24,8 @@ def mostrar_carreras_usuarioperfil():
         
         for x in listaCarpo:
             carpoNombres.append(Carpo.get_carpo_nombres_from_id(db,x[0]))
-            
-        print(carpoNombres)
         
-        # Segundo se obtiene, los carpos que me falta inscribirme
-        listaCarpoRestante = personalcarpo.get_carpoid_not_personalid(db, session['personalid'])
-        carpoRestantes = []
-        for x in listaCarpoRestante:
-            carpoRestantes.append(Carpo.get_carpo_nombres_from_id(db,x[0]))
-        print(carpoRestantes)
-        
-        return render_template('user/perfiles/docente/miscarreras.html', carposUsuario = carpoNombres, carpo = carpoRestantes)
+        return render_template('user/perfiles/docente/miscarreras.html', carposUsuario = carpoNombres, carpo = carpoTotales)
 
 
 @docente.route('/datossecundaria')
@@ -48,9 +41,14 @@ def seleccionar_materias():
         flash('No puedes inscribirte sin seleccionar una carrera')  
         return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))  
     else:
-        materias = Materia.get_materia_by_carpoidmat(db,carpoid)
-        print(type(materias))
-        
+        #falta filtrar materias inscriptas
+        personalcarpoid = personalcarpo.get_personalcarpoid(db,session['personalid'], carpoid)
+
+        if personalcarpoid == None:
+            materias = Materia.get_materia_by_carpoidmat(db,carpoid)
+        else:
+            materias = Materia.get_materia_by_carpoidmat_filtrer(db,personalcarpoid[0],carpoid)
+
         return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
 
 @docente.route('/Eliminarcarrera', methods = ['POST'])
@@ -66,7 +64,7 @@ def eliminar_carrera():
 
     return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
 
-@docente.route('/Vermaterias', methods = ['POST'])
+@docente.route('/Materias', methods = ['POST'])
 @login_required
 def Ver_Materias():
     carpoid = request.form.get('carpoid')
@@ -75,9 +73,39 @@ def Ver_Materias():
     materias = []
     for i in personalcarpomaterias:
         materias.append(Materia.get_Materia_id(db, i[2]))
-    print(materias)
 
-    return render_template('user/perfiles/docente/vermaterias.html', materias = materias)
+    return render_template('user/perfiles/docente/vermaterias.html', materias = materias, personalcarpoid = personalcarpoid,carpoid = carpoid)
+
+
+@docente.route('/EliminarMateria', methods = ['POST'])
+@login_required
+def eliminarmateria_personalcarpomateria():
+    carpoid = request.form.get('carpoid')    
+    personalcarpoid = request.form.get('personalcarpoid')
+    materiaid = request.form.get('materiaid')
+    if personalcarpomateria.eliminar_personalcarpomateria(db,personalcarpoid,materiaid):
+        flash('Se desinscribio de una materia')
+        personalcarpomateriaid = personalcarpomateria.select_personalcarpomateria(db,personalcarpoid)
+        if personalcarpomateriaid == None:
+            print('if eliminar')
+            print(session['personalid'],carpoid, ' personalid, carpoid')
+            personalcarpo.eliminar_personalcarpo(db,session['personalid'],carpoid)
+
+            print(len(personalcarpo.cantcarpo(db,session['personalid'])), 'condicion 2do if')
+
+            if len(personalcarpo.cantcarpo(db,session['personalid'])) == 0:
+                print('if eliminar 2')
+                UsuarioPerfil.deactivate_user_perfil(db, current_user.id, session['perfilid'])
+                session['usuarioperfilactivo'] = 0
+
+            return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
+
+    personalcarpomaterias = personalcarpomateria.select_personalcarpomateria_by_personalcarpoid(db,personalcarpoid)
+    materias = []
+    for i in personalcarpomaterias:
+        materias.append(Materia.get_Materia_id(db, i[2]))
+
+    return render_template('user/perfiles/docente/vermaterias.html', materias = materias, personalcarpoid = personalcarpoid, carpoid = carpoid)
 
 
 @docente.route('/activarperfil', methods=['POST'])
@@ -101,7 +129,14 @@ def activar_usuarioperfil():
         return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
 
     else:
-        personalcarpoid = personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[1]
+        personalcarpoid = personalcarpo.get_personalcarpoid(db,session['personalid'], carpoid)
+
+        if personalcarpoid == None:
+            personalcarpoid = personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[1]
+        else:
+            personalcarpoid = personalcarpoid[0]
+        
+
         personalcarpomateriaid = personalcarpomateria.cargar_personalcarpomateria(db,personalcarpoid,materiaid)
 
         personalmateriadatos.insert_into_personalmateriadatos(db,personalcarpomateriaid,CargaHoraria,SituacionRevista,FechaInCargo,TurnoCargo,NumControl,TituloProfesional,observaciones)
@@ -125,3 +160,14 @@ def agregar_carrera():
         alumnocarpo.insert_alumnocarpo(db, session['alumnoid'], carpoid)
         
     return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
+
+@docente.route('/Materias/Datos', methods = ['POST'])
+@login_required
+def Ver_Datos():
+    #datos materias
+    materiaid = request.form.get('materiaid')
+    personalcarpoid = request.form.get('personalcarpoid')
+    personalcarpomateriaid = personalcarpomateria.get_personalcarpomateriaid(db,personalcarpoid,materiaid)[0]
+    datosmateria = personalmateriadatos.select_personalmateriadatos(db,personalcarpomateriaid)[0]
+
+    return render_template('user/perfiles/docente/verdatos.html',datosmateria = datosmateria)
