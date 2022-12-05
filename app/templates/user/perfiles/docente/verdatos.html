@@ -11,11 +11,14 @@
 <div class="row py-5">
   <div class="col-2">
   </div>
+
   <div class="col-md-10 py-5">
     <div class="container">
-      <div class="container d-flex">
-        <h1>{{materia[1]}} - {{materia[3]}}° año - {{materia[4]}}</h1><br>
-        <table>
+      <div class="container d-flex flex-column">
+        
+        <div class="tabla mb-4">
+          <div><h2>{{materia[1]}} - {{materia[3]}}° año - {{materia[4]}}</h2></div>
+          <table class="table table-bordered table-striped mb-4">
             <thead>
                 <tr>
                     <td>Carga Horaria</td>
@@ -39,8 +42,11 @@
                 </tr>
             </tbody>
         </table>
-
-        <table>
+        </div>
+        
+        <div class="tabla">
+          <div><h2 class="text-center capitalize">Alumnos Inscriptos</h2></div>
+          <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <td>Id</td>
@@ -60,6 +66,8 @@
                 {%endfor%}
             </tbody>
         </table>
+        </div>
+        
 
       </div>
     </div>
