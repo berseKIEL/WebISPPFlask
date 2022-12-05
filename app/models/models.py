@@ -155,14 +155,14 @@ class Usuario(UserMixin):
     def resetear_contraseña(self, db, usuarioid):
         try:
             cur = db.connection.cursor()
-            consulta = (
-                'UPDATE usuario SET usuariocontraseñatemp = (select usuario from usuario where usuarioid = %s),usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s')
+            consulta = ('UPDATE usuario SET usuariocontraseñatemp = (select usuario from usuario where usuarioid = %s),usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s')
             cur.execute(consulta, [usuarioid, usuarioid])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
+    
 
     @classmethod
     def update_email(self, db, email, id):
@@ -202,6 +202,18 @@ class Usuario(UserMixin):
         except Exception as ex:
             print(ex)
             raise Exception(ex)
+        
+    @classmethod
+    def deshabilitar_usuario(self, db, id):
+        try:
+            cur = db.connection.cursor()
+            consulta = ("UPDATE usuario SET usuariocontraseñatemp = NULL, usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s")
+            cur.execute(consulta, [(id)])
+            return cur.fetchone()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+        
 
     @classmethod
     def revisar_contraseña_hasheada(self, hash, contraseña):

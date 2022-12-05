@@ -1,9 +1,6 @@
 {%extends 'user/home.html'%} {%block head%} {{super()}}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
-<link
-  rel="stylesheet"
-  href="{{ url_for('static',filename='css/administrarusuarios.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/administrarusuarios.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
 
 {%endblock%} {%block content%}
@@ -11,93 +8,77 @@
   <div class="col-2"></div>
 
   <div class="col-md-10 col-sm-12 contenedor">
-    <div class="container-md container-fluid d-flex">
-      <div class="row g-4 w-100">
-        <div class="col-md-6">
-          <div class="tabla h-100 w-100">
-            <table class="table table-hover h-100">
-              <thead>
-                <tr>
-                  <td>Id</td>
-                  <td>Nombre</td>
-                  <td>Apellido</td>
-                  <td>Carrera</td>
-                  <td>Observaciones</td>
-                </tr>
-              </thead>
-              <tbody>
-                {% for nom in nombreapellido %}
-                <form
-                  action="{{url_for('bedel.resetear_contraseña')}}"
-                  method="post"
-                >
-                  <tr>
-                    <td>{{nom[3]}}</td>
-                    <td>{{nom[0]}}</td>
-                    <td>{{nom[1]}}</td>
-                    <td>{{nom[4]}}</td>
-                    <td>{{nom[2]}}</td>
-                    <input type="hidden" value="{{nom[5]}}" name="usuarioid" />
-                    <td><input type="submit" value="Resetear Contraseña" /></td>
-                  </tr>
-                </form>
+    <div class="container d-flex flex-column">
+      <div class="col mb-3">
+        <form class="d-flex justify-content-center align-items-center" action="{{url_for('bedel.crear_alumno')}}" method="post">
+          <div class="crear p-3">
+            <div class="d-flex flex-column align-items-left p-3">
+              <h1 class="mb-3 text-center border-bottom">Crear Alumno</h1>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" id="nombre" name="nombre" class="form-control form-custom" value="" />
+                </div>
+                <div class="col-md-6">
+                  <label for="apellido">Apellido</label>
+                  <input type="text" id="apellido" name="apellido" class="form-control form-custom" value="" />
+                </div>
+              </div>
 
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <form
-            class="d-flex justify-content-center align-items-center crear"
-            action="{{url_for('bedel.crear_alumno')}}"
-            method="post"
-          >
-            <div class="container login">
-              <div class="d-flex flex-column align-items-left py-3">
-                <h1 class="mb-3">Crear Alumno</h1>
-                <label for="nombre">Nombre</label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  class="form-control form-custom"
-                  value=""
-                />
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="dni">DNI</label>
+                  <input type="text" id="dni" name="dni" class="form-control form-custom" value="" />
+                </div>
+                <div class="col-md-6">
+                  <label for="carpo">Carrera</label>
+                  <select name="Carpo" class="form-select form-select-sm form-custom">
+                    {% for car in carpo %} {% if car[2] == None%}
+                    <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
+                    {% else %}
+                    <option value="{{car[0]}}">{{car[1]}} {{car[2]}} {{car[3]}}</option>
+                    {% endif %} {% endfor %}
+                  </select>
+                </div>
+              </div>
 
-                <label for="apellido">Apellido</label>
-                <input
-                  type="text"
-                  id="apellido"
-                  name="apellido"
-                  class="form-control form-custom"
-                  value=""
-                />
-
-                <label for="dni">DNI</label>
-                <input
-                  type="text"
-                  id="dni"
-                  name="dni"
-                  class="form-control form-custom"
-                  value=""
-                />
-
-                <label for="carpo">Carrera</label>
-                <select name="Carpo" class="form-select form-select-lg">
-                  {% for car in carpo %} {% if car[2] == None%}
-                  <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
-                  {% else %}
-                  <option value="{{car[0]}}">
-                    {{car[1]}} {{car[2]}} {{car[3]}}
-                  </option>
-                  {% endif %} {% endfor %}
-                </select>
-
-                <input type="submit" class="btn btn-primary my-3" />
+              <div class="col text-center">
+                <input type="submit" class="btn btn-primary" />
               </div>
             </div>
-          </form>
+          </div>
+        </form>
+      </div>
+      <div class="col">
+        <div class="tabla h-100">
+          <table class="table h-100">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Carrera</th>
+                <th scope="col">Observaciones</th>
+                <th scope="col">Administracion</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for nom in nombreapellido %}
+              <tr>
+                <th>{{nom[3]}}</th>
+                <td>{{nom[0]}}</td>
+                <td>{{nom[1]}}</td>
+                <td>{{nom[4]}}</td>
+                <td>{{nom[2]}}</td>
+                <td>
+                  <a href="{{ url_for('bedel.resetear_contraseña', usuarioid = nom[3]) }}" class="btn btn-warning btn-sm"> Restablecer </a>
+                  <a href="{{ url_for('bedel.deshabilitarusuario', usuarioid = nom[3]) }}" class="btn btn-danger btn-sm"> Deshabilitar </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -194,7 +194,7 @@ def mostrar_alumnos():
         alid = alumno.get_alumnoid_by_usuarioperfilid(db,i[1])
         user.append(alid)
 
-        carid = alumnocarpo.get_carpoid_by_alumnoid(db,alid)
+        carid = alumnocarpo.get_carpoid_by_alumnoid(db,alid)[0]
         
         car=Carpo.get_carpo_nombres_from_id(db,carid)
         if car[2] == None:
@@ -216,14 +216,22 @@ def mostrar_alumnos():
 
     return render_template('user/perfiles/bedel/adminusuarios.html',nombreapellido = nombreapellido, carpo = carpo)
 
-@bedel.route('/resetearcontraseña', methods = ['POST'])
+@bedel.route('/resetearcontraseña/<usuarioid>', methods = ['GET'])
 @login_required
-def resetear_contraseña():
-    usuarioid = request.form.get('usuarioid')
-    print(usuarioid, ' usuario')
-    Usuario.resetear_contraseña(db,usuarioid)
-    flash('Usuario reseteado')
+def resetear_contraseña(usuarioid):
+    print(usuarioid, 'usuario')
+    # Usuario.resetear_contraseña(db,usuarioid)
+    # flash('Usuario reseteado')
     return redirect(url_for('bedel.mostrar_alumnos'))
+
+@bedel.route('/deshabilitarusuario/<usuarioid>', methods = ['GET'])
+@login_required
+def deshabilitarusuario(usuarioid):
+    print(usuarioid, 'usuario')
+    # Usuario.resetear_contraseña(db,usuarioid)
+    # flash('Usuario reseteado')
+    return redirect(url_for('bedel.mostrar_alumnos'))
+
 
 @bedel.route('/carpo/', methods=['GET','POST'])
 @login_required
