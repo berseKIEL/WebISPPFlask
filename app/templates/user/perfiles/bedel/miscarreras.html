@@ -12,8 +12,8 @@
           <table class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th class="col-6">Carrera</th>
-                <th class="col-6">Operaciones</th>
+                <th class="col-6 text-center">Carrera</th>
+                <th class="col-6 text-center">Operaciones</th>
               </tr>
             </thead>
 
@@ -27,7 +27,7 @@
                 {% endif %}
 
                 <td class="col-6 text-center">
-                  <a href="{{ url_for('bedel.eliminar_carrera', carpoid = car[0]) }}" class="btn btn-danger btn-sm"> x </a>
+                  <a href="{{ url_for('bedel.eliminar_carrera', carpoid = car[0]) }}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
               </tr>
               {% endfor %}
