@@ -3,95 +3,83 @@
 {%block head%}
 {{super()}}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/datospersonales.css') }}" />
 {%endblock%}
 
 {%block content%}
+<div class="row contenedor">
+    <div class="col-2"></div>
+    <div class="col-md-10">
+        <div class="m-4">
+            <form class="row p-3 mb-2 fondo" action="{{ url_for('usuario.editar_datospersonales_usuario') }}"
+                method="POST" id="datospersonales">
+                <div class="container-fluid">
+                    <h2 class="mb-4 col text-center">Seleccione una materia</h2>
+                    <div class="row mb-4">
+                        <select name="materia" class="form-select form-select-lg">
+                            {% for car in materias %}
+                            <option value="{{car[0]}}">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="hidden" value="{{materias[0][2]}}" name="carpoid">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="cargahoraria">Carga horaria</label>
+                            <input type="number" placeholder="Carga Horaria" name="CargaHoraria"
+                                class="form-control form-custom">
+                        </div>
 
-<div class="row pt-5" style="margin:0;">
-
-    <div class="col-2">
-    </div>
-    <div class="col-md-10 py-5 pt-3">
-        <div class="container d-flex pt-3 justify-content-center">
-            <div class="card col-12 col-md-8 text-center">
-
-                <div class="card-header text-center">
-                    <h4 class="mb-0">Datos de Materia</h4>
-                </div>
-
-                <div class="row contenedor">
-
-                    <div class="col-md-10">
-                        <div class="m-4">
-                            <form action="{{url_for('docente.activar_usuarioperfil')}}" method="post">
-                                <div class="d-flex flex-column">
-                                    <select name="materia">
-                                        {% for car in materias %}
-                                        <option value="{{car[0]}}">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</option>
-                                        {% endfor %}
-                                </div>
-                                <input type="hidden" value="{{materias[0][2]}}" name="carpoid">
-                                <div class="row mb-4 pt-3">
-                                    <div class="col-md-6">
-                                        <label for="CargaHoraria">CARGA HORARIA SEMANAL</label>
-                                        <input type="number" placeholder="HORAS" name="CargaHoraria">
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="SituacionRevista">SITUACIÓN DE REVISTA</label>
-                                        <select class="form-select form-select-sm" name="SituacionRevista"
+                        <div class="col-md-6 mb-2">
+                            <label for="situacionRevista">Situacion de revista</label>
+                            <select class="form-select form-select-sm" name="SituacionRevista"
                                             id="SituacionRevista">
-                                            <option selected>Seleccione una opción</option>
-                                            <option value="1">Docente Titular</option>
-                                            <option value="2">Docente Suplente</option>
-                                            <option value="3">Interino</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        <label for="FechaInCargo">FECHA DE INICIO EN EL CARGO</label>
-                                        <input type="date" placeholder="Fecha Inicio Cargo" name="FechaInCargo"
-                                            id="FechaInCargo">
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="TurnoCargo">TURNO</label>
-                                        <select class="form-select form-select-sm" name="TurnoCargo" id="TurnoCargo">
-                                            <option selected>Seleccione una opción</option>
-                                            <option value="1">Turno Mañana</option>
-                                            <option value="2">Turno Tarde</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        <label for="NumControl">NÚMERO DE CONTROL</label>
-                                        <input type="text" placeholder="Número de Control" name="NumControl"
-                                            id="NumControl">
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="TituloProfesional">TÍTULO
-                                            PROFESIONAL</label>
-                                        <input type="text" placeholder="Título Profesional" name="TituloProfesional"
-                                            id="TituloProfesional">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 mb-4">
-                                    <label for="obs">OBSERVACIONES</label>
-                                    <textarea class="form-control" id="obs" rows="2" name="observaciones"></textarea>
-                                </div>
-
-                                <div class="col-12 mb-1 text-center">
-                                    <input type="submit" class="btn btn-primary" value="Guardar" />
-                                </div>
-                            </form>
+                                <option selected>Seleccione una opción</option>
+                                <option value="1">Docente Titular</option>
+                                <option value="2">Docente Suplente</option>
+                                <option value="3">Interino</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="FechaInCarg">Fecha inicio cargo</label>
+                            <input type="date" placeholder="Fecha Inicio Cargo" name="FechaInCargo"
+                                class="form-control form-custom">
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="TurnoCargo">TURNO</label>
+                            <select class="form-select form-select-sm" name="TurnoCargo" id="TurnoCargo">
+                                <option selected>Seleccione una opción</option>
+                                <option value="1">Turno Mañana</option>
+                                <option value="2">Turno Tarde</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label for="NumControl">Numero de control</label>
+                            <input type="text" placeholder="Numero de Control" name="NumControl"
+                                class="form-control form-custom">
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="TituloProfesional">Titulo Profesional</label>
+                            <input type="text" placeholder="Titulo Profesional" name="TituloProfesional"
+                                class="form-control form-custom">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <label for="observaciones">Observaciones</label>
+                            <textarea class="form-control form-custom" name="observaciones" id="observaciones" cols="10"
+                                rows="5" placeholder="Observaciones"></textarea>
+                        </div>
+                        <input type="submit">
+                    </form>
                 </div>
             </div>
         </div>
