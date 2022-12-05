@@ -64,9 +64,8 @@ def mostrar_Datospersonales_usuarioperfil():
 
     perfilid = session['perfilid']
 
-    alumnoid = session['alumnoid']
-
     if perfilid == 7:
+        alumnoid = session['alumnoid']
         datosDomicilioProc = alumnodomproc.get_usuario_domproc_id(db, alumnoid)
         return render_template('user/perfiles/Datospersonales.html', datosPersonales=datosPersonales, datosDomicilio=datosDomicilio, datosDomicilioProc=datosDomicilioProc)
 

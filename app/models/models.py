@@ -896,6 +896,26 @@ class Materia():
             raise Exception(ex)
 
     @classmethod
+    def get_materia_by_alumno_filtrer(self, mysql, alumnocarpoid, carpoid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * from materia where materiaid not in (select materiaid From alumnoCarpomateria where alumnocarpoid = %s) and carpoidmat = %s order by materiaid'
+            cur.execute(sql, [alumnocarpoid,carpoid])
+            return cur.fetchall()
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_materia_by_alumno_filtrerIn(self, mysql, alumnocarpoid, carpoid):
+        try:
+            cur = mysql.connection.cursor()
+            sql = 'SELECT * from materia where materiaid in (select materiaid From alumnoCarpomateria where alumnocarpoid = %s) and carpoidmat = %s order by materiaid'
+            cur.execute(sql, [alumnocarpoid,carpoid])
+            return cur.fetchall()
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
     def add_Materia(self, mysql, MateriaNombre, MateriaAño, MateriaTipo, CarpoIDMat):
         try:
             cur = mysql.connection.cursor()
@@ -1175,6 +1195,18 @@ class alumnocarpo():
             raise Exception(ex)
 
     @classmethod
+    def get_alumnocarpoid_by_alumnoidcarpoid(self, mysql, carpoid,alumnoid):
+        try:
+            cur = mysql.connection.cursor()
+            consulta = ("SELECT alumnocarpoid FROM alumnocarpo WHERE carpoid = %s AND alumnoid = %s")
+            cur.execute(consulta, [carpoid,alumnoid])
+            alumnos = cur.fetchall()
+            return alumnos
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
+    @classmethod
     def get_carpoid_by_alumnoid(self, db, id):
         try:
             cur = db.connection.cursor()
@@ -1205,6 +1237,48 @@ class alumnocarpo():
             consulta = ("SELECT alumnoid FROM alumnocarpo inner join alumnocarpomateria on alumnocarpo.AlumnoCarpoID = alumnocarpomateria.AlumnoCarpoID where materiaid = %s")
             cur.execute(consulta, [(materiaid)])
             return cur.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
+class alumnocarpomateria():
+    def __init__(self, alumnocarpomateriaid, alumnocarpoid, Materiaid) -> None:
+
+        self.alumnocarpomateriaid = alumnocarpomateriaid
+        self.alumnocarpoid = alumnocarpoid
+        self.Materiaid = Materiaid
+
+    @classmethod
+    def get_materiaid_by_alumnocarpoid(self, db, alumnocarpoid):
+        try:
+            cur = db.connection.cursor()
+            consulta = ("SELECT materiaid FROM alumnocarpomateria where alumnocarpoid = %s")
+            cur.execute(consulta, [(alumnocarpoid)])
+            return cur.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
+    @classmethod
+    def insert_alumnocarpomateria(self, db, materiaid, alumnocarpoid):
+        try:
+            cur = db.connection.cursor()
+            consulta = 'INSERT INTO alumnocarpomateria(AlumnoCarpoID, MateriaID) VALUES(%s,%s)'
+            cur.execute(consulta, [alumnocarpoid,materiaid])
+            db.connection.commit()
+            return True
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
+
+    @classmethod
+    def delete_alumnocarpomateria(self, db, materiaid, alumnocarpoid):
+        try:
+            cur = db.connection.cursor()
+            consulta = 'DELETE FROM alumnocarpomateria WHERE AlumnoCarpoID = %s AND MateriaID = %s'
+            cur.execute(consulta, [alumnocarpoid,materiaid])
+            db.connection.commit()
+            return True
         except Exception as ex:
             print(ex)
             raise Exception(ex)
