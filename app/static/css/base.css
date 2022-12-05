@@ -23,6 +23,11 @@ body {
   z-index: 101;
 }
 
+.nav-link:hover {
+  color:#0d6efd;
+  text-transform: uppercase;
+  font-weight: bold; 
+}
 /* Sidebar */
 .sidebar {
   position: fixed;
