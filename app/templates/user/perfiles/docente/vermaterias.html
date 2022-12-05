@@ -23,9 +23,18 @@
           <tbody>
             {% for car in materias %}
             <tr>
-                <form action="{{url_for('docente.Ver_Materias')}}" method='post'>
+                <form action="{{url_for('docente.Ver_Datos')}}" method='post'>
                   <td>{{car[1]}} - {{car[3]}}° año - {{car[4]}}</td>
                   <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                  <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
+                  <td><input type="submit" value="Ver Datos"></td>
+                  
+                </form>
+                <form action="{{url_for('docente.eliminarmateria_personalcarpomateria')}}" method='post'>
+
+                  <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                  <input type="hidden" value="{{carpoid}}" name="carpoid" />
+                  <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
                   <td><input type="submit" value="X"></td>
                 </form>
             </tr>
