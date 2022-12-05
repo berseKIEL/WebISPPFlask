@@ -42,10 +42,10 @@
                   <div class="d-flex gap-2">
                     <form action="{{url_for('docente.Ver_Materias')}}" method="post">
                       <input type="hidden" value="{{car[0]}}" name="carpoid" />
-                      <input type="submit" class="btn btn-primary btn-sm" value="Ver Materias" />
+                      <input type="submit" class="btn btn-primary btn-sm" value="Ver Datos" />
                     </form>
                     <form action="{{url_for('docente.eliminar_carrera')}}" method="post">
-                      <input type="hidden" value="{{car[0]}}" name="carpoid" />
+                      <input type="hidden" value="{{car[0]}}" name="carpoid"/>
                       <input type="submit" class="btn btn-danger btn-sm" value="X" />
                     </form>
                   </div>

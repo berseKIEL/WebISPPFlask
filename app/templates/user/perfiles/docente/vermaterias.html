@@ -11,38 +11,45 @@
 <div class="row py-5">
   <div class="col-2">
   </div>
-  <div class="col-md-10 py-5">
-    <div class="container">
-      <div class="container d-flex">
-        <table>
-          <thead>
-            <tr>
-              <td><strong>Carrera</strong></td>
-            </tr>
-          </thead>
-          <tbody>
-            {% for car in materias %}
-            <tr>
-                <form action="{{url_for('docente.Ver_Datos')}}" method='post'>
-                  <td>{{car[1]}} - {{car[3]}}° año - {{car[4]}}</td>
-                  <input type="hidden" value="{{car[0]}}" name="materiaid" />
-                  <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
-                  <input type="hidden" value="{{carpoid}}" name="carpoid" />
-                  <td><input type="submit" value="Ver Datos"></td>
-                  
-                </form>
-                <form action="{{url_for('docente.eliminarmateria_personalcarpomateria')}}" method='post'>
 
-                  <input type="hidden" value="{{car[0]}}" name="materiaid" />
-                  <input type="hidden" value="{{carpoid}}" name="carpoid" />
-                  <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
-                  <td><input type="submit" value="X"></td>
-                </form>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+  <div class="col-10 py-5 mt-3">
+    <div class="container d-flex flex-column align-items-center">
+      <div class="col-md-10 col-12 mb-3">
+        <div class="tabla">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th class="col-6">Carrera</th>
+                <th class="col-6">Administración</th>
+              </tr>
+            </thead>
 
+            <tbody>
+              {% for car in materias %}
+              <tr>
+                <td class="col-6">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</td>
+                <td class="col-6">
+                  <div class="d-flex gap-2">
+                    <form action="{{url_for('docente.Ver_Datos')}}" method='post'>
+                      <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                      <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
+                      <input type="hidden" value="{{carpoid}}" name="carpoid" />
+                      <input class="btn btn-primary btn-sm" type="submit" value="Ver Datos">
+                    </form>
+                    
+                    <form action="{{url_for('docente.eliminarmateria_personalcarpomateria')}}" method='post'>
+                      <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                      <input type="hidden" value="{{carpoid}}" name="carpoid" />
+                      <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
+                      <input class="btn btn-danger btn-sm" type="submit" value="X">
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
