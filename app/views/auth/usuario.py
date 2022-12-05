@@ -171,20 +171,13 @@ def editar_datosdomicilio_usuario():
     if not altura and not altura.strip():
         error = 'Falta completar la altura'
 
-    if not piso and not piso.strip():
-        error = 'Falta completar el Piso'
-
-    if not numdep and not numdep.strip():
-        error = 'Falta completar el Numero de departamento'
-
-    if not manzana and not manzana.strip():
-        error = 'Falta completar la manzana'
-
     if not cp and not cp.strip():
         error = 'Falta completar el Codigo Postal'
 
     if not (error):
         usuarioDomicilio.update_usuariodom(db,provincia, departamento, localidad,ciudad, barrio, calle, altura, piso, numdep, manzana, cp, current_user.id)
+        flash('Se acutalizado los datos correctamente')
+        return redirect(url_for('usuario.mostrar_Datospersonales_usuarioperfil'))
 
     else:
         flash(error)

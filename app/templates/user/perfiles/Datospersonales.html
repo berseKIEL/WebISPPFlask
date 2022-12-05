@@ -1,4 +1,7 @@
-{%extends 'user/home.html'%} {%block head%} {{super()}}
+{%extends 'user/home.html'%}
+
+{%block head%}
+{{super()}}
 
 <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
 
@@ -6,7 +9,9 @@
 
 <link rel="stylesheet" href="{{ url_for('static',filename='css/datospersonales.css') }}" />
 
-{%endblock%} {%block content%}
+{%endblock%}
+
+{%block content%}
 <div class="row contenedor">
   <div class="col-2"></div>
   <div class="col-md-10">
@@ -79,68 +84,70 @@
         </div>
       </form>
 
-      <form class="row p-3 mb-2 fondo" action="" id="datosDom">
+      <form class="row p-3 mb-2 fondo" action="{{ url_for('usuario.editar_datosdomicilio_usuario') }}" method="POST" id="datosDom">
         <div class="container-fluid">
           <h2 class="mb-4 col text-center">Domicilio de Residencia</h2>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="provincia" id="provincia" class="form-control form-custom" value="{{datosDomicilio[1]}}" />
+              <input type="text" name="provincia" id="provincia" placeholder="Provincia" class="form-control form-custom" value="{{datosDomicilio[1]}}" />
               <label class="labelforms" for="provincia">Provincia</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="departamento" id="departamento" class="form-control form-custom" value="{{datosDomicilio[2]}}" />
+              <input type="text" name="departamento" id="departamento" placeholder="Departamento" class="form-control form-custom" value="{{datosDomicilio[2]}}" />
               <label class="labelforms" for="departamento">Departamento</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="localidad" id="localidad" class="form-control form-custom" value="{{datosDomicilio[3]}}" />
+              <input type="text" name="localidad" id="localidad" placeholder="Localidad" class="form-control form-custom" value="{{datosDomicilio[3]}}" />
               <label class="labelforms" for="localidad">Localidad</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="ciudad" id="ciudad" class="form-control form-custom" value="{{datosDomicilio[4]}}" />
+              <input type="text" name="ciudad" id="ciudad" placeholder="Ciudad" class="form-control form-custom" value="{{datosDomicilio[4]}}" />
               <label class="labelforms" for="ciudad">Ciudad</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="barrio" id="barrio" class="form-control form-custom" value="{{datosDomicilio[5]}}" />
+              <input type="text" name="barrio" id="barrio" placeholder="Barrio" class="form-control form-custom" value="{{datosDomicilio[5]}}" />
               <label class="labelforms" for="barrio">Barrio</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="calle" id="calle" class="form-control form-custom" value="{{datosDomicilio[6]}}" />
-              <label class="labelforms" for="calle">UsuarioCalle</label>
+              <input type="text" name="calle" id="calle" placeholder="Calle" class="form-control form-custom" value="{{datosDomicilio[6]}}" />
+              <label class="labelforms" for="calle">Calle</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="altura" id="altura" class="form-control form-custom" value="{{datosDomicilio[7]}}" />
+              <input type="text" name="altura" id="altura" placeholder="Altura" class="form-control form-custom" value="{{datosDomicilio[7]}}" />
               <label class="labelforms" for="altura">Altura</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="piso" id="piso" class="form-control form-custom" value="{{datosDomicilio[8]}}" />
+              <input type="text" name="piso" id="piso" placeholder="Piso" class="form-control form-custom" value="{{datosDomicilio[8]}}" />
               <label class="labelforms" for="piso">Piso</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="numdep" id="numdep" class="form-control form-custom" value="{{datosDomicilio[9]}}" />
-              <label class="labelforms" for="numdep">Numero Departamento</label>
+              <input type="text" name="numdep" id="numdep" placeholder="Numero del Departamento" class="form-control form-custom" value="{{datosDomicilio[9]}}" />
+              <label class="labelforms" for="numdep">Num. Dep.</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="manzana" id="manzana" class="form-control form-custom" value="{{datosDomicilio[10]}}" />
+              <input type="text" name="manzana" id="manzana" placeholder="Manzana" class="form-control form-custom" value="{{datosDomicilio[10]}}" />
               <label class="labelforms" for="manzana">Manzana</label>
             </div>
           </div>
 
-          <div class="col">
-            <input type="text" name="cp" id="cp" class="form-control form-custom" value="{{datosDomicilio[11]}}" />
-            <label class="labelforms" for="cp">Codigo Postal</label>
+          <div class="d-flex justify-content-md-center">
+            <div class="col-md-6">
+              <input type="text" name="cp" id="cp" placeholder="Código Postal" class="form-control form-custom" value="{{datosDomicilio[11]}}" />
+              <label class="labelforms" for="cp">CP</label>
+            </div>
           </div>
 
           <div class="col-12 mb-1 text-center">
@@ -150,68 +157,70 @@
       </form>
 
       {%if session['perfilid'] == 7%}
-      <form class="row p-3 mb-2 fondo" action="" id="datosDomP">
+      <form class="row p-3 mb-2 fondo" action="{{ url_for('alumno.editar_datosdomicilioproc_alumno') }}" method="POST" id="datosDomP">
         <div class="container-fluid">
           <h2 class="mb-4 col text-center">Domicilio de Procedencia</h2>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="provincia" id="provincia" class="form-control form-custom" value="{{datosDomicilio[1]}}" />
+              <input type="text" name="provincia" id="provincia" placeholder="Provincia" class="form-control form-custom" value="{{datosDomicilioProc[1]}}" />
               <label class="labelforms" for="provincia">Provincia</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="departamento" id="departamento" class="form-control form-custom" value="{{datosDomicilio[2]}}" />
+              <input type="text" name="departamento" id="departamento" placeholder="Departamento" class="form-control form-custom" value="{{datosDomicilioProc[2]}}" />
               <label class="labelforms" for="departamento">Departamento</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="localidad" id="localidad" class="form-control form-custom" value="{{datosDomicilio[3]}}" />
+              <input type="text" name="localidad" id="localidad" placeholder="Localidad" class="form-control form-custom" value="{{datosDomicilioProc[3]}}" />
               <label class="labelforms" for="localidad">Localidad</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="ciudad" id="ciudad" class="form-control form-custom" value="{{datosDomicilio[4]}}" />
+              <input type="text" name="ciudad" id="ciudad" placeholder="Ciudad" class="form-control form-custom" value="{{datosDomicilioProc[4]}}" />
               <label class="labelforms" for="ciudad">Ciudad</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="barrio" id="barrio" class="form-control form-custom" value="{{datosDomicilio[5]}}" />
+              <input type="text" name="barrio" id="barrio" placeholder="Barrio" class="form-control form-custom" value="{{datosDomicilioProc[5]}}" />
               <label class="labelforms" for="barrio">Barrio</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="calle" id="calle" class="form-control form-custom" value="{{datosDomicilio[6]}}" />
+              <input type="text" name="calle" id="calle" placeholder="UsuarioCalle" class="form-control form-custom" value="{{datosDomicilioProc[6]}}" />
               <label class="labelforms" for="calle">UsuarioCalle</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="altura" id="altura" class="form-control form-custom" value="{{datosDomicilio[7]}}" />
+              <input type="text" name="altura" id="altura" placeholder="Altura" class="form-control form-custom" value="{{datosDomicilioProc[7]}}" />
               <label class="labelforms" for="altura">Altura</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="piso" id="piso" class="form-control form-custom" value="{{datosDomicilio[8]}}" />
+              <input type="text" name="piso" id="piso" placeholder="Piso" class="form-control form-custom" value="{{datosDomicilioProc[8]}}" />
               <label class="labelforms" for="piso">Piso</label>
             </div>
           </div>
 
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" name="numdep" id="numdep" class="form-control form-custom" value="{{datosDomicilio[9]}}" />
-              <label class="labelforms" for="numdep">Numero Departamento</label>
+              <input type="text" name="numdep" id="numdep" placeholder="Numero del Departamento" class="form-control form-custom" value="{{datosDomicilioProc[9]}}" />
+              <label class="labelforms" for="numdep">Num. Dep.</label>
             </div>
             <div class="col-md-6">
-              <input type="text" name="manzana" id="manzana" class="form-control form-custom" value="{{datosDomicilio[10]}}" />
+              <input type="text" name="manzana" id="manzana" placeholder="Manzana" class="form-control form-custom" value="{{datosDomicilioProc[10]}}" />
               <label class="labelforms" for="manzana">Manzana</label>
             </div>
           </div>
 
-          <div class="col">
-            <input type="text" name="cp" id="cp" class="form-control form-custom" value="{{datosDomicilio[11]}}" />
-            <label class="labelforms" for="cp">Codigo Postal</label>
+          <div class="d-flex justify-content-md-center">
+            <div class="col-md-6 col-12">
+              <input type="text" name="cp" id="cp" placeholder="Código Postal" class="form-control form-custom" value="{{datosDomicilioProc[11]}}" />
+              <label class="labelforms" for="cp">CP</label>
+            </div>
           </div>
 
           <div class="col-12 mb-1 text-center">
@@ -223,8 +232,10 @@
     </div>
   </div>
 </div>
-{%endblock%} {%block script%} {{super()}}
+{%endblock%}
 
+{%block script%}
+{{super()}}
 <script>
   let formDP = document.getElementById("datospersonales");
 
@@ -236,19 +247,9 @@
     }
   }
 
-  let formD = document.getElementById("datosDom");
+  let formDD = document.getElementById("datosDom");
 
-  var elements = formD.elements;
-
-  for (var i = 0, element; (element = elements[i++]); ) {
-    if (element.value === "None") {
-      element.value = "";
-    }
-  }
-
-  let fromDP = document.getElementById("datosDomP");
-
-  var elements = fromDP.elements;
+  var elements = formDD.elements;
 
   for (var i = 0, element; (element = elements[i++]); ) {
     if (element.value === "None") {
@@ -256,6 +257,14 @@
     }
   }
 
+  let fromDDP = document.getElementById("datosDomP");
 
+  var elements = fromDDP.elements;
+
+  for (var i = 0, element; (element = elements[i++]); ) {
+    if (element.value === "None") {
+      element.value = "";
+    }
+  }
 </script>
 {%endblock%}

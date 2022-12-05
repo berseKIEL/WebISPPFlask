@@ -44,12 +44,40 @@ def mostrar_datossecundaria_usuarioperfil():
 @login_required
 def seleccionar_materias():
     carpoid = request.form.get('Carpo')
-    
-    materias = Materia.get_materia_by_carpoidmat(db,carpoid)
-    print(type(materias))
+    if (carpoid==None):
+        flash('No puedes inscribirte sin seleccionar una carrera')  
+        return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))  
+    else:
+        materias = Materia.get_materia_by_carpoidmat(db,carpoid)
+        print(type(materias))
         
-    return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
+        return render_template('user/perfiles/docente/seleccionmateria.html',carpoid = carpoid, materias = materias)
 
+@docente.route('/Eliminarcarrera', methods = ['POST'])
+@login_required
+def eliminar_carrera():
+    carpoid = request.form.get('carpoid')
+    personalcarpo.eliminar_personalcarpo(db,session['personalid'], carpoid)
+
+
+    if len(personalcarpo.cantcarpo(db,session['personalid'])) == 0:
+        UsuarioPerfil.deactivate_user_perfil(db, current_user.id, session['perfilid'])
+        session['usuarioperfilactivo'] = 0
+
+    return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
+
+@docente.route('/Vermaterias', methods = ['POST'])
+@login_required
+def Ver_Materias():
+    carpoid = request.form.get('carpoid')
+    personalcarpoid = personalcarpo.get_personalcarpoid(db,session['personalid'],carpoid)[0]
+    personalcarpomaterias = personalcarpomateria.select_personalcarpomateria_by_personalcarpoid(db,personalcarpoid)
+    materias = []
+    for i in personalcarpomaterias:
+        materias.append(Materia.get_Materia_id(db, i[2]))
+    print(materias)
+
+    return render_template('user/perfiles/docente/vermaterias.html', materias = materias)
 
 
 @docente.route('/activarperfil', methods=['POST'])
@@ -64,6 +92,7 @@ def activar_usuarioperfil():
     TurnoCargo = request.form.get('TurnoCargo')
     NumControl = request.form.get('NumControl')
     TituloProfesional = request.form.get('TituloProfesional')
+    observaciones = request.form.get('observaciones')
 
     if ((((((CargaHoraria == '') or SituacionRevista == '') or FechaInCargo == '') or TurnoCargo == '') or NumControl == '') or TituloProfesional == ''):
 
@@ -75,10 +104,12 @@ def activar_usuarioperfil():
         personalcarpoid = personalcarpo.cargar_personalcarpo(db,session['personalid'], carpoid)[1]
         personalcarpomateriaid = personalcarpomateria.cargar_personalcarpomateria(db,personalcarpoid,materiaid)
 
-        personalmateriadatos.insert_into_personalmateriadatos(db,personalcarpomateriaid,CargaHoraria,SituacionRevista,FechaInCargo,TurnoCargo,NumControl,TituloProfesional)
+        personalmateriadatos.insert_into_personalmateriadatos(db,personalcarpomateriaid,CargaHoraria,SituacionRevista,FechaInCargo,TurnoCargo,NumControl,TituloProfesional,observaciones)
 
-        UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
-        session['usuarioperfilactivo'] = 1
+        if 'usuarioperfilactivo' in session:
+            if session['usuarioperfilactivo'] == 0:
+                UsuarioPerfil.activate_user_perfil(db, current_user.id, session['perfilid'])
+                session['usuarioperfilactivo'] = 1
         
         return redirect(url_for('docente.mostrar_carreras_usuarioperfil'))
 

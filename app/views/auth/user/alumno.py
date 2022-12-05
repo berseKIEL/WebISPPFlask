@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos, Perfil, Carpo, alumnocarpo, UsuarioPerfil
+from ....models.models import usuarioDatos, Perfil, Carpo, alumnocarpo, UsuarioPerfil, alumnodomproc, alumnosecundaria
 from ....ext import db
 
 # Desarrollo de la vista Alumno
@@ -43,10 +43,39 @@ def mostrar_carreras_usuarioperfil():
         return render_template('user/perfiles/alumno/miscarreras.html', carposUsuario = carpoNombres, carpo = carpoRestantes)
 
 
-@alumno.route('/datossecundaria')
+@alumno.route('/datossecundaria', methods=['GET','POST'])
 @login_required
 def mostrar_datossecundaria_usuarioperfil():
-    return render_template('user/perfiles/alumno/datossecundaria.html')
+    if request.method == 'GET':
+        alumnoid = session['alumnoid']
+        datosecundaria = alumnosecundaria.get_alumno_alumnosecundaria_id(db, alumnoid)
+    if request.method == 'POST':
+        institucion = request.form.get('institucion')
+        titulosec = request.form.get('titulosec')
+        modalidad = request.form.get('modalidad')
+        añoEgreso = request.form.get('añoEgreso')
+
+        error = None
+        
+        if not institucion and not institucion.strip():
+            error = 'Falta completar la institucion'
+        
+        if not titulosec and not titulosec.strip():
+            error = 'Falta completar el Titulo'
+        
+        if not modalidad and not modalidad.strip():
+            error = 'Falta completar la modalidad'
+        
+        if not añoEgreso and not añoEgreso.strip():
+            error = 'Falta completar el año de Egreso'
+        
+        if not error:
+            alumnosecundaria.update_alumnosecundaria(db,institucion,titulosec,modalidad,añoEgreso,current_user.id)
+        
+        else:
+            flash(error)
+            
+    return render_template('user/perfiles/alumno/datossecundaria.html', datosecundaria = datosecundaria)
 
 
 @alumno.route('/activarperfil', methods=['POST'])
@@ -72,3 +101,60 @@ def agregar_carrera():
         alumnocarpo.insert_alumnocarpo(db, session['alumnoid'], carpoid)
         
     return redirect(url_for('alumno.mostrar_carreras_usuarioperfil'))
+
+@alumno.route('/edit/datosdomicilioproc', methods=['POST'])
+@login_required
+def editar_datosdomicilioproc_alumno():
+    provincia = request.form.get('provincia')
+    departamento = request.form.get('departamento')
+    localidad = request.form.get('localidad')
+    ciudad = request.form.get('ciudad')
+    barrio = request.form.get('barrio')
+    calle = request.form.get('calle')
+    altura = request.form.get('altura')
+    piso = request.form.get('piso')
+    numdep = request.form.get('numdep')
+    manzana = request.form.get('manzana')
+    cp = request.form.get('cp')
+
+    error = None
+
+    if not provincia and not provincia.strip():
+        error = 'Falta completar la provincia'
+
+    if not departamento and not departamento.strip():
+        error = 'Falta completar la departamento'
+
+    if not localidad and not localidad.strip():
+        error = 'Falta completar el localidad'
+
+    if not ciudad and not ciudad.strip():
+        error = 'Falta completar el ciudad'
+
+    if not barrio and not barrio.strip():
+        error = 'Falta completar el barrio'
+
+    if not calle and not calle.strip():
+        error = 'Falta completar el calle'
+
+    if not altura and not altura.strip():
+        error = 'Falta completar la altura'
+
+    if not piso and not piso.strip():
+        error = 'Falta completar el Piso'
+
+    if not numdep and not numdep.strip():
+        error = 'Falta completar el Numero de departamento'
+
+    if not manzana and not manzana.strip():
+        error = 'Falta completar la manzana'
+
+    if not cp and not cp.strip():
+        error = 'Falta completar el Codigo Postal'
+
+    if not (error):
+        alumnodomproc.update_usuariodomproc(db,provincia, departamento, localidad,ciudad, barrio, calle, altura, piso, numdep, manzana, cp, current_user.id)
+
+    else:
+        flash(error)
+        return redirect(url_for('usuario.mostrar_Datospersonales_usuarioperfil'))
