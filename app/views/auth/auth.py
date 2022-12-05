@@ -231,7 +231,6 @@ def habilitar_usuario():
 @login_required
 def logout():
     logout_user()
-    if 'perfilid' in session:
-        session.pop('perfilid', None)
+    session.clear()
     flash('El usuario ha cerrado la sesión correctamente')
     return redirect(url_for("home.index"))
