@@ -261,7 +261,7 @@ CREATE TABLE alumnosecundaria (
   AlumnoID int NOT NULL,
   Institucion varchar(100),
   TituloSecundaria varchar(100),
-  AñoEgreso varchar(100),
+  AñoEgreso YEAR,
   Modalidad varchar(100),
   PRIMARY KEY (AlumnoID),
   CONSTRAINT AlumnoIDSec FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
