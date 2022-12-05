@@ -14,16 +14,33 @@
   <div class="col-md-10 py-5">
     <div class="container">
       <div class="container d-flex">
-        
-        {{datosmateria}}
+        <h1>{{materia[1]}} - {{materia[3]}}° año - {{materia[4]}}</h1><br>
         <table>
             <thead>
-
+                <tr>
+                    <td>Carga Horaria</td>
+                    <td>Situacion Revista</td>
+                    <td>Fecha inicio cargo</td>
+                    <td>Turno cargo</td>
+                    <td>Numero de control</td>
+                    <td>Titulo Profesional</td>
+                    <td>Observaciones</td>
+                </tr>
             </thead>
             <tbody>
-                
+                <tr>
+                    <td>{{datosmateria[1]}}</td>
+                    <td>{{datosmateria[2]}}</td>
+                    <td>{{datosmateria[3]}}</td>
+                    <td>{{datosmateria[4]}}</td>
+                    <td>{{datosmateria[5]}}</td>
+                    <td>{{datosmateria[6]}}</td>
+                    <td>{{datosmateria[7]}}</td>
+                </tr>
             </tbody>
         </table>
+
+        
 
       </div>
     </div>
