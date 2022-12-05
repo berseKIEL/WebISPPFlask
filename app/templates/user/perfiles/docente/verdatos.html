@@ -40,7 +40,26 @@
             </tbody>
         </table>
 
-        
+        <table>
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>Apellido</td>
+                    <td>Nombre</td>
+                    <td>Observaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {%for nom in nombreapellido%}
+                <tr>
+                    <td>{{nom[3]}}</td>
+                    <td>{{nom[1]}}</td>
+                    <td>{{nom[0]}}</td>
+                    <td>{{nom[2]}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
 
       </div>
     </div>
