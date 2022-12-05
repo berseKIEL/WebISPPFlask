@@ -154,7 +154,7 @@ class Usuario(UserMixin):
     def resetear_contraseña(self, db, usuarioid):
         try:
             cur = db.connection.cursor()
-            consulta = ('UPDATE usuario SET usuariocontraseñatemp = (select usuario from usuario where usuarioid = %s),usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s')
+            consulta = ('UPDATE usuario SET usuariocontraseñatemp = (select usuario where usuarioid = %s), usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s')
             cur.execute(consulta, [usuarioid, usuarioid])
             db.connection.commit()
             return cur.lastrowid
@@ -208,7 +208,7 @@ class Usuario(UserMixin):
             consulta = (
                 "UPDATE usuario SET usuariocontraseñatemp = NULL, usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s")
             cur.execute(consulta, [(id)])
-            return cur.fetchone()
+            return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
