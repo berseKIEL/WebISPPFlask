@@ -9,15 +9,6 @@ from ....ext import db
 # Desarrollo de la vista Alumno
 alumno = Blueprint('alumno', __name__)
 
-
-@alumno.before_request
-def before_request():
-    try:
-        print(session['usuarioperfilactivo'])
-    except:
-        print('caca')        
-
-
 @alumno.route('/miscarreras')
 @login_required
 def mostrar_carreras_usuarioperfil():
@@ -49,6 +40,7 @@ def mostrar_datossecundaria_usuarioperfil():
     if request.method == 'GET':
         alumnoid = session['alumnoid']
         datosecundaria = alumnosecundaria.get_alumno_alumnosecundaria_id(db, alumnoid)
+        
     if request.method == 'POST':
         institucion = request.form.get('institucion')
         titulosec = request.form.get('titulosec')
@@ -70,10 +62,13 @@ def mostrar_datossecundaria_usuarioperfil():
             error = 'Falta completar el año de Egreso'
         
         if not error:
-            alumnosecundaria.update_alumnosecundaria(db,institucion,titulosec,modalidad,añoEgreso,current_user.id)
+            alumnosecundaria.update_alumnosecundaria(db,institucion,titulosec,modalidad,añoEgreso,session['alumnoid'])
+            flash('Se modifico los datos correctamente',category='success')
+            return redirect(url_for('alumno.mostrar_datossecundaria_usuarioperfil'))
         
         else:
             flash(error)
+            return redirect(url_for('alumno.mostrar_datossecundaria_usuarioperfil'))
             
     return render_template('user/perfiles/alumno/datossecundaria.html', datosecundaria = datosecundaria)
 
