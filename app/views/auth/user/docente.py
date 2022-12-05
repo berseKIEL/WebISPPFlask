@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia,personalcarpomateria, personalmateriadatos,alumnocarpo
+from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia,personalcarpomateria, personalmateriadatos,alumnocarpo,alumno
 from ....ext import db
 
 # Desarrollo de la vista docente
@@ -172,7 +172,30 @@ def Ver_Datos():
     datosmateria = personalmateriadatos.select_personalmateriadatos(db,personalcarpomateriaid)[0]
 
     materia = Materia.get_Materia_id(db,materiaid)
+    alumnosid = alumnocarpo.get_alumnoid(db,materia[0])
 
-    alumnocarpo.get_alumno_from_alumnocarpo(db,carpoid)
 
-    return render_template('user/perfiles/docente/verdatos.html',datosmateria = datosmateria, materia = materia)
+
+    usuariosperfilesid =[]
+    for i in alumnosid:
+        usuariosperfilesid.append([alumno.get_usuarioperfil_from_alumno(db,i[0]),i[0]])
+    usuariosid = []
+    for i in usuariosperfilesid:
+        usuariousuarioperfil=UsuarioPerfil.get_usuarioid_from_usuarioperfil(db,i[0])
+        usuariousuarioperfil.append(i[1])
+        usuariosid.append(usuariousuarioperfil)
+
+    
+    nombreapellido = []
+    user = []
+    for i in usuariosid:
+        
+        user = list(usuarioDatos.get_Nombre_Apellido_from_usuariodatos(db,i[0]))
+
+        user.append(i[2]) 
+
+        user.append(i[0])
+
+        nombreapellido.append(user)
+        
+    return render_template('user/perfiles/docente/verdatos.html',datosmateria = datosmateria, materia = materia, nombreapellido = nombreapellido)

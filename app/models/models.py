@@ -1200,3 +1200,14 @@ class alumnocarpo():
         except Exception as ex:
             print(ex)
             raise Exception(ex)
+
+    @classmethod
+    def get_alumnoid(self, db, materiaid):
+        try:
+            cur = db.connection.cursor()
+            consulta = ("SELECT alumnoid FROM alumnocarpo inner join alumnocarpomateria on alumnocarpo.AlumnoCarpoID = alumnocarpomateria.AlumnoCarpoID where materiaid = %s")
+            cur.execute(consulta, [(materiaid)])
+            return cur.fetchall()
+        except Exception as ex:
+            print(ex)
+            raise Exception(ex)
