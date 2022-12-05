@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-6">
                   <label for="carpo">Carrera</label>
-                  <select name="Carpo" class="form-select form-select-sm form-custom">
+                  <select name="carpo" class="form-select form-select-sm form-custom">
                     {% for car in carpo %} {% if car[2] == None%}
                     <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
                     {% else %}
