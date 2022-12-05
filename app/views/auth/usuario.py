@@ -19,8 +19,9 @@ def index():
         db, current_user.id, session['perfilid'])
 
     if session['perfilid'] != 7:
-        session['personalid'] = personal.get_personalid(
-            db, session['usuarioperfilid'])
+        if session['perfilid'] != 1:
+            session['personalid'] = personal.get_personalid(
+                db, session['usuarioperfilid'])
 
     else:
         session['alumnoid'] = alumno.get_alumnoid_by_usuarioperfilid(
