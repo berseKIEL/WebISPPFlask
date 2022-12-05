@@ -53,7 +53,7 @@
 <script src="{{ url_for('static',filename='js/yearpicker.js') }}"></script>
 
 <script>
-  {%if datossecundaria[3] == ''%}
+  {%if datosecundaria[3] == ''%}
     $('.yearpicker').yearpicker({year:{{datosecundaria[3]}}})
   {%else%}
     $('.yearpicker').yearpicker({})
