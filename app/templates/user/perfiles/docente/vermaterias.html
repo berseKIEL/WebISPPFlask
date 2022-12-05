@@ -1,0 +1,51 @@
+{%extends 'user/home.html'%}
+
+{%block head%}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+{%endblock%}
+
+
+{%block content%}
+<div class="row py-5">
+  <div class="col-2">
+  </div>
+  <div class="col-md-10 py-5">
+    <div class="container">
+      <div class="container d-flex">
+        <table>
+          <thead>
+            <tr>
+              <td><strong>Carrera</strong></td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for car in materias %}
+            <tr>
+                <form action="{{url_for('docente.Ver_Materias')}}" method='post'>
+                  <td>{{car[1]}} - {{car[3]}}° año - {{car[4]}}</td>
+                  <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                  <td><input type="submit" value="X"></td>
+                </form>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+{%block script%}
+{{super()}}
+<script>
+  carposelect = document.getElementById("carposelect");
+
+  if (carposelect.value == "") {
+    carposelect.value = "0";
+  }
+</script>
+{%endblock%}

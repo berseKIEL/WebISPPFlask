@@ -23,18 +23,23 @@
                             {% endfor %}
                         </select>
                     </div>
-
+                    <input type="hidden" value="{{materias[0][2]}}" name="carpoid">
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <label for="cargahoraria">Carga horaria</label>
-                            <input type="text" placeholder="Carga Horaria" name="CargaHoraria"
+                            <input type="number" placeholder="Carga Horaria" name="CargaHoraria"
                                 class="form-control form-custom">
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <label for="situacionRevista">Situacion de revista</label>
-                            <input type="text" placeholder="Situacion Revista" name="SituacionRevista"
-                                class="form-control form-custom">
+                            <select class="form-select form-select-sm" name="SituacionRevista"
+                                            id="SituacionRevista">
+                                <option selected>Seleccione una opción</option>
+                                <option value="1">Docente Titular</option>
+                                <option value="2">Docente Suplente</option>
+                                <option value="3">Interino</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -73,14 +78,11 @@
                             <textarea class="form-control form-custom" name="observaciones" id="observaciones" cols="10"
                                 rows="5" placeholder="Observaciones"></textarea>
                         </div>
-                    </div>
-                    <div class="col-12 mb-1 text-center">
-                        <input type="submit" class="btn btn-primary" value="Guardar" />
-                    </div>
-
+                        <input type="submit">
+                    </form>
                 </div>
+            </div>
         </div>
     </div>
 </div>
-
 {%endblock%}

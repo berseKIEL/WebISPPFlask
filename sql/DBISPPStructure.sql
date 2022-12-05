@@ -259,6 +259,7 @@ CREATE TABLE alumnocarpomateria (
 DROP TABLE IF EXISTS alumnosecundaria;
 CREATE TABLE alumnosecundaria (
   AlumnoID int NOT NULL,
+  Institucion varchar(100),
   TituloSecundaria varchar(100),
   AñoEgreso varchar(100),
   Modalidad varchar(100),
@@ -349,6 +350,7 @@ CREATE TABLE personalmateriadatos (
   TurnoCargo varchar(30),
   NumControl varchar(15),
   TituloPersonal varchar(100),
+  Observaciones varchar(100),
   PRIMARY KEY (PersonalCarpoMateriaID),
   CONSTRAINT PersonalCarpoMateriaID FOREIGN KEY (PersonalCarpoMateriaID) REFERENCES personalcarpomateria (PersonalCarpoMateriaID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

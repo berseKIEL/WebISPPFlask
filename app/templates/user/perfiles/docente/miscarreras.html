@@ -24,18 +24,25 @@
             {% for car in carposUsuario %}
             <tr>
                 {% if car[2] == None %}
-                <form action="">
+                <form action="{{url_for('docente.Ver_Materias')}}" method='post'>
                   <td>{{car[1]}} {{car[3]}}</td>
                   <input type="hidden" value="{{car[0]}}" name="carpoid" />
                   <td><input type="submit" value="Ver Materias"></td>
                 </form>
+                <form action="{{url_for('docente.eliminar_carrera')}}" method='post'>
+                  <input type="hidden" value="{{car[0]}}" name="carpoid" />
+                  <td><input type="submit" value="X"></td>
+                </form>
 
                 {% else %}
-                <form action="">
+                <form action="{{url_for('docente.Ver_Materias')}}" method='post'>
                   <td>{{car[1]}} {{car[2]}} {{car[3]}}</td>
                   <input type="hidden" value="{{car[0]}}" name="carpoid" />
                   <td><input type="submit" value="Ver Materias"></td>
-                  
+                </form>
+                <form action="{{url_for('docente.eliminar_carrera')}}" method='post'>
+                  <input type="hidden" value="{{car[0]}}" name="carpoid" />
+                  <td><input type="submit" value="X"></td>
                 </form>
                 {% endif %}
             </tr>
@@ -45,7 +52,7 @@
 
         <div class="card-text px-5 py-2">
           <h4 class="mb-0">Anotarse a otra carrera</h4>
-          <form action="{{url_for('alumno.agregar_carrera')}}" method="post">
+          <form action="{{url_for('docente.seleccionar_materias')}}" method="post">
             <select name="Carpo" id="carposelect">
               <option disabled value="0">Seleccione una carrera</option>
               {% for car in carpo %}
