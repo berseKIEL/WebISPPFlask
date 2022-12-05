@@ -122,10 +122,10 @@ def agregar_carrera():
 @login_required
 def crear_alumno():
     carpoid = request.form.get('Carpo')
-    DNI = request.form.get('DNI')
+    dnialumn = request.form.get('dni')
     nombre = request.form.get('nombre')
     apellido = request.form.get('Apellido')
-    if nombre == '' or apellido == '' or DNI == '':
+    if nombre == '' or apellido == '' or dnialumn == '':
         flash('Datos incompletos')
     else:
         car = Carpo.get_carpo_nombres_from_id(db,carpoid)
@@ -134,13 +134,13 @@ def crear_alumno():
         else:
             name = car[1]+' '+car[2]+' '+car[3]   
 
-        usuarioid = Usuario.create_user(db,DNI)
+        usuarioid = Usuario.create_user(db,dnialumn)
+        
         UsuarioPerfil.create_userperfil(db,usuarioid,7)
         
         usuarioDatos.insert_usuariodatos(db,usuarioid,nombre,apellido,name)
+        
         flash('Usuario Guardado')
-
-
     return redirect(url_for('bedel.mostrar_alumnos'))
 
 
