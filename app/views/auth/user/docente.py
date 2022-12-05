@@ -166,6 +166,7 @@ def agregar_carrera():
 def Ver_Datos():
     #datos materias
     materiaid = request.form.get('materiaid')
+    carpoid = request.form.get('carpoid')
     personalcarpoid = request.form.get('personalcarpoid')
     personalcarpomateriaid = personalcarpomateria.get_personalcarpomateriaid(db,personalcarpoid,materiaid)[0]
     datosmateria = personalmateriadatos.select_personalmateriadatos(db,personalcarpomateriaid)[0]
