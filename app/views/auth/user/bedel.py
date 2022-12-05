@@ -124,7 +124,7 @@ def crear_alumno():
     carpoid = request.form.get('Carpo')
     dnialumn = request.form.get('dni')
     nombre = request.form.get('nombre')
-    apellido = request.form.get('apellido')
+    apellido = request.form.get('Apellido')
     if nombre == '' or apellido == '' or dnialumn == '':
         flash('Datos incompletos')
     else:
@@ -211,22 +211,22 @@ def mostrar_alumnos():
 
     carpo = Carpo.get_carpo_nombres(db)
 
-    return render_template('user/perfiles/bedel/adminusuarios.html', nombreapellido = nombreapellido, carpo = carpo)
+    return render_template('user/perfiles/bedel/adminusuarios.html',nombreapellido = nombreapellido, carpo = carpo)
 
 @bedel.route('/resetearcontraseña/<usuarioid>', methods = ['GET'])
 @login_required
 def resetear_contraseña(usuarioid):
     print(usuarioid, 'usuario')
-    Usuario.resetear_contraseña(db,usuarioid)
-    flash('Usuario reseteado')
+    # Usuario.resetear_contraseña(db,usuarioid)
+    # flash('Usuario reseteado')
     return redirect(url_for('bedel.mostrar_alumnos'))
 
 @bedel.route('/deshabilitarusuario/<usuarioid>', methods = ['GET'])
 @login_required
 def deshabilitarusuario(usuarioid):
     print(usuarioid, 'usuario')
-    Usuario.deshabilitar_usuario(db,usuarioid)
-    flash('Usuario reseteado')
+    # Usuario.resetear_contraseña(db,usuarioid)
+    # flash('Usuario reseteado')
     return redirect(url_for('bedel.mostrar_alumnos'))
 
 
