@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, logout_user, login_required, current_user
 
 # Importación modular
-from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia,personalcarpomateria, personalmateriadatos
+from ....models.models import usuarioDatos, Perfil, Carpo, UsuarioPerfil, personalcarpo,Materia,personalcarpomateria, personalmateriadatos,alumnocarpo
 from ....ext import db
 
 # Desarrollo de la vista docente
@@ -170,4 +170,8 @@ def Ver_Datos():
     personalcarpomateriaid = personalcarpomateria.get_personalcarpomateriaid(db,personalcarpoid,materiaid)[0]
     datosmateria = personalmateriadatos.select_personalmateriadatos(db,personalcarpomateriaid)[0]
 
-    return render_template('user/perfiles/docente/verdatos.html',datosmateria = datosmateria)
+    materia = Materia.get_Materia_id(db,materiaid)
+
+    alumnocarpo.get_alumno_from_alumnocarpo(db,carpoid)
+
+    return render_template('user/perfiles/docente/verdatos.html',datosmateria = datosmateria, materia = materia)
