@@ -1,0 +1,79 @@
+{%extends 'user/home.html'%}
+
+{%block head%}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+{%endblock%}
+
+
+{%block content%}
+<div class="row py-5">
+  <div class="col-2">
+  </div>
+  <div class="col-md-10 py-5">
+    <div class="container">
+      <div class="container d-flex">
+        <h1>{{materia[1]}} - {{materia[3]}}° año - {{materia[4]}}</h1><br>
+        <table>
+            <thead>
+                <tr>
+                    <td>Carga Horaria</td>
+                    <td>Situacion Revista</td>
+                    <td>Fecha inicio cargo</td>
+                    <td>Turno cargo</td>
+                    <td>Numero de control</td>
+                    <td>Titulo Profesional</td>
+                    <td>Observaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{datosmateria[1]}}</td>
+                    <td>{{datosmateria[2]}}</td>
+                    <td>{{datosmateria[3]}}</td>
+                    <td>{{datosmateria[4]}}</td>
+                    <td>{{datosmateria[5]}}</td>
+                    <td>{{datosmateria[6]}}</td>
+                    <td>{{datosmateria[7]}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>Apellido</td>
+                    <td>Nombre</td>
+                    <td>Observaciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {%for nom in nombreapellido%}
+                <tr>
+                    <td>{{nom[3]}}</td>
+                    <td>{{nom[1]}}</td>
+                    <td>{{nom[0]}}</td>
+                    <td>{{nom[2]}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+{%block script%}
+{{super()}}
+<script>
+  carposelect = document.getElementById("carposelect");
+
+  if (carposelect.value == "") {
+    carposelect.value = "0";
+  }
+</script>
+{%endblock%}

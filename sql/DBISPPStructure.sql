@@ -91,12 +91,17 @@ CREATE TABLE usuario (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50003 TRIGGER `InsertTempPassword` BEFORE INSERT ON `usuario` FOR EACH ROW BEGIN
-	IF (NEW.UsuarioContraseñaTemp IS NULL) THEN
+	IF (NEW.UsuarioContraseñaTemp IS NULL and NEW.UsuarioContraseña IS NULL) THEN
 		SET NEW.UsuarioContraseñaTemp := NEW.Usuario;
 	END IF;
 END */;;
 DELIMITER ;
-
+DELIMITER ;;
+/*!50003 CREATE*/  /*!50003 TRIGGER `usuariodatosdom_insert` AFTER INSERT ON `usuario` FOR EACH ROW BEGIN
+	INSERT INTO usuariodomicilio (usuarioid) VALUES (new.usuarioid);
+  INSERT INTO usuariodatos (usuarioid) VALUES (new.usuarioid);
+END */;;
+DELIMITER ;
 
 --
 -- Table structure for table `usuariodatos`
@@ -107,9 +112,12 @@ CREATE TABLE usuariodatos (
   UsuarioID int NOT NULL,
   UsuarioNombre varchar(100) DEFAULT NULL,
   UsuarioApellido varchar(100) DEFAULT NULL,
-  UsuarioCUIL int DEFAULT NULL,
+  UsuarioCUIL varchar(15) DEFAULT NULL,
   UsuarioFechaNac date DEFAULT NULL,
   UsuarioSexoDNI varchar(45) DEFAULT NULL,
+  UsuarioNacionalidad varchar(100) NULL,
+  UsuarioTelefono varchar(100) NULL,
+  Observaciones varchar(120) NULL,
   PRIMARY KEY (UsuarioID),
   CONSTRAINT UsuarioIDDatos FOREIGN KEY (UsuarioID) REFERENCES usuario (UsuarioID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -121,7 +129,6 @@ CREATE TABLE usuariodatos (
 DROP TABLE IF EXISTS usuariodomicilio;
 CREATE TABLE usuariodomicilio (
   UsuarioID int NOT NULL,
-  UsuarioNacionalidad varchar(100) DEFAULT NULL,
   UsuarioProvincia varchar(100) DEFAULT NULL,
   UsuarioDepartamento varchar(100) DEFAULT NULL,
   UsuarioLocalidad varchar(100) DEFAULT NULL,
@@ -203,7 +210,12 @@ CREATE TABLE alumno (
   UsuarioPerfilID int NOT NULL,
   PRIMARY KEY (AlumnoID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+DELIMITER ;;
+/*!50003 CREATE*/  /*!50003 TRIGGER `alumnodomprocsec_insert` AFTER INSERT ON `alumno` FOR EACH ROW BEGIN
+	INSERT INTO alumnodomproc (alumnoid) VALUES (new.alumnoid);	
+	INSERT INTO alumnosecundaria (alumnoid) VALUES (new.alumnoid);
+END */;;
+DELIMITER ;
 
 --
 -- Table structure for table `alumnocarpo`
@@ -219,7 +231,7 @@ CREATE TABLE alumnocarpo (
   KEY fk_carpo_has_Alumno_Alumno1_idx (AlumnoID),
   KEY fk_carpo_has_Alumno_carpo1_idx (CarpoID),
   CONSTRAINT fk_carpo_has_Alumno_Alumno1 FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID),
-  CONSTRAINT fk_carpo_has_Alumno_carpo1 FOREIGN KEY (CarpoID) REFERENCES carpo (CARPOID)
+  CONSTRAINT fk_carpo_has_Alumno_carpo1 FOREIGN KEY (CarpoID) REFERENCES carpo (CARPOID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -235,7 +247,7 @@ CREATE TABLE alumnocarpomateria (
   PRIMARY KEY (AlumnoCarpoMateriaID),
   KEY AlumnoCarpoID_idx (AlumnoCarpoID),
   KEY AlumnoCarpoMateriaID_idx (MateriaID),
-  CONSTRAINT AlumnoCarpoID FOREIGN KEY (AlumnoCarpoID) REFERENCES alumnocarpo (AlumnoCarpoID),
+  CONSTRAINT AlumnoCarpoID FOREIGN KEY (AlumnoCarpoID) REFERENCES alumnocarpo (AlumnoCarpoID) ON DELETE CASCADE, 
   CONSTRAINT AlumnoCarpoMateriaID FOREIGN KEY (MateriaID) REFERENCES materia (MateriaID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -244,13 +256,39 @@ CREATE TABLE alumnocarpomateria (
 -- Table structure for table `alumnodatos`
 --
 
-DROP TABLE IF EXISTS alumnodatos;
-CREATE TABLE alumnodatos (
-  AlumnoDatosID int NOT NULL,
-  PRIMARY KEY (AlumnoDatosID),
-  CONSTRAINT AlumnoID FOREIGN KEY (AlumnoDatosID) REFERENCES alumno (AlumnoID)
+DROP TABLE IF EXISTS alumnosecundaria;
+CREATE TABLE alumnosecundaria (
+  AlumnoID int NOT NULL,
+  Institucion varchar(100),
+  TituloSecundaria varchar(100),
+  AñoEgreso YEAR,
+  Modalidad varchar(100),
+  PRIMARY KEY (AlumnoID),
+  CONSTRAINT AlumnoIDSec FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+--
+-- Table structure for table `alumnodomproc`
+--
+
+DROP TABLE IF EXISTS alumnodomproc;
+CREATE TABLE alumnodomproc (
+  AlumnoID int NOT NULL,
+  AlumnoProvincia varchar(100) DEFAULT NULL,
+  AlumnoDepartamento varchar(100) DEFAULT NULL,
+  AlumnoLocalidad varchar(100) DEFAULT NULL,
+  AlumnoCiudad varchar(100) DEFAULT NULL,
+  AlumnoBarrio varchar(150) DEFAULT NULL,
+  AlumnoCalle varchar(100) DEFAULT NULL,
+  AlumnoAltura varchar(100) DEFAULT NULL,
+  AlumnoPiso varchar(100) DEFAULT NULL,
+  AlumnoNumDep varchar(100) DEFAULT NULL,
+  AlumnoManzana varchar(100) DEFAULT NULL,
+  AlumnoCP int DEFAULT NULL,
+  PRIMARY KEY (AlumnoID),
+  CONSTRAINT AlumnoIDDom FOREIGN KEY (AlumnoID) REFERENCES alumno (AlumnoID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Table structure for table `personal`
@@ -278,7 +316,7 @@ CREATE TABLE personalcarpo (
   KEY fk_Personal_has_carpo_carpo1_idx (CarpoID),
   KEY fk_Personal_has_carpo_Personal1_idx (PersonalID),
   CONSTRAINT fk_Personal_has_carpo_carpo1 FOREIGN KEY (CarpoID) REFERENCES carpo (CARPOID),
-  CONSTRAINT fk_Personal_has_carpo_Personal1 FOREIGN KEY (PersonalID) REFERENCES personal (PersonalID)
+  CONSTRAINT fk_Personal_has_carpo_Personal1 FOREIGN KEY (PersonalID) REFERENCES personal (PersonalID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -295,7 +333,7 @@ CREATE TABLE personalcarpomateria (
   KEY fk_PersonalCarpo_has_materia_materia1_idx (MateriaID),
   KEY PersonalCarpoID_idx (PersonalCarpoID),
   CONSTRAINT MateriaID FOREIGN KEY (MateriaID) REFERENCES materia (MateriaID),
-  CONSTRAINT PersonalCarpoID FOREIGN KEY (PersonalCarpoID) REFERENCES personalcarpo (PersonalCarpoID)
+  CONSTRAINT PersonalCarpoID FOREIGN KEY (PersonalCarpoID) REFERENCES personalcarpo (PersonalCarpoID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -303,9 +341,16 @@ CREATE TABLE personalcarpomateria (
 -- Table structure for table `personaldatos`
 --
 
-DROP TABLE IF EXISTS personaldatos;
-CREATE TABLE personaldatos (
-  PersonalID int NOT NULL,
-  PRIMARY KEY (PersonalID),
-  CONSTRAINT PersonalID FOREIGN KEY (PersonalID) REFERENCES personal (PersonalID)
+DROP TABLE IF EXISTS personalmateriadatos;
+CREATE TABLE personalmateriadatos (
+  PersonalCarpoMateriaID int NOT NULL,
+  CargaHoraria int,
+  SituacionRevista varchar(40),
+  FcInicioCargo date,
+  TurnoCargo varchar(30),
+  NumControl varchar(15),
+  TituloPersonal varchar(100),
+  Observaciones varchar(100),
+  PRIMARY KEY (PersonalCarpoMateriaID),
+  CONSTRAINT PersonalCarpoMateriaID FOREIGN KEY (PersonalCarpoMateriaID) REFERENCES personalcarpomateria (PersonalCarpoMateriaID) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

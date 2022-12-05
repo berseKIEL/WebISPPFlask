@@ -1,0 +1,68 @@
+{%extends 'user/home.html'%}
+
+{%block head%}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+{%endblock%}
+
+
+{%block content%}
+<div class="row py-5">
+  <div class="col-2">
+  </div>
+
+  <div class="col-10 py-5 mt-3">
+    <div class="container d-flex flex-column align-items-center">
+      <div class="col-md-10 col-12 mb-3">
+        <div class="tabla">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th class="col-6">Carrera</th>
+                <th class="col-6">Administración</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for car in materias %}
+              <tr>
+                <td class="col-6">{{car[1]}} - {{car[3]}}° año - {{car[4]}}</td>
+                <td class="col-6">
+                  <div class="d-flex gap-2">
+                    <form action="{{url_for('docente.Ver_Datos')}}" method='post'>
+                      <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                      <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
+                      <input type="hidden" value="{{carpoid}}" name="carpoid" />
+                      <input class="btn btn-primary btn-sm" type="submit" value="Ver Datos">
+                    </form>
+                    
+                    <form action="{{url_for('docente.eliminarmateria_personalcarpomateria')}}" method='post'>
+                      <input type="hidden" value="{{car[0]}}" name="materiaid" />
+                      <input type="hidden" value="{{carpoid}}" name="carpoid" />
+                      <input type="hidden" value="{{personalcarpoid}}" name="personalcarpoid" />
+                      <input class="btn btn-danger btn-sm" type="submit" value="X">
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+{%block script%}
+{{super()}}
+<script>
+  carposelect = document.getElementById("carposelect");
+
+  if (carposelect.value == "") {
+    carposelect.value = "0";
+  }
+</script>
+{%endblock%}

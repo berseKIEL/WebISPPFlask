@@ -37,6 +37,8 @@ def login():
         # Preguntar si el usuario retornado no es nulo
         if RetornoUsuario != None:
 
+            print(RetornoUsuario.usuariocontraseña)
+            print(RetornoUsuario.usuariocontraseñatemp)
             if RetornoUsuario.usuariocontraseña or RetornoUsuario.usuariocontraseñatemp:
 
                 login_user(RetornoUsuario)  # Logear al Flask-Login
@@ -82,8 +84,6 @@ def verificar_roles():
         session['perfilid'] = perfilobtenido
         session['usuarioperfilactivo'] = UsuarioPerfil.get_usuarioperfil_via_user_activo(db, current_user.id, session['perfilid'])
         return redirect(url_for('usuario.index'))
-        
-    return jsonify({'Respuesta': 'No se pudo realizar la redirección'})
 
 
 @auth.route('/seleccionarperfil', methods=['GET', 'POST'])
@@ -121,7 +121,7 @@ def seleccionar_perfil():
         # elif perfilobtenido == 7:
         #     return redirect(url_for('alumno.index'))
         
-    return render_template('user/seleccionarperfil.html', perfilnames=perfilnames)
+    return render_template('user/perfiles/seleccionarperfil.html', perfilnames=perfilnames)
 
 
 @auth.route('/recuperarcontrasenia', methods=['GET', 'POST'])
@@ -231,7 +231,6 @@ def habilitar_usuario():
 @login_required
 def logout():
     logout_user()
-    if 'perfilid' in session:
-        session.pop('perfilid', None)
+    session.clear()
     flash('El usuario ha cerrado la sesión correctamente')
     return redirect(url_for("home.index"))

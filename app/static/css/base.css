@@ -23,6 +23,11 @@ body {
   z-index: 101;
 }
 
+.nav-link:hover {
+  color:#0d6efd;
+  text-transform: uppercase;
+  font-weight: bold; 
+}
 /* Sidebar */
 .sidebar {
   position: fixed;
@@ -37,6 +42,9 @@ body {
 @media screen and (max-width: 767px) {
   .sidebar {
     width: 100%;
+  }
+  .titulo{
+    margin-top: 58px;
   }
 }
 .sidebar .active {
@@ -61,11 +69,11 @@ body {
   left: 0;
   margin: auto;
   margin-top: 1rem;
-  position: absolute;
+  position: fixed;
   right: 0;
   text-align: center;
-  bottom: 2.5rem;
-  z-index: 1;
+  top: 1rem;
+  z-index: 10000;
 }
 
 .btn-close {

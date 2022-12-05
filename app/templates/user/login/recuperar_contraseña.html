@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'home.html' %}
 
 {%block head%}
 {{super()}}
@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block content %}
-{{super()}}
 <form action="{{ url_for('auth.recuperar_contraseña') }}" class="form-usuario container d-flex justify-content-center align-items-center" method="POST">
     <div class="container-md container">
         <div class="card">
