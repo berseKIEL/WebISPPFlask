@@ -38,6 +38,9 @@ body {
   .sidebar {
     width: 100%;
   }
+  .titulo{
+    margin-top: 58px;
+  }
 }
 .sidebar .active {
   border-radius: 5px;
