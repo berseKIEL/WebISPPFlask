@@ -121,7 +121,6 @@ def agregar_carrera():
 @bedel.route('/crear_alumno', methods = ['POST'])
 @login_required
 def crear_alumno():
-    print('hola')
     carpoid = request.form.get('Carpo')
     DNI = request.form.get('DNI')
     nombre = request.form.get('nombre')
@@ -146,14 +145,12 @@ def crear_alumno():
 
 
 
-@bedel.route('/Eliminarcarrera', methods = ['POST'])
+@bedel.route('/Eliminarcarrera', methods = ['GET'])
 @login_required
 def eliminar_carrera():
-    print('asdasd')
-    carpoid = request.form.get('carpoid')
+    carpoid = request.args.get('carpoid')
+    
     personalcarpo.eliminar_personalcarpo(db,session['personalid'], carpoid)
-
-    print(len(personalcarpo.cantcarpo(db,session['personalid'])))
 
     if len(personalcarpo.cantcarpo(db,session['personalid'])) == 0:
         UsuarioPerfil.deactivate_user_perfil(db, current_user.id, session['perfilid'])
@@ -167,25 +164,28 @@ def eliminar_carrera():
 def mostrar_alumnos():
 
     carpoid = personalcarpo.cantcarpo(db,session['personalid'])
+    
     carpos=[]
+    
     alumnosid=[]
     for i in carpoid:
         carpos = alumnocarpo.get_alumno_from_alumnocarpo(db,i[0])
         
         for a in carpos:
-            alumnosid.append(a[0])
+            alumnosid.append([a[0],i[0]])
 
 
     usuariosperfilesid =[]
     for i in alumnosid:
-        usuariosperfilesid.append(alumno.get_usuarioperfil_from_alumno(db,i))
+        usuariosperfilesid.append([alumno.get_usuarioperfil_from_alumno(db,i[0]),i[1]])
 
     usuariosid = []
     for i in usuariosperfilesid:
-        usuariosid.append(UsuarioPerfil.get_usuarioid_from_usuarioperfil(db,i))
+        usuariousuarioperfil = UsuarioPerfil.get_usuarioid_from_usuarioperfil(db,i[0])
+        usuariousuarioperfil.append(i[1])
+        usuariosid.append(usuariousuarioperfil)
     
     nombreapellido = []
-          
     user = []
     for i in usuariosid:
         
@@ -193,10 +193,11 @@ def mostrar_alumnos():
 
         alid = alumno.get_alumnoid_by_usuarioperfilid(db,i[1])
         user.append(alid)
-
-        carid = alumnocarpo.get_carpoid_by_alumnoid(db,alid)[0]
         
-        car=Carpo.get_carpo_nombres_from_id(db,carid)
+        
+        car = Carpo.get_carpo_nombres_from_id(db,i[2])
+
+        
         if car[2] == None:
             name = car[1]+' '+car[3]    
         else:
@@ -206,13 +207,9 @@ def mostrar_alumnos():
         user.append(i[0])
 
         nombreapellido.append(user)
-
+        
 
     carpo = Carpo.get_carpo_nombres(db)
-        # carpos = personalcarpo.cantcarpo(db,session['personalid'])
-        # carpo = []
-        # for i in carpos:
-        #     carpo.append(Carpo.get_carpo_nombres_from_id(db,i[0]))
 
     return render_template('user/perfiles/bedel/adminusuarios.html',nombreapellido = nombreapellido, carpo = carpo)
 

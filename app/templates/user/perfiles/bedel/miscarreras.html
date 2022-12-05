@@ -1,87 +1,65 @@
-{%extends 'user/home.html'%}
-
-{%block head%}
-{{super()}}
+{%extends 'user/home.html'%} {%block head%} {{super()}}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static',filename='css/administrarusuarios.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
-{%endblock%}
-
-{%block content%}
+{%endblock%} {%block content%}
 <div class="row contenedor">
-  <div class="col-2">
-  </div>
-  <div class="col-md-10 col-sm-12 contenedor">
-    <div class="container-md container-fluid d-flex">
-      <div class="row g-4 w-100">
-        <div class="container d-flex justify-content-around">
-          <table class="table table-hover tabla">
+  <div class="col-2"></div>
+
+  <div class="col-md-10 col-sm-12 mt-3">
+    <div class="container d-flex flex-column align-items-center">
+      <div class="col-md-10 col-12 mb-3">
+        <div class="tabla">
+          <table class="table table-fixed">
             <thead>
               <tr>
-                <td>Carrera</td>
-                <td></td>
+                <th class="col-6">Carrera</th>
+                <th class="col-6">Administración</th>
               </tr>
             </thead>
+
             <tbody>
               {% for car in carposUsuario%}
               <tr>
-                <form action="{{url_for('bedel.eliminar_carrera')}}" method="post">
-                  {% if car[2] == None %}
-                  <td>
-                    <a href="{{url_for('bedel.ingresar_carpo',id=car[0])}}">
-                      {{car[1]}} {{car[3]}}</a>
-                  </td>
-  
-                  <input type="hidden" value="{{car[0]}}" name="carpoid" />
-  
-                  {% else %}
-                  <td>
-                    <a href="{{url_for('bedel.ingresar_carpo', id=car[0])}}">
-                      {{car[1]}} {{car[2]}} {{car[3]}}</a>
-                  </td>
-  
-                  <input type="hidden" value="{{car[0]}}" name="carpoid" />
-  
-                  {% endif %}
-                  <td class="text-end">
-                    <input class="btn btn-danger btn-sm" type="submit" value="x" />
-                  </td>
-                </form>
+                {% if car[2] == None %}
+                <td class="col-6">{{car[1]}} {{car[3]}}</td>
+                {% else %}
+                <td class="col-6">{{car[1]}} {{car[2]}} {{car[3]}}</td>
+                {% endif %}
+
+                <td class="col-6">
+                  <a href="{{ url_for('bedel.eliminar_carrera', carpoid = car[0]) }}" class="btn btn-danger btn-sm"> x </a>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
-  
-          <div class="card-text px-5 py-2">
-            <form class="d-flex justify-content-center align-items-center crear"
-              action="{{url_for('bedel.agregar_carrera')}}" method="post">
-              <div class="container login">
-                <div class="d-flex flex-column align-items-left py-3">
-                  <h4 class="mb-3">Anotarse a otra carrera</h4>
-                  <select class="form-select form-select-lg" name="Carpo" id="carposelect">
-                    <option disabled value="0">Seleccione una carrera</option>
-                    {% for car in carpo %} {% if car[2] == None%}
-                    <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
-                    {% else %}
-                    <option value="{{car[0]}}">
-                      {{car[1]}} {{car[2]}} {{car[3]}}
-                    </option>
-                    {% endif %} {% endfor %}
-                  </select>
-                  <input type="submit" class="btn btn-primary my-3">
-                </div>
-              </div>
-            </form>
-          </div>
         </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <form class="crear" action="{{url_for('bedel.agregar_carrera')}}" method="post">
+          <div class="container fondo">
+            <div class="d-flex flex-column align-items-left py-3">
+              <h5 class="mb-3 text-center">Anotarse a otra carrera</h5>
+              <select class="form-select form-select-sm form-custom" name="Carpo" id="carposelect">
+                <option disabled value="0">Seleccione una carrera</option>
+                {% for car in carpo %} {% if car[2] == None%}
+                <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
+                {% else %}
+                <option value="{{car[0]}}">{{car[1]}} {{car[2]}} {{car[3]}}</option>
+                {% endif %} {% endfor %}
+              </select>
+              <div class="col text-center">
+                <input type="submit" class="btn btn-primary mt-3" />
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
-{%endblock%}
-
-{%block script%}
-{{super()}}
+{%endblock%} {%block script%} {{super()}}
 <script>
   carposelect = document.getElementById("carposelect");
 

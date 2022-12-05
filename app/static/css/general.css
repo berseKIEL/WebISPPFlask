@@ -8,11 +8,40 @@
 }
 
 .contenedor {
-  padding-top:58px
+  padding-top: 58px;
 }
 
 .fondo {
   border-bottom: 1px solid #757575;
   border-radius: 20px;
   background-color: var(--background);
+}
+
+.tabla {
+  background-color: rgb(255, 255, 255);
+  border-bottom: 1px solid #757575;
+  border-radius: 20px;
+  background-color: var(--background);
+}
+
+.table-fixed thead {
+  width: 97%;
+}
+
+.table-fixed tbody {
+  height: 230px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr > th {
+  float: left;
+  border-bottom-width: 0;
 }

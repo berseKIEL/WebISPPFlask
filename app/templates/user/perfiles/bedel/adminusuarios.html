@@ -3,7 +3,9 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='css/administrarusuarios.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
 
-{%endblock%} {%block content%}
+{%endblock%}
+
+{%block content%}
 <div class="row">
   <div class="col-2"></div>
 
@@ -72,8 +74,8 @@
                 <td>{{nom[4]}}</td>
                 <td>{{nom[2]}}</td>
                 <td>
-                  <a href="{{ url_for('bedel.resetear_contraseña', usuarioid = nom[3]) }}" class="btn btn-warning btn-sm"> Restablecer </a>
-                  <a href="{{ url_for('bedel.deshabilitarusuario', usuarioid = nom[3]) }}" class="btn btn-danger btn-sm"> Deshabilitar </a>
+                  <a href="{{ url_for('bedel.resetear_contraseña', usuarioid = nom[5]) }}" class="btn btn-warning btn-sm"> Restablecer </a>
+                  <a href="{{ url_for('bedel.deshabilitarusuario', usuarioid = nom[5]) }}" class="btn btn-danger btn-sm"> Deshabilitar </a>
                 </td>
               </tr>
               {% endfor %}

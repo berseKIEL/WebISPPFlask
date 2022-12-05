@@ -367,8 +367,7 @@ class UsuarioPerfil():
     def get_usuarioid_from_usuarioperfil(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = (
-                "select usuarioid from usuarioperfil where usuarioperfilid = %s")
+            consulta = ("select usuarioid from usuarioperfil where usuarioperfilid = %s")
             cur.execute(consulta, [id])
             usuarios = []
             usuarios.append(cur.fetchone()[0])

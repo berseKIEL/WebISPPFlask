@@ -1,12 +1,14 @@
 {%extends 'user/home.html'%} {%block head%} {{super()}}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
-{%endblock%} {%block content%}
+{%endblock%}
+
+{%block content%}
 <div class="row contenedor">
   <div class="col-2"></div>
   <div class="col-md-10">
     <div class="m-4">
-      <form class="row p-3 mb-2 fondo" action="{{ url_for('usuario.editar_datospersonales_usuario') }}" method="POST" id="datospersonales">
+      <form class="row p-3 mb-2 fondo" action="{{ url_for('docente.activar_usuarioperfil') }}" method="POST" id="datospersonales">
         <div class="container-fluid">
           <h2 class="mb-4 col text-center">Seleccione una materia</h2>
           <input type="hidden" value="{{materias[0][2]}}" name="carpoid" />
