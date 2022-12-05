@@ -57,9 +57,9 @@ def login():
                 return redirect(url_for('auth.verificar_roles'))
             
             else:
-                flash('Contraseña Incorrecta', category='error')
+                flash('Dato/s Invalidos', category='error')
         else:
-            flash('Usuario Inexistente', category='error')
+            flash('Dato/s Invalidos', category='error')
 
     return render_template("user/login/log_in.html")
 
