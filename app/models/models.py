@@ -27,8 +27,7 @@ class Usuario(UserMixin):
     def create_user(self, db, dni):
         try:
             cur = db.connection.cursor()
-            consulta = (
-                'INSERT INTO usuario(Usuario) VALUES(%s)')
+            consulta = ('INSERT INTO usuario (Usuario) VALUES (%s)')
             cur.execute(consulta, [dni])
             db.connection.commit()
             return cur.lastrowid
@@ -155,14 +154,13 @@ class Usuario(UserMixin):
     def resetear_contraseña(self, db, usuarioid):
         try:
             cur = db.connection.cursor()
-            consulta = ('UPDATE usuario SET usuariocontraseñatemp = (select usuario from usuario where usuarioid = %s),usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s')
+            consulta = ('UPDATE usuario SET usuariocontraseñatemp = (select usuario where usuarioid = %s), usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s')
             cur.execute(consulta, [usuarioid, usuarioid])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-    
 
     @classmethod
     def update_email(self, db, email, id):
@@ -202,18 +200,18 @@ class Usuario(UserMixin):
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-        
+
     @classmethod
     def deshabilitar_usuario(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = ("UPDATE usuario SET usuariocontraseñatemp = NULL, usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s")
+            consulta = (
+                "UPDATE usuario SET usuariocontraseñatemp = NULL, usuariocontraseña = NULL, usuariocorreo = NULL, usuarioactivo = 0 WHERE usuarioid = %s")
             cur.execute(consulta, [(id)])
-            return cur.fetchone()
+            return cur.lastrowid
         except Exception as ex:
             print(ex)
             raise Exception(ex)
-        
 
     @classmethod
     def revisar_contraseña_hasheada(self, hash, contraseña):
@@ -366,7 +364,8 @@ class UsuarioPerfil():
     def get_usuarioid_from_usuarioperfil(self, db, id):
         try:
             cur = db.connection.cursor()
-            consulta = ("select usuarioid from usuarioperfil where usuarioperfilid = %s")
+            consulta = (
+                "select usuarioid from usuarioperfil where usuarioperfilid = %s")
             cur.execute(consulta, [id])
             usuarios = []
             usuarios.append(cur.fetchone()[0])
@@ -428,11 +427,9 @@ class usuarioDatos():
         try:
             cur = db.connection.cursor()
             # consulta = ('INSERT INTO usuariodatos(usuarioid, UsuarioNombre,UsuarioApellido, observaciones) VALUES(%s,%s,%s,%s)')
-            consulta = (
-                'UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, Observaciones = %s where usuarioid = %s')
+            consulta = ('UPDATE usuariodatos SET UsuarioNombre = %s, UsuarioApellido = %s, Observaciones = %s where usuarioid = %s')
 
-            cur.execute(consulta, [UsuarioNombre,
-                        UsuarioApellido, observaciones, usuarioid])
+            cur.execute(consulta, [UsuarioNombre,UsuarioApellido, observaciones, usuarioid])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
@@ -887,15 +884,13 @@ class Materia():
             return cur.fetchall()
         except Exception as ex:
             raise Exception(ex)
-            
-
 
     @classmethod
     def get_materia_by_carpoidmat_filtrer(self, mysql, personalcarpoid, carpoid):
         try:
             cur = mysql.connection.cursor()
             sql = 'SELECT * from materia where materiaid not in (select materiaid From personalCarpomateria where personalcarpoid = %s) and carpoidmat = %s order by materiaid'
-            cur.execute(sql, [personalcarpoid,carpoid])
+            cur.execute(sql, [personalcarpoid, carpoid])
             return cur.fetchall()
         except Exception as ex:
             raise Exception(ex)
@@ -1007,7 +1002,8 @@ class personalmateriadatos():
         try:
             cur = db.connection.cursor()
             sql = 'INSERT INTO personalmateriadatos VALUES(%s,%s,%s,%s,%s,%s,%s,%s)'
-            cur.execute(sql, [personalcarpomateriaid, cargahoraria, situacionrevista,fciniciocargo, turnocargo, numcontrol, TituloProfesional, observaciones])
+            cur.execute(sql, [personalcarpomateriaid, cargahoraria, situacionrevista,
+                        fciniciocargo, turnocargo, numcontrol, TituloProfesional, observaciones])
             db.connection.commit()
             return cur.lastrowid
         except Exception as ex:
@@ -1101,12 +1097,12 @@ class personalcarpomateria():
         self.PersonalCarpoID = PersonalCarpoID
         self.MateriaID = MateriaID
 
-
     @classmethod
     def eliminar_personalcarpomateria(self, mysql, PersonalCarpoID, MateriaID):
         try:
             cur = mysql.connection.cursor()
-            consulta = ('DELETE FROM personalcarpomateria WHERE PersonalCarpoID = %s AND MateriaID = %s')
+            consulta = (
+                'DELETE FROM personalcarpomateria WHERE PersonalCarpoID = %s AND MateriaID = %s')
             cur.execute(consulta, [PersonalCarpoID, MateriaID])
             mysql.connection.commit()
             return True
@@ -1118,7 +1114,8 @@ class personalcarpomateria():
     def get_personalcarpomateriaid(self, mysql, PersonalCarpoID, MateriaID):
         try:
             cur = mysql.connection.cursor()
-            consulta = ('SELECT personalcarpomateriaid FROM personalcarpomateria WHERE PersonalCarpoID = %s AND MateriaID = %s')
+            consulta = (
+                'SELECT personalcarpomateriaid FROM personalcarpomateria WHERE PersonalCarpoID = %s AND MateriaID = %s')
             cur.execute(consulta, [PersonalCarpoID, MateriaID])
             return cur.fetchone()
         except Exception as ex:
@@ -1129,9 +1126,10 @@ class personalcarpomateria():
     def select_personalcarpomateria(self, mysql, PersonalCarpoID):
         try:
             cur = mysql.connection.cursor()
-            consulta = ('SELECT * FROM personalcarpomateria WHERE PersonalCarpoID = %s')
+            consulta = (
+                'SELECT * FROM personalcarpomateria WHERE PersonalCarpoID = %s')
             cur.execute(consulta, [PersonalCarpoID])
-            
+
             return cur.fetchone()
         except Exception as ex:
             print(ex)
