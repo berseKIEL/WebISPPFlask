@@ -26,7 +26,7 @@
                 {% endif %}
                 <form action="{{url_for('alumno.mis_materias')}}" method="post">
                   <input type="hidden" value="{{car[0]}}" name="carpoid">
-                  <td><input type="submit" value="Mis Materias"></td>
+                  <td><input type="submit" class="btn btn-primary btn-sm" value="Mis Materias"></td>
                 </form>
               </tr>
               {% endfor %}
@@ -49,7 +49,7 @@
                 {% endif %} {% endfor %}
               </select>
               <div class="col text-center">
-                <input type="submit" class="btn btn-primary mt-3" />
+                <input type="submit" class="btn btn-primary mt-3  "/>
               </div>
             </div>
           </div>
