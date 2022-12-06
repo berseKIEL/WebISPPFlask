@@ -20,7 +20,7 @@ def create_app(Settings_Module):
     from .views.auth.user.alumno import alumno
     from .views.auth.user.bedel import bedel
     from .views.auth.user.docente import docente
-    from .views.auth.user.user import usuario
+    from .views.auth.usuario import usuario
     
     app.register_blueprint(home, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
@@ -44,23 +44,33 @@ def create_app(Settings_Module):
     # Registro de error handlers
     @app.errorhandler(400)
     def handler400Error(error):
-        return jsonify({'error': 'Bad Request'}), 400
+        flash(error, + "Contacte con un administrador")
+        return redirect(url_for('home.index'))
 
     @app.errorhandler(401)
     def handler401Error(error):
+        flash(error, + "Contacte con un administrador")
         return redirect(url_for('index'))
 
     @app.errorhandler(404)
     def handler404Error(error):
-        return jsonify({'error': 'NotFound'}), 404
+        flash(error, + "Contacte con un administrador")
+        return redirect(url_for('home.index'))
+
+    @app.errorhandler(405)
+    def handler405Error(error):
+        flash(error)
+        return redirect(url_for('home.index'))
 
     @app.errorhandler(500)
     def handler500error(error):
-        return jsonify({'error': 'Error a la hora de conectar a la base de datos'}), 500
+        flash(error)
+        return redirect(url_for('home.index'))
 
     app.register_error_handler(400, handler400Error)
     app.register_error_handler(401, handler401Error)
     app.register_error_handler(404, handler404Error)
+    app.register_error_handler(405, handler405Error)
     app.register_error_handler(500, handler500error)
     
     return app

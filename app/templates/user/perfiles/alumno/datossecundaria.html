@@ -1,0 +1,78 @@
+{%extends 'user/home.html'%} {%block head%} {{super()}}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/yearpicker.css') }}" />
+
+{%endblock%} {%block content%}
+<div class="row contenedor">
+  <div class="col-2"></div>
+  <div class="col-md-10">
+    <div class="m-4">
+      <form class="row p-3 mb-2 fondo" action="{{ url_for('alumno.mostrar_datossecundaria_usuarioperfil') }}" method="POST" id="datossecundaria">
+        <div class="container-fluid">
+          <h2 class="mb-4 col text-center">Datos de Secundaria</h2>
+          <div class="row mb-4">
+            <div class="col">
+              <input type="text" id="institucion" name="institucion" class="form-control form-custom" placeholder="Secundaría Egresada" value="{{datosecundaria[1]}}" />
+              <label for="institucion">Institucion</label>
+            </div>
+            <div class="col">
+              <input type="text" id="titulosec" name="titulosec" class="form-control form-custom" placeholder="Titulo de la Secundaria" value="{{datosecundaria[2]}}" />
+              <label for="titulosec">Titulo Secundario</label>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <input type="text" id="modalidad" name="modalidad" class="form-control form-custom" placeholder="Modalidad" value="{{datosecundaria[4]}}" />
+              <label for="modalidad">Modalidad</label>
+            </div>
+
+            <div class="col">
+              <!-- <input type="month" id="añoEgreso" name="añoEgreso" class="form-control form-custom" placeholder="Año de Egreso" value="{{datosecundaria[4]}}" />
+              <label for="añoEgreso">Año egreso</label> -->
+              <input type="text" id="añoEgreso" name="añoEgreso" class="yearpicker form-control form-custom" value="" />
+              <label for="añoEgreso">Año egreso</label>
+            </div>
+          </div>
+
+          <div class="col-12 mb-1 text-center">
+            <input type="submit" class="btn btn-primary" value="Guardar" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+{%block script%}
+{{super()}}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<script src="{{ url_for('static',filename='js/yearpicker.js') }}"></script>
+
+<script>
+  {%if datosecundaria[3] == ''%}
+    $('.yearpicker').yearpicker({year:{{datosecundaria[3]}}})
+  {%else%}
+    $('.yearpicker').yearpicker({})
+  {%endif%}
+</script>
+
+<script>
+  let formDP = document.getElementById("datossecundaria");
+
+  var elements = formDP.elements;
+
+  for (var i = 0, element; (element = elements[i++]); ) {
+    if (element.value === "None") {
+      element.value = "";
+    }
+  }
+</script>
+
+<script></script>
+
+{%endblock%}

@@ -37,6 +37,8 @@ def login():
         # Preguntar si el usuario retornado no es nulo
         if RetornoUsuario != None:
 
+            print(RetornoUsuario.usuariocontraseña)
+            print(RetornoUsuario.usuariocontraseñatemp)
             if RetornoUsuario.usuariocontraseña or RetornoUsuario.usuariocontraseñatemp:
 
                 login_user(RetornoUsuario)  # Logear al Flask-Login
@@ -55,9 +57,9 @@ def login():
                 return redirect(url_for('auth.verificar_roles'))
             
             else:
-                flash('Contraseña Incorrecta', category='error')
+                flash('Dato/s Invalidos', category='error')
         else:
-            flash('Usuario Inexistente', category='error')
+            flash('Dato/s Invalidos', category='error')
 
     return render_template("user/login/log_in.html")
 
@@ -80,10 +82,8 @@ def verificar_roles():
 
         # Se añade a la sesión actual, el perfil obtenido
         session['perfilid'] = perfilobtenido
-        
-        return redirect(url_for('user.index'))
-        
-    return jsonify({'Respuesta': 'No se pudo realizar la redirección'})
+        session['usuarioperfilactivo'] = UsuarioPerfil.get_usuarioperfil_via_user_activo(db, current_user.id, session['perfilid'])
+        return redirect(url_for('usuario.index'))
 
 
 @auth.route('/seleccionarperfil', methods=['GET', 'POST'])
@@ -92,6 +92,7 @@ def seleccionar_perfil():
     if request.method == 'GET':
         id = current_user.id
         perfiles = UsuarioPerfil.get_perfilid_via_userid(db, id)
+        
         perfilesid = []
         perfilnames = []
 
@@ -107,7 +108,9 @@ def seleccionar_perfil():
     
         session['perfilid'] = perfilobtenido
         
-        return redirect(url_for('user.index'))
+        session['usuarioperfilactivo'] = UsuarioPerfil.get_usuarioperfil_via_user_activo(db, current_user.id, session['perfilid'])
+                
+        return redirect(url_for('usuario.index'))
     
         # if perfilobtenido == 1:
         #     return redirect(url_for('auth.adminview'))
@@ -118,7 +121,7 @@ def seleccionar_perfil():
         # elif perfilobtenido == 7:
         #     return redirect(url_for('alumno.index'))
         
-    return render_template('user/seleccionarperfil.html', perfilnames=perfilnames)
+    return render_template('user/perfiles/seleccionarperfil.html', perfilnames=perfilnames)
 
 
 @auth.route('/recuperarcontrasenia', methods=['GET', 'POST'])
@@ -228,7 +231,6 @@ def habilitar_usuario():
 @login_required
 def logout():
     logout_user()
-    if 'perfilid' in session:
-        session.pop('perfilid', None)
+    session.clear()
     flash('El usuario ha cerrado la sesión correctamente')
     return redirect(url_for("home.index"))

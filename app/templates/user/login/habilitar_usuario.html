@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'home.html' %}
 
 {% block titulo %}Habilitar Usuario{% endblock%}
 
@@ -18,7 +18,7 @@
 <form action="{{ url_for('auth.habilitar_usuario') }}" class="form-usuario container d-flex justify-content-center align-items-center" method="POST">
   <div class="container-md container">
     <div class="card">
-      <h1 class="card-header display-12 text-center">Habilitación de Usuario</h1>
+      <h1 class="card-header display-12 capitalize text-center">Habilitación de Usuario</h1>
       <hr class="w-100 m-0 mb-4" />
       <input type="hidden" name="id" value="{{ id }}" />
 
@@ -38,7 +38,7 @@
           class="form-control form-custom"
           name="password"
           id="password"
-          placeholder="Ingrese una Nueva Contraseña"
+          placeholder="Ingrese una Nueva Contraseña" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*[ !@#$%^&*_=+-]).{6,12}$" title="Al menos 6 caracteres, máximo 12, debe contener una letra minúscula, una letra mayúscula, un número y no puede contener caracteres especiales." data-tipo="password"
         />
       </div>
 
@@ -48,7 +48,7 @@
           class="form-control form-custom"
           name="passwordconfirm"
           id="passwordconfirm"
-          placeholder="Confirma tu Contraseña"
+          placeholder="Confirma tu Contraseña" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*[ !@#$%^&*_=+-]).{6,12}$" title="Al menos 6 caracteres, máximo 12, debe contener una letra minúscula, una letra mayúscula, un número y no puede contener caracteres especiales." data-tipo="password"
         />
       </div>
 
@@ -66,7 +66,7 @@
           &#183; Su contraseña no puede tener información personal
         </span>
         <span class="text-muted mx-2">
-          &#183; Su contraseña debe contener más de 8 caracteres
+          &#183; Su contraseña debe contener más de 6 caracteres
         </span>
         <span class="text-muted mx-2">
           &#183; Su contraseña no puede ser completamente númerica

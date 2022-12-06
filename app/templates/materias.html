@@ -1,0 +1,71 @@
+{%extends 'home.html' %}
+
+{% block titulo %}
+Materias
+{% endblock %}
+
+{% block head%}
+{{super()}}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/nonbootstrap/carpo.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/nonbootstrap/materias.css') }}"
+/>
+{% endblock %}
+
+{% block navbar %}
+{{super()}}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content %}
+<section style="padding-top:68px;">
+  <div class="titleFormat">
+    <span class="titleCarpo">
+      {% if nombre[1]== None%}
+        {{nombre[0]}} - {{nombre[2]}}
+      {%else%}
+        {{nombre[0]}}: {{nombre[1]}} - {{nombre[2]}}
+      {%endif%}
+    </span>
+  </div>
+
+  
+  <div class="contenedor">
+    {% for i in range(cantidadAños) %}
+    <div class="titleYear">
+      <h1>{{listaAños[i]}}</h1>
+    </div>
+  
+    <div class="tablematerias">
+      <table class="style-table">
+        <thead>
+          <th>Materia</th>
+          <th>Tipo</th>
+        </thead>
+        
+        <tbody id="select">
+          {% for materia in materias %} {% if materia[2]==(i+1) %}
+          <tr id="{{materia[0]}}" class="fila">
+            <!--<td>{{materia[0]}}</td>-->
+            <td>{{materia[1]}}</td>
+            <td>{{materia[3]}}</td>
+          </tr>
+          {% endif %} {% endfor %}
+        </tbody>
+        
+      </table>
+      <br>
+    </div>
+    {%endfor%}
+  </div>
+</section>
+{%endblock%}

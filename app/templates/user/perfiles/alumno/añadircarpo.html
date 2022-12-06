@@ -1,0 +1,35 @@
+{%extends 'user/home.html'%}
+
+{%block head%}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/user.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static',filename='css/general.css') }}" />
+{%endblock%} 
+
+{%block content%}
+<div class="row pt-5">
+  <div class="col-2"></div>
+  <div class="col-md-10 py-5 pt-3">
+    <div class="container d-flex pt-3 justify-content-center">
+      <div class="card col-12 col-md-8 text-center">
+        <div class="card-header text-center mb-3">
+          <h4 class="mb-0">Seleccione una carrera</h4>
+        </div>
+
+        <div class="card-text px-5 py-2">
+          <form action="{{url_for('alumno.activar_usuarioperfil')}}" method="post">
+            <select name="Carpo" class="form-select-sm form-custom">
+              {% for car in carpo %} {% if car[2] == None%}
+              <option value="{{car[0]}}">{{car[1]}} {{car[3]}}</option>
+              {% else %}
+              <option value="{{car[0]}}">{{car[1]}} {{car[2]}} {{car[3]}}</option>
+              {% endif %} {% endfor %}</select
+            ><br />
+            <input type="submit" class="btn btn-primary my-3" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

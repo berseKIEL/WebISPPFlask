@@ -1,0 +1,26 @@
+.form-custom {
+  background: var(--background);
+  border: 0;
+  border-bottom: 1px solid #757575;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.contenedor {
+  padding-top: 58px;
+}
+
+.fondo {
+  border-bottom: 1px solid #757575;
+  border-radius: 20px;
+  background-color: var(--background);
+}
+
+.tabla {
+  background-color: rgb(255, 255, 255);
+  border-bottom: 1px solid #757575;
+  border-radius: 20px;
+  background-color: var(--background);
+}
+
