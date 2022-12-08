@@ -9,7 +9,7 @@ Este proyecto requiere Python 3.10 para poder ejecutarlo
 
 Instala las dependencias y los requerimientos para ejecutar el servidor
 ```sh
-pip install -r requirements.txt'
+pip install -r requirements.txt
 ```
 Descarga y importa las bases de datos a tu RDBMS, (Se utilizo MySQL para este proyecto) que se encuentra ubicado en *sql/DBISPPStructure.sql*:
 - Se debe utilizar el archivo *sql/Testers.sql* para que el software tenga sus funcionalidades.
